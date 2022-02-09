@@ -1,0 +1,83 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-header">
+                    <h3 class="card-title">Add Catogory</h3>
+                  </div>
+                  <div class="card-body">
+
+                    {% if messages %}
+                    <div class="col-lg-12 ">
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                           {% for message in messages %} 
+                           {{message}} 
+                           {% endfor %}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+                    {% endif %}
+
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                       
+                        <div class="form-group">
+                          <label class="form-label">Catogory Name<span class="danger" style="color: red;"> *</span></label>
+                          {{form.catogory_name}}
+                        </div>
+                        </div>
+                     
+                      <div class="col-md-6 col-lg-6">
+                         <div class="form-group">
+                          <label class="form-label">Catogory Image<span class="danger" style="color: red;"> *</span><span style="font-size: smaller;font-style: italic;color: crimson;"> (Upload image of 1200*600px for better performance.)</span> </label>
+                          <div class="input-group">
+                            {{form.catogory_image}}
+              
+                          </div>
+                          </div>
+                          </div>
+
+                          <div class="col-md-6 col-lg-6">
+                       
+                            <div class="form-group">
+                              <label class="form-label">Parent<span class="danger"></span></label>
+                              {{form.parent}}
+                            </div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-6">
+                       
+                                <div class="form-group">
+                                  <label class="form-label">Display Order<span class="danger" style="color: red;"> *</span></label>
+                                  {{form.display_order}}
+                                </div>
+                                </div>
+
+                                <div class="col-md-6 col-lg-6">
+                       
+                                    <div class="form-group">
+                                      <label class="form-label">Status<span class="danger" style="color: red;"> *</span></label>
+                                      {{form.status}}
+                                    </div>
+                                    </div>
+                           
+                      
+                    </div>
+                    <div class="col-lg-12">
+                        <center><button class="btn btn-secondary  mt-5">Submit</button></center>
+                    </div>
+                    </div>
+                    </div>
+           
+        </form>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+{% endblock %}

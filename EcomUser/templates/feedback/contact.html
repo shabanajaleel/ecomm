@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Document</title>
+    <style>
+        .errorlist{
+            list-style-type: None;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        <div class="col-lg-3"></div>
+        <div class="col-lg-6 mt-5">
+            <h3 class="text-center text-secondary">Contact Form</h3>
+            <form action="" method="POST">
+                {% csrf_token %}
+
+                <!-- message -->
+                {% if messages %}
+                <div class="col-lg-12 ">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                       {% for message in messages %} 
+                       {{message}} 
+                       {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                {% endif %}
+
+                {% if form.errors %}
+                <div class="col-lg-12 ">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        {% for field in form %}
+                        <!-- For each error in field -->
+                             {% for error  in field.errors %}
+                                <!-- Output error text message only -->
+                                    <div>{{error}}</div>
+                                {% endfor %}
+                {% endfor %}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- end of message -->
+
+            <div class="col-lg-12 ">
+                <div class="row mt-5">
+                    <div class="col-lg-4"><label for="">{{form.name.label}}</label></div>
+                    <div class="col-lg-8">{{form.name}}</div>
+                </div>    
+            </div>
+            <div class="col-lg-12">
+                <div class="row mt-2">
+                    <div class="col-lg-4"><label for="">{{form.phone.label}}</label></div>
+                    <div class="col-lg-8">{{form.phone}}</div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row mt-2">
+                    <div class="col-lg-4"><label for="">{{form.email.label}}</label></div>
+                    <div class="col-lg-8">{{form.email}}</div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row mt-2">
+                    <div class="col-lg-4"><label for="">{{form.subject.label}}</label></div>
+                    <div class="col-lg-8">{{form.subject}}</div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="row mt-2">
+                    <div class="col-lg-4"><label for="">{{form.description.label}}</label></div>
+                    <div class="col-lg-8">{{form.description}}</div>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <center><button class="btn btn-secondary  mt-5">Submit</button></center>
+                
+            </div>
+        </form>
+        </div>
+        <div class="col-lg-3"></div>
+    </div>
+    
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>   
+</body>
+</html>
+

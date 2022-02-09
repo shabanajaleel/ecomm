@@ -1,0 +1,101 @@
+{% if my_wishlist %}
+{% for product in my_wishlist %}
+<div class="prd prd--style2 prd-labels--max prd-labels-shadow listProduct">
+    <div class="prd-inside">
+        <div class="prd-img-area">
+            <a href="{{product.Product_id.Thumbnail_image.url}}" class="prd-img image-hover-scale image-container">
+                <img src="{{product.Product_id.Thumbnail_image.url}}"
+                    data-src="{{product.Product_id.Thumbnail_image.url}}" alt="Oversize Cotton Dress"
+                    class="js-prd-img lazyload fade-up">
+                <!-- <div class="foxic-loader"></div> -->
+                <div class="prd-big-squared-labels">
+
+
+
+                </div>
+            </a>
+            <div class="prd-circle-labels">
+                <div class="colorswatch-label colorswatch-label--variants js-prd-colorswatch">
+                    <i class="icon-palette"><span class="path1"></span><span class="path2"></span><span
+                            class="path3"></span><span class="path4"></span><span class="path5"></span><span
+                            class="path6"></span><span class="path7"></span><span class="path8"></span><span
+                            class="path9"></span><span class="path10"></span></i>
+                    <ul>
+                        {% for i in product.Product_id.Product_Items.all %}
+                        <li data-image="images/skins/fashion/products/product-02-1.jpg">
+                            <a class="getPrice btn--sm btn-light p-1" data-toggle="tooltip" data-placement="left"
+                                title="{{i.Varient_Values}}" data-id="{{i.id}}"
+                                data-product="{{product.Product_id.id}}"><span>{{i.Varient_Values}}</span></a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="prd-info">
+            <div class="prd-info-wrap">
+
+                <!-- stocks -->
+                <h2 class="prd-title"><a href="">{{product.Product_id}}</a>
+                </h2>
+                <div class="prd-description">
+                    {{product.Product_id.Description}}
+                </div>
+                <div class="prd-action">
+                    <div class="row">
+                        <div class="col-12 col-lg-6 mt-1">
+                            <form action="#">
+
+                                {% if product.Product_id.id in CartExistance %}
+                                <button id="CartBtn{{product.Product_id.id}}" class="btn AddToCart disabled"
+                                    data-id="{{product.Product_id.Product_Items.first.id}}"
+                                    data-item="{{product.Product_id.Product_Items.first.Varient_Values}}"
+                                    data-Pr="{{product.Product_id}}"
+                                    data-product='{"name": "Oversize Cotton Dress", "path":"images/skins/fashion/products/product-02-1.jpg", "url":"", "aspect_ratio":0.778}'>Add
+                                    To Cart</button>
+                                {% else %}
+                                <button id="CartBtn{{product.Product_id.id}}" class="btn AddToCart"
+                                    data-id="{{product.Product_id.Product_Items.first.id}}"
+                                    data-item="{{product.Product_id.Product_Items.first.Varient_Values}}"
+                                    data-Pr="{{product.Product_id}}"
+                                    data-product='{"name": "Oversize Cotton Dress", "path":"images/skins/fashion/products/product-02-1.jpg", "url":"", "aspect_ratio":0.778}'>Add
+                                    To Cart</button>
+                                {% endif %}
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prd-hovers">
+                <div class="prd-circle-labels">
+                    <div><a href="/removeWishlist/?pk={{product.Product_id.id}}" class="circle-label-compare mt-0"
+                            title="Remove From Wishlist">
+                            <i class="icon-recycle"></i>
+                        </a>
+                    </div>
+                    <div class="prd-hide-mobile"><a
+                            href="/Categories/viewProduct/?id={{product.Product_id.id}}&cat={{product.Product_id.Product_Category.id}}"
+                            class="circle-label-qview" data-src="ajax/ajax-quickview.html"><i
+                                class="icon-eye"></i><span>QUICK VIEW</span></a></div>
+                </div>
+                <div class="prd-price">
+                    <div class="price-new" id="prize{{product.Product_id.id}}"> ₹
+                        {{product.Product_id.Product_Items.first.Selling_Prize}}
+                        ({{product.Product_id.Product_Items.first.Varient_Values}})</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<hr>
+{% endfor %}
+{% else %}
+<div class="empty-wishlist js-empty-wishlist text-center py-3 py-sm-5" style="opacity: .5;">
+    <h3>Your Wishlist is empty</h3>
+    <div class="mt-5">
+        <a href="/" class="btn">Continue shopping</a>
+    </div>
+</div>
+{% endif %}

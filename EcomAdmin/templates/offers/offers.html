@@ -1,0 +1,62 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="row">
+<div class="col-lg-1"></div>
+
+<div class="col-lg-10">
+    
+        <div class="card">
+            <div class="card-header">
+             <h3>Catogories</h3>
+             <a href="{% url 'add_offers' %}" class="btn btn-secondary text-end" style="float:right">Offers</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Offer Name</th>
+                        <th>Offer Image</th>
+                        <th>Offer App Image </th>
+                        <th>Status </th>
+                        <th></th>
+                        <th></th>
+                        
+        
+                        
+        
+                        
+                       
+                    </tr>
+                    {% for offer in offers %}
+                    <tr>
+                        
+                        
+                        <td>{{offer.offer_name}}</td>
+                        <td><img src="/media/{{offer.offer_image}}" alt=""></td>
+                        <td><img src="/media/{{offer.offer_app_image}}" alt=""></td>
+                        <td>{{offer.status}}</td>
+
+                        {% if offer.status == 'active' %}
+                        <td><a href="{% url 'edit_offers' off_id=offer.id %}" class="btn btn-secondary">Edit</a></td>
+                        <td><a href="{% url 'disable_offers' offdis_id=offer.id %}" class="btn btn-secondary">Disable</a></td>
+                        {% else %}
+                        <td></td>
+                        <td><a href="{% url 'disable_offers' offdis_id=offer.id %}" class="btn btn-secondary">Enable</a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+        
+                </table>
+        
+            </div>
+          </div>
+    
+       
+
+   
+
+
+</div>
+<div class="col-lg-1"></div>
+</div>
+
+{% endblock%}

@@ -1,0 +1,63 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="row">
+<div class="col-lg-1"></div>
+
+<div class="col-lg-10">
+    
+        <div class="card">
+            <div class="card-header">
+             <h3>Catogories</h3>
+             <a href="{% url 'add_catogory' %}" class="btn btn-secondary text-end" style="float:right">Add Catogory</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Catogory Image</th>
+                        <th>Catogory Name</th>
+                        <th>Display Order </th>
+                        <th>Parent </th>
+                        <th>Status </th>
+                        <th></th>
+                        <th></th>
+                        
+        
+                        
+        
+                        
+                       
+                    </tr>
+                    {% for catogory in cat %}
+                    <tr>
+                        
+                        <td><img src="/media/{{catogory.catogory_image}}" alt=""></td>
+                        <td>{{catogory.catogory_name}}</td>
+                        <td>{{catogory.display_order}}</td>
+                        <td>{{catogory.parent}}</td>
+                        <td>{{catogory.status}}</td>
+
+                        {% if catogory.status == 'active' %}
+                        <td><a href="{% url 'edit_catogory' cat_id=catogory.id %}" class="btn btn-secondary">Edit</a></td>
+                        <td><a href="{% url 'disable_catogory' catdis_id=catogory.id %}" class="btn btn-secondary">Disable</a></td>
+                        {% else %}
+                        <td></td>
+                        <td><a href="{% url 'disable_catogory' catdis_id=catogory.id %}" class="btn btn-secondary">Enable</a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+        
+                </table>
+        
+            </div>
+          </div>
+    
+       
+
+   
+
+
+</div>
+<div class="col-lg-1"></div>
+</div>
+
+{% endblock%}

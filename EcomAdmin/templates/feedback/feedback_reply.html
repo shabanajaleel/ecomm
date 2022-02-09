@@ -1,0 +1,68 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="row">
+    <div class="col-lg-3"></div>
+    <div class="col-lg-6 mt-5">
+        <h3 class="text-center text-secondary">Contact Form</h3>
+        <form action="" method="POST">
+            {% csrf_token %}
+
+            <!-- message -->
+            {% if messages %}
+            <div class="col-lg-12 ">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                   {% for message in messages %} 
+                   {{message}} 
+                   {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if form.errors %}
+            <div class="col-lg-12 ">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {% for field in form %}
+                    <!-- For each error in field -->
+                         {% for error  in field.errors %}
+                            <!-- Output error text message only -->
+                                <div>{{error}}</div>
+                            {% endfor %}
+            {% endfor %}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- end of message -->
+
+        <div class="col-lg-12 ">
+            <div class="row mt-5">
+                <div class="col-lg-4"><label for="">Email</label></div>
+                <div class="col-lg-8"><input type="email" value={{data.email}} name="email_to" class="form-control"></div>
+            </div>    
+        </div>
+        <div class="col-lg-12">
+            <div class="row mt-2">
+                <div class="col-lg-4"><label for="">subject</label></div>
+                <div class="col-lg-8"><input type="text" value={{data.subject}} name="subject" class="form-control"></div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="row mt-2">
+                <div class="col-lg-4"><label for="">Message</label></div>
+                <div class="col-lg-8"><textarea name="message" id="" cols="30" rows="10" name="message" class="form-control"></textarea></div>
+            </div>
+        </div>
+       
+        <div class="col-lg-12">
+            <center><button class="btn btn-secondary  mt-5">Submit</button></center>
+            
+        </div>
+    </form>
+    </div>
+    <div class="col-lg-3"></div>
+</div>
+
+{% endblock %}

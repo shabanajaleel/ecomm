@@ -1,0 +1,56 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="row">
+<div class="col-lg-1"></div>
+
+<div class="col-lg-10">
+    <div class="card">
+        <div class="card-header">
+         <h3>Varient Values</h3>
+         <a href="{% url 'add_varientvalues' %}" class="btn btn-secondary " style="float:right">Add Varient Values</a>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <tr>
+                    
+                    <th>Varient Values</th>
+                    <th>Varient Type</th>
+                    <th>Display Order </th>
+                    <th>Status </th>
+                    <th></th>
+                    <th></th>
+                    
+    
+                    
+    
+                    
+                    
+                </tr>
+                {% for data in varientvalues %}
+                <tr>
+                    
+                    <td>{{data.varient_values}}</td>
+                    <td>{{data.varient_type}}</td>
+                    <td>{{data.display_order}}</td>
+                    <td>{{data.status}}</td>
+                    
+                    <td><a href="{% url 'edit_varientvalues' varval_id=data.id%}" class="btn btn-secondary">Edit</a></td>
+                    <td><a href="{% url 'disable_varientvalues' disval_id=data.id %}" class="btn btn-secondary">Disable</a></td>
+                </tr>
+                {% endfor %}
+    
+            </table>
+    
+        </div>
+      </div>
+    <div class="row">
+    
+        
+   
+</div>
+
+</div>
+<div class="col-lg-1"></div>
+</div>
+
+{% endblock%}

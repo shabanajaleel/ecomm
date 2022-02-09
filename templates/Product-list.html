@@ -1,0 +1,125 @@
+{% if Products %}
+{% for Product in Products %}
+{% load mathfilters %}
+<div class="prd prd--style2 prd-labels--max prd-labels-shadow listProduct">
+    <div class="prd-inside">
+
+        <div class="prd-img-area">
+
+            <a href="/Categories/viewProduct/?id={{Product.id}}&cat={{CatDetails.id}}"
+                class="prd-img image-hover-scale image-container">
+                <img src="{{Product.Thumbnail_image.url}}"
+                    data-src="{{Product.Thumbnail_image.url}}" alt="Oversize Cotton Dress"
+                    class="js-prd-img lazyload fade-up">
+                    <div class="prd-big-squared-labels" id="offPercent{{Product.id}}">
+                        {% with ProductPriceDiff=Product.Product_Items.first.Display_Prize|sub:Product.Product_Items.first.Selling_Prize%}
+                        {% with numerator=ProductPriceDiff|mul:100 denominator=Product.Product_Items.first.Display_Prize %}
+        
+                        {% if numerator|div:denominator|floatformat:0 > 20|floatformat:0 %}
+                        <div class="label-sale" style="background-color: #17c6aa;;" ><span>{{ numerator|div:denominator|floatformat:0 }}%<span class="sale-text">off</span></span>
+                            <div class="countdown-circle">	
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% endwith %}
+                        {% endwith %}
+                
+                        
+                    </div>
+            </a>
+            <div class="prd-circle-labels">
+                <div class="pb-2 wishlistClass">
+                    <a href="#" class="circle-label-compare mt-0 Wishlist_add"
+                        data-id="{{Product.id}}" title="Add To Wishlist">
+                        {% if Product.id in wishlist %}
+                        <i class="icon-heart-hover"></i>
+                        {% else %}
+                        <i class="icon-heart-stroke"></i>
+                        {% endif %}
+                    </a>
+                </div>
+                <a href="#" class="circle-label-qview js-prd-quickview prd-hide-mobile"
+                    data-src="ajax/ajax-quickview.html"><i class="icon-eye"></i><span>QUICK
+                        VIEW</span>
+                </a>
+                <div
+                class="colorswatch-label colorswatch-label--variants js-prd-colorswatch">
+                <i class="icon-palette"><span class="path1"></span><span
+                        class="path2"></span><span class="path3"></span><span
+                        class="path4"></span><span class="path5"></span><span
+                        class="path6"></span><span class="path7"></span><span
+                        class="path8"></span><span class="path9"></span><span
+                        class="path10"></span></i>
+                <ul>
+                    {% for i in Product.Product_Items.all %}
+                    <li>
+                        <a class="getPrice btn-light btn--sm p-1" data-toggle="tooltip"
+                            data-placement="left" title="{{i.Varient_Values}}" data-id="{{i.id}}" data-product="{{Product.id}}"><span>{{i.Varient_Values}}</span></a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            </div>
+        </div>
+        <div class="prd-info">
+            <div class="prd-info-wrap">
+                {%if Product.Product_Items.first.Product_stock == 0 %}<div class="prd-tag" style="color: crimson;">Out Of Stock</div>{%else%}<div class="prd-tag"><br></div> {% endif %}
+                <h2 class="prd-title"><a href="#">{{Product}}</a>
+                </h2>
+                <div class="row" style="padding: auto; text-align: center;">
+                </div>
+                <div class="prd-action">
+                    <form action="#">
+                        <button class="btn js-prd-addtocart"
+                            data-product='{"name": "Leather Pegged Pants", "path":"/static/User/images/skins/fashion/products/product-01-1.jpg", "url":"product.html", "aspect_ratio":0.778}'>Add
+                            To Cart</button>
+                    </form>
+                </div>
+            </div>
+            <div class="prd-hovers">
+                <div class="prd-circle-labels">
+                    <div class="prd-hide-mobile"><a href="#"
+                            class="circle-label-qview js-prd-quickview"
+                            data-src="ajax/ajax-quickview.html"><i
+                                class="icon-eye"></i><span>QUICK VIEW</span></a></div>
+                </div>
+                <div class="prd-price row">
+                    <div class="price-old col-12 text-center">
+                        <span
+                            style="color: rgb(228, 33, 33); font-size: small;" id="prizeD{{Product.id}}">
+              
+                            ₹ {{Product.Product_Items.first.Display_Prize}}
+                            
+                             
+
+                        </span>
+                    </div>
+                    
+                    <div class="price-new col-12 text-center"><span
+                            style="color: rgb(151, 145, 145); font-size: small;" id="prize{{Product.id}}">
+                            ₹ {{Product.Product_Items.first.Selling_Prize}} ({{Product.Product_Items.first.Varient_Values}})
+                        </span>
+                    </div>
+                </div>
+                <div class="prd-action">
+                    <div class="prd-action-left">
+                        {% if Product.Product_Items.first.id in CartExistance %}
+                        <a href="" id="CartBtn{{Product.id}}" class="btn btn--sm AddToCart disabled" data-id="{{Product.Product_Items.first.id}}">Add To Cart</a>
+                        {% else %}
+                        <a href="" id="CartBtn{{Product.id}}" class="btn btn--sm AddToCart {%if Product.Product_Items.first.Product_stock == 0 %}disabled{%endif%}" data-id="{{Product.Product_Items.first.id}}">Add To Cart</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% else %}
+<div class="col-lg aside">
+    <div class="prd-grid-wrap" style="text-align: center;margin-top: 2rem;">
+        <h1>Nothing Find!!</h1>
+    </div>
+</div>
+{% endif %}
+</div>
