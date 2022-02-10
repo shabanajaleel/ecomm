@@ -56,6 +56,19 @@ class CatogoryForm(forms.ModelForm):
         model=Catogory
         fields="__all__"
 
+    def clean_catogory_image(self):
+        catogory_image = self.cleaned_data.get("catogory_image")
+        if not catogory_image:
+            raise forms.ValidationError("No image!")
+        else:
+            w, h = get_image_dimensions(catogory_image)
+            if w > 1200:
+                raise forms.ValidationError("The image is %i pixel wide. It's supposed to be 1200px" % w)
+            if h > 600:
+                raise forms.ValidationError("The image is %i pixel high. It's supposed to be 600px" % h)
+        return catogory_image
+       
+
 
     def __init__(self, *args, **kwargs):
         super(CatogoryForm, self).__init__(*args, **kwargs)
@@ -120,6 +133,28 @@ class OffersForm(forms.ModelForm):
            if h > 450:
                raise forms.ValidationError("The offer App Imageis %i pixel high. It's supposed to be 450px" % h)
        return offer_app_image
+
+class AreaForm(forms.ModelForm):
+    class Meta:
+        model=Area
+        fields="__all__"
+
+
+    def __init__(self,*args , **kwargs):
+        super(AreaForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+class PincodeForm(forms.ModelForm):
+    class Meta:
+        model=Pincode
+        fields="__all__"
+
+
+    def __init__(self,*args , **kwargs):
+        super(PincodeForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
 
 
 

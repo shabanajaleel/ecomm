@@ -49,6 +49,7 @@
                                   <label class="form-label">Display Order<span class="danger" style="color: red;"> *</span></label>
                                   {{form.display_order}}
                                 </div>
+                                <div id="order"></div>
                                 </div>
 
                                 <div class="col-md-6 col-lg-6">
@@ -75,5 +76,34 @@
         <div class="col-lg-1"></div>
     </div>
 </div>
+
+<script>
+$(document).ready(function(){
+  $('#id_display_order').on('change',function(){
+    order=$('#id_display_order').val()
+    $.ajax({
+      type:'GET',
+      url:"{% url 'varient_display_order' %}",
+      data:{
+        order:order
+      },
+      success:function(response){
+        console.log(response.data)
+                  if(response.data==true){
+                      let html_data = '<span style="font-size:smaller;color: red">Display order already exist</span>'
+                      $("#order").html(html_data);
+                      $('#id_display_order').val('');
+                  }else{
+                      $("#order").html('');
+                  }  
+              },
+              error:function (response) {
+                  alert('error')
+              },
+
+    })
+  })
+})
+</script>
 
 {% endblock %}

@@ -51,12 +51,20 @@
                           {{form.offer_name}}
                         </div>
                         </div>
+
+                        <div class="col-md-6 col-lg-6">
+                       
+                          <div class="form-group">
+                            <label class="form-label">Status<span class="danger" style="color: red;"> *</span></label>
+                            {{form.status}}
+                          </div>
+                          </div>
                      
                       <div class="col-md-6 col-lg-6">
                          <div class="form-group">
                           <label class="form-label">Offer Image<span class="danger" style="color: red;"> *</span><span style="font-size: smaller;font-style: italic;color: crimson;"> (Upload image of 235*145 px for better performance.)</span> </label>
-                          <div class="input-group">
-                            {{form.offer_image}}
+                          <div >
+                            {{form.offer_image|cut:'images/offers/'}}
               
                           </div>
                           </div>
@@ -64,21 +72,15 @@
                           <div class="col-md-6 col-lg-6">
                             <div class="form-group">
                              <label class="form-label">Offer App Image<span class="danger" style="color: red;"> *</span><span style="font-size: smaller;font-style: italic;color: crimson;"> (Upload image of 900*450 px for better performance.)</span> </label>
-                             <div class="input-group">
-                               {{form.offer_app_image}}
+                             <div >
+                               {{form.offer_app_image|cut:'images/offers/app_image'}}
                  
                              </div>
                              </div>
                              </div>
 
 
-                                <div class="col-md-6 col-lg-6">
-                       
-                                    <div class="form-group">
-                                      <label class="form-label">Status<span class="danger" style="color: red;"> *</span></label>
-                                      {{form.status}}
-                                    </div>
-                                    </div>
+                            
                            
                       
                     </div>

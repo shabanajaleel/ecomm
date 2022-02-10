@@ -35,8 +35,8 @@
                       <div class="col-md-6 col-lg-6">
                          <div class="form-group">
                           <label class="form-label">Catogory Image<span class="danger" style="color: red;"> *</span><span style="font-size: smaller;font-style: italic;color: crimson;"> (Upload image of 1200*600px for better performance.)</span> </label>
-                          <div class="input-group">
-                            {{form.catogory_image}}
+                          <div >
+                            {{form.catogory_image|cut:'images/catogory/'}}
               
                           </div>
                           </div>
@@ -45,7 +45,8 @@
                           <div class="col-md-6 col-lg-6">
                        
                             <div class="form-group">
-                              <label class="form-label">Parent<span class="danger"></span></label>
+                              <label class="form-label">Parent  
+                                <span class="danger"></span><span style="color:red;font-style:italic;font-size: smaller">(leave parent blank if no parent catogory)</span></label>
                               {{form.parent}}
                             </div>
                             </div>
@@ -83,7 +84,7 @@
 
 <script>
    $(document).ready(function () {
-        $('#id_display_order').change(()=>{
+    $('#id_display_order').on('change',function(){
             var order = $('#id_display_order').val()
             $.ajax({
                 data:{'p':order},
@@ -106,35 +107,7 @@
     })
 
 
-  // $(document).ready(function(){
-  //   $('#id_display_order').on('change',function(){
-  //     var display=$('#id_display_order').val()
-  //     $.ajax({
-        
-  //       data:{
-  //         'display':display
-  //       },
-  //       url:"/admin/display_order/",
-  //       success: function (response) {
-                    
-  //                   if(response.data==true){
-  //                       // let html_data = '<span style="font-size:smaller;font-style: italic;color: red">Display order already taken</span>'
-  //                       $("#orderData").html('<span style="font-size:smaller;color: red">Display order already exist</span>');
-  //                       $('#id_display_order').val('');
-  //                   }else{
-  //                       $("#orderData").html('');
-  //                   }  
-  //               },
-               
-  //     })
-
-  //   })
-  // })
-
-
  
-  
-                
 </script>
 
 

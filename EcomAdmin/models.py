@@ -1,3 +1,4 @@
+import os
 from django.db import models
 
 # Create your models here.
@@ -21,7 +22,7 @@ class Banners(models.Model):
         ('active','active'),
         ('inactive','inactive')
     ))
-    Created_at = models.DateTimeField(auto_now_add=True)
+    Created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'Banner'
@@ -33,21 +34,29 @@ class Brand(models.Model):
         ('active','active'),
         ('inactive','inactive')
     ))
+    Created_at = models.DateTimeField(auto_now_add=True)
+
+    # def filename(self):
+    #     return os.path.basename(self.brand_image.name)
 
     class Meta:
         db_table='Brand'
+        ordering = ['-Created_at']
 
 class Catogory(models.Model):
     catogory_name=models.CharField(max_length=100)
-    catogory_image=models.FileField(upload_to='images/catogory')
+    catogory_image=models.ImageField(upload_to='images/catogory')
     display_order=models.IntegerField()
     parent=models.ForeignKey('Catogory',on_delete=models.CASCADE,null=True,blank=True)
     status=models.CharField(max_length=20,default='active',choices=(
         ('active','active'),
         ('inactive','inactive')
     ))
+    Created_at = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         db_table='Catogory'
+        ordering = ['-Created_at']
 
     def __str__(self):
         return self.catogory_name
@@ -59,9 +68,11 @@ class VarientType(models.Model):
         ('active','active'),
         ('inactive','inactive')
     ))
+    Created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table='Varient Type'
+        ordering = ['-Created_at']
 
     def __str__(self):
         return self.varient_name
@@ -74,8 +85,10 @@ class VarientValues(models.Model):
         ('active','active'),
         ('inactive','inactive')
     ))
+    Created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table='Varient Values'
+        ordering = ['-Created_at']
 
 class Offers(models.Model):
     offer_name=models.CharField(max_length=100)
@@ -85,11 +98,43 @@ class Offers(models.Model):
         ('active','active'),
         ('inactive','inactive')
     ))
+    Created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table='Offers'
+        ordering = ['-Created_at']
 
 class Area(models.Model):
-    pass
+    area_name=models.CharField(max_length=100)
+    status=models.CharField(max_length=30,choices=(
+        ('Active','Active'),
+        ('Inactive','Inactive')
+    ))
+    Created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        db_table='Area'
+        ordering = ['-Created_at']
+
+    def __str__(self):
+        return self.area_name
+
+class Pincode(models.Model):
+    pincode=models.CharField(max_length=10)
+    postoffice=models.CharField(max_length=100)
+    area=models.ForeignKey(Area,on_delete=models.CASCADE,null=True,blank=True)
+    Created_at = models.DateTimeField(auto_now_add=True)
+    status=models.CharField(max_length=30,choices=(
+        ('Active','Active'),
+        ('Inactive','Inactive')
+    ))
+    class Meta:
+        db_table='Pincode'
+        ordering = ['-Created_at']
+        
+
+    def __str__(self):
+        return self.area_name
+
+
 
 
 

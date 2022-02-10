@@ -1,0 +1,90 @@
+{% extends 'main.html' %}
+{% block content %}
+
+{% if messages %}
+<div class="row">
+  <div class="col-lg-1"></div>
+  
+  <div class="col-lg-10">
+      {% for message in messages %} 
+     
+              <div class="col-lg-12 ">
+                  <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                    
+                     {{message}} 
+                    
+                     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+              </div>
+
+       
+ 
+  {% endfor %}
+
+  </div>
+  <div class="col-lg-1"></div>
+  </div>
+  
+  {% endif %}
+
+  
+<div class="row">
+<div class="col-lg-1"></div>
+
+<div class="col-lg-10">
+    
+        <div class="card">
+            <div class="card-header">
+             <h3>Areas</h3>
+             <a href="{% url 'add_area' %}" class="btn btn-secondary text-end" style="float:right">Add Areas</a>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Area</th>
+                        <th>Status</th>
+                        <th>PinCode</th>
+                        <th></th>
+                        <th></th>
+                        
+        
+                        
+        
+                        
+                       
+                    </tr>
+                    {% for area in areas %}
+                    <tr>
+                        
+                        
+                        <td>{{area.area_name}}</td>
+                        <td>{{area.status}}</td>
+                        <td><a href="{% url 'add_pincode' pin_id=area.id %}" class="btn btn-primary">Add Pincode</a></td>
+
+                        {% if area.status == 'Active' %}
+                        <td><a href="{% url 'edit_areas' editarea_id=area.id %}" class="btn btn-secondary">Edit</a></td>
+                        <td><a href="{% url 'disable_area' disarea_id=area.id %}" class="btn btn-secondary">Disable</a></td>
+                        {% else %}
+                        <td></td>
+                        <td><a href="{% url 'disable_area' disarea_id=area.id %}" class="btn btn-secondary">Enable</a></td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+        
+                </table>
+        
+            </div>
+          </div>
+    
+       
+
+   
+
+
+</div>
+<div class="col-lg-1"></div>
+</div>
+
+{% endblock%}
