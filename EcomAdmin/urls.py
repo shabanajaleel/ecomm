@@ -10,7 +10,16 @@ urlpatterns=[
     path('feedback/',views.fnfeedback,name="feedback"),
     # path('feedback_reply/<feed_id>',views.fnfeedbackreply,name="feedback_reply"),
 
-    # path('add_banners/',views.fnaddbanner,name="add_banners"),
+    path('add_banners/',views.fnaddbanner,name="add_banners"),
+    path('addinner_banners/',views.fnaddinnerbanner,name="addinner_banners"),
+    path('inner_banners/',views.fninnerbanner,name="inner_banners"),
+    path('main_banners/',views.fnmainbanner,name="main_banners"),
+    path('maindisplay_order/',views.fnmaindisplay,name="maindisplay_order"),
+    path('innerdisplay_order/',views.fninnerdisplay,name="innerdisplay_order"),
+    path('edit_innerbanner/<inneredit_id>',views.fneditinner,name="edit_innerbanner"),
+    path('disable_innerbanner/<innerban_id>',views.fndisableinnerbanner,name="disable_innerbanner"),
+    path('edit_mainbanner/<mainedit_id>',views.fneditmain,name="edit_mainbanner"),
+    path('disable_mainbanner/<mainban_id>',views.fndisablemainbanner,name="disable_mainbanner"),
 
     path('brand/',views.fnbrand,name="brand"),
     path('add_brand/',views.fnaddbrand,name="add_brand"),
@@ -50,6 +59,9 @@ urlpatterns=[
     path('disable_area/<disarea_id>',views.fndisablearea,name="disable_area"),
     path('edit_areas/<editarea_id>',views.fneditareas,name="edit_areas"),
     path('disable_pincode/<dispin_id>',views.fndisablepincode,name="disable_pincode"),
+
+    path('customers/',views.fncustomers,name="customers"),
+    path('disablecustomer/<customid>',views.fndisablecustomer,name="disablecustomer"),
 
 
 

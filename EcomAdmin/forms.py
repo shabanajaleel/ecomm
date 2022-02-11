@@ -16,17 +16,40 @@ class AdminRoleForm(forms.ModelForm):
 
 
 class BannerForm(forms.ModelForm):
-       class Meta:
+
+    class Meta:
         model=Banners
         fields="__all__"
-        widgets={
-            'banner_name' : forms.TextInput(attrs={'class':'form-control'}),
-            'banner_url' : forms.URLInput(attrs={'class':'form-control'}),
-            'banner_image' : forms.FileInput(attrs={'class':'form-control'}),
-            'app_banner_image' : forms.FileInput(attrs={'class':'form-control'}),
-            'display_order' : forms.NumberInput(attrs={'class':'form-control'}),
-            'status' : forms.Select(attrs={'class':'form-control'})
-        }
+    
+
+    def clean_banner_image(self):
+       banner_image = self.cleaned_data.get("banner_image")
+       if not banner_image:
+           raise forms.ValidationError("No image!")
+       else:
+           w, h = get_image_dimensions(banner_image)
+           if w > 235:
+               raise forms.ValidationError("The Banner image is %i pixel wide. It's supposed to be 235px" % w)
+           if h > 145:
+               raise forms.ValidationError("The Banner Imageis %i pixel high. It's supposed to be 145px" % h)
+       return banner_image
+
+    def clean_banner_app_image(self):
+        banner_app_image = self.cleaned_data.get("banner_app_image")
+        if not banner_app_image:
+            raise forms.ValidationError("No image!")
+        else:
+            w, h = get_image_dimensions(banner_app_image)
+            if w > 900:
+                raise forms.ValidationError("The Banner App image is %i pixel wide. It's supposed to be 900px" % w)
+            if h > 450:
+                raise forms.ValidationError("The Banner App Imageis %i pixel high. It's supposed to be 450px" % h)
+        return banner_app_image
+
+    def __init__(self, *args, **kwargs):
+        super(BannerForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
 
 class BrandForm(forms.ModelForm):
     class Meta:
@@ -157,10 +180,16 @@ class PincodeForm(forms.ModelForm):
             self.fields[name].widget.attrs.update({'class':'form-control'})
 
 
+class CustomerForm(forms.ModelForm):
+    class Meta:
+        model=Customer
+        fields="__all__"
 
 
-
-
+    def __init__(self,*args , **kwargs):
+        super(CustomerForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
 
 
 

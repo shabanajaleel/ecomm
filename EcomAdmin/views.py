@@ -55,16 +55,12 @@ def fnbrand(request):
         brand=request.POST['brand']
         status=request.POST['status']
         if brand:
-            brands=Brand.objects.filter(brand_name=brand)
+            brands=brands.filter(brand_name=brand)
             context={'brand':brands}
         if status:
-            brands=Brand.objects.filter(status=status)
-            context={'brand':brands}
-        if brand and status:
-            brands=Brand.objects.filter(brand_name=brand,status=status)
+            brands=brands.filter(status=status)
             context={'brand':brands}
 
-    
     return render(request,'brands/brands.html',context)
 
 def fnaddbrand(request):
@@ -128,21 +124,15 @@ def fncatogory(request):
         status=request.POST['status']
 
         if catogory:
-            catogories=Catogory.objects.filter(catogory_name__icontains=catogory)
+            catogories=catogories.filter(catogory_name=catogory)
             context={'cat':catogories}
         if parent:
-            catogories=Catogory.objects.filter(parent__catogory_name=parent)
+            catogories=catogories.filter(parent__catogory_name=parent)
             context={'cat':catogories}
         if status:
-            catogories=Catogory.objects.filter(status=status)
+            catogories=catogories.filter(status=status)
             context={'cat':catogories}
-        # if catogory or status or parent:
-        #     catogories=Catogory.objects.filter(Q(catogory_name__icontains=catogory)|Q(parent__catogory_name__icontains=parent)|Q(status=status))
-        #     context={'cat':catogories}
-
-        if catogory and status and parent:
-            catogories=Catogory.objects.filter(catogory_name__icontains=catogory,parent__catogory_name__icontains=parent,status=status)
-            context={'cat':catogories}
+       
 
     return render(request,'catogory/catogories.html',context)
 
@@ -194,19 +184,19 @@ def fnaddvarienttype(request):
     return render(request,'varients/varienttype/addvarienttype.html',context)
 
 def fnvarienttype(request):
-    varienttype=VarientType.objects.all
+    varienttype=VarientType.objects.all()
     context={'varienttype':varienttype}
     if request.method=="POST":
         varient=request.POST['varienttype']
         status=request.POST['status']
         if varient:
-            varienttype=VarientType.objects.filter(varient_name=varient)
+            varienttype=varienttype.filter(varient_name=varient)
             context={'varienttype':varienttype}
         if status:
-            varienttype=VarientType.objects.filter(status=status)
+            varienttype=varienttype.filter(status=status)
             context={'varienttype':varienttype}
         if varient and status:
-            varienttype=VarientType.objects.filter(varient_name=varient,status=status)
+            varienttype=varienttype.filter(varient_name=varient,status=status)
             context={'varienttype':varienttype}
 
     return render(request,'varients/varienttype/varienttype.html',context)
@@ -262,17 +252,15 @@ def fnvarientvalues(request):
         varient=request.POST['varienttype']
         status=request.POST['status']
         if varientvals:
-            varientvalues=VarientValues.objects.filter(varient_values=varientvals)
+            varientvalues=varientvalues.filter(varient_values=varientvals)
             context={'varientvalues':varientvalues}
         if varient:
-            varientvalues=VarientValues.objects.filter(varient_type__varient_name=varient)
+            varientvalues=varientvalues.filter(varient_type__varient_name=varient)
             context={'varientvalues':varientvalues}
         if status:
-            varientvalues=VarientValues.objects.filter(status=status)
+            varientvalues=varientvalues.filter(status=status)
             context={'varientvalues':varientvalues}
-        if varient and status and varientvals:
-            varientvalues=VarientValues.objects.filter(varient_values=varientvals,status=status,varient_type=varient)
-            context={'varientvalues':varientvalues}
+        
     return render(request,'varients/varientvalues/varientvalues.html',context)
 
 def fneditvarientvalues(request,varval_id):
@@ -340,11 +328,11 @@ def fnoffers(request):
     if request.method=="POST":
         offer=request.POST['offer']
         status=request.POST['status']
-        if offers or status:
-            offers=Offers.objects.filter(Q(offer_name=offer) | Q(status=status))
+        if offer:
+            offers=offers.filter(Q(offer_name=offer))
             context={'offers':offers}
-        if offers and status:
-            offers=Offers.objects.filter(offer_name=offer,status=status)
+        if status:
+            offers=offers.filter(Q(status=status))
             context={'offers':offers}
 
     return render(request,'offers/offers.html',context)
@@ -377,6 +365,15 @@ def fndisableoffers(request,offdis_id):
 def fnareas(request):
     areas=Area.objects.all()
     context={'areas':areas}
+    if request.method=="POST":
+        area=request.POST['area']
+        status=request.POST['status']
+        if area:
+            areas=areas.filter(Q(area_name=area))
+            context={'areas':areas}
+        if status:
+            areas=areas.filter(status=status)
+            context={'areas':areas}
     return render(request,'area/areas.html',context)
 
 
@@ -451,6 +448,168 @@ def fneditareas(request,editarea_id):
 #         return redirect(fnoffers)
 #     return render(request,'offers/addoffers.html',{'form':form})
 
+def fncustomers(request):
+    customers=Customer.objects.all()
+    context={'customers':customers}
+    if request.method=="POST":
+        customer=request.POST['user']
+        status=request.POST['status']
+        if customer:
+            customers=customers.filter(Q(username=customer))
+            context={'customers':customers}
+        if status:
+            customers=customers.filter(Q(status=status))
+            context={'customers':customers}
+    
+    return render(request,'customer/customer.html',context)
+
+def fndisablecustomer(request,customid):
+    customer=Customer.objects.get(id=customid)
+    if customer.status== 1 :
+        customer.status=0
+        customer.save()
+        return redirect(fncustomers)
+    if customer.status== 0 :
+        customer.status=1
+        customer.save()
+        return redirect(fncustomers)
+
+def fnaddbanner(request):
+    if request.method=="POST":
+        form=BannerForm(request.POST,request.FILES)
+        print(form)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Banners added successfully')
+            return redirect(fnmainbanner)
+            
+        else:
+            return render(request,'banners/main/addbanner.html',{'form':form})
+
+    form=BannerForm()
+    context={'form':form}
+    return render(request,'banners/main/addbanner.html',context)
+
+def fnaddinnerbanner(request):
+    if request.method=="POST":
+        form=BannerForm(request.POST,request.FILES)
+        print(form)
+        if form.is_valid():
+            banner=form.save(commit=False)
+            banner.is_intermediate=1
+            banner.save()
+            messages.success(request,'Intermediate Banners added successfully')
+            return redirect(fninnerbanner)
+            
+        else:
+            return render(request,'banners/intermediate/addinnerbanner.html',{'form':form})
+
+    form=BannerForm()
+    context={'form':form}
+    return render(request,'banners/intermediate/addinnerbanner.html',context)
+
+def fninnerbanner(request):
+    innerbanners=Banners.objects.filter(is_intermediate=1)
+    context={'innerbanners':innerbanners}
+    if request.method=="POST":
+        banner=request.POST['banner']
+        URL=request.POST['URL']
+        status=request.POST['status']
+        if banner:
+            innerbanners=innerbanners.filter(Q(banner_name=banner),Q(is_intermediate=1))
+            context={'innerbanners':innerbanners}
+        if URL:
+            innerbanners=innerbanners.filter(Q(banner_url=URL),Q(is_intermediate=1))
+            context={'innerbanners':innerbanners}
+        if status:
+            innerbanners=innerbanners.filter(Q(status=status),Q(is_intermediate=1))
+            context={'innerbanners':innerbanners}
+
+    return render(request,'banners/intermediate/innerbanner.html',context)
+
+def fnmainbanner(request):
+    innerbanners=Banners.objects.filter(is_intermediate=0)
+    context={'innerbanners':innerbanners}
+    if request.method=="POST":
+        banner=request.POST['banner']
+        URL=request.POST['URL']
+        status=request.POST['status']
+        if banner:
+            innerbanners=innerbanners.filter(Q(banner_name=banner),Q(is_intermediate=0))
+            context={'innerbanners':innerbanners}
+        if URL:
+            innerbanners=innerbanners.filter(Q(banner_url=URL),Q(is_intermediate=0))
+            context={'innerbanners':innerbanners}
+        if status:
+            innerbanners=innerbanners.filter(Q(status=status),Q(is_intermediate=0))
+            context={'innerbanners':innerbanners}
+    return render(request,'banners/main/mainbanner.html',context)
+
+def fnmaindisplay(request):
+    data = request.GET.get('p')
+    if int(data) in [i.display_order for i in Banners.objects.filter(is_intermediate=0)]:
+        data = True
+    else:
+        data = False
+    return JsonResponse({'data':data})
+
+def fninnerdisplay(request):
+    data = request.GET.get('p')
+    if int(data) in [i.display_order for i in Banners.objects.filter(is_intermediate=1)]:
+        data = True
+    else:
+        data = False
+    return JsonResponse({'data':data})
+
+def fneditinner(request,inneredit_id):
+    innerbanner=Banners.objects.get(id=inneredit_id)
+    form =BannerForm(
+    data=(request.POST or None),
+    files=(request.FILES or None),
+    instance=innerbanner,
+    )
+    if form.is_valid():
+        banner=form.save(commit=False)
+        banner.is_intermediate=1
+        banner.save()
+        messages.success(request,'Intermediate Banners changed successfully')
+        return redirect(fninnerbanner)
+    return render(request,'banners/intermediate/addinnerbanner.html',{'form':form})
+
+def fndisableinnerbanner(request,innerban_id):
+    banner=Banners.objects.get(id=innerban_id)
+    if banner.status== "Active" :
+        banner.status='Inactive'
+        banner.save()
+        return redirect(fninnerbanner)
+    else:
+        banner.status="Active"
+        banner.save()
+        return redirect(fninnerbanner)
+
+def fneditmain(request,mainedit_id):
+    innerbanner=Banners.objects.get(id=mainedit_id)
+    form =BannerForm(
+    data=(request.POST or None),
+    files=(request.FILES or None),
+    instance=innerbanner,
+    )
+    if form.is_valid():
+        form.save()
+        messages.success(request,' Banners changed successfully')
+        return redirect(fnmainbanner)
+    return render(request,'banners/intermediate/addinnerbanner.html',{'form':form})
+
+def fndisablemainbanner(request,mainban_id):
+    banner=Banners.objects.get(id=mainban_id)
+    if banner.status== "Active" :
+        banner.status='Inactive'
+        banner.save()
+        return redirect(fnmainbanner)
+    else:
+        banner.status="Active"
+        banner.save()
+        return redirect(fnmainbanner)
 
     
 

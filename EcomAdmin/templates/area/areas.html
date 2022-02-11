@@ -29,8 +29,58 @@
   
   {% endif %}
 
+   <!-- filter -->
+
+   <div class="row mt-5">
+    <div class="col-lg-1"></div>
+    
+    <div class="col-lg-10">
+
+
+<div class="card">
+    <div class="card-body">
+        <form method="post" action="">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Area</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="search by Area.."
+                            name="area">
+                    </div>
+                </div>
+
+                
+               
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label for="exampleInputUsername1">Status</label>
+                        <select id="status" class="form-control form-control-sm" name="status">
+                            <option value="">Select</option>
+                            <option value="active">Active</option>
+                            <option value="inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+               
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        
+                        <button type="submit" class="btn btn-primary mt-4 " style="float:right" data-toggle="tooltip" title=""
+                            data-original-title="Apply">Filter</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+<div class="col-lg-1"></div>
+</div>
+<!-- end filter -->
+
   
-<div class="row">
+<div class="row mt-5">
 <div class="col-lg-1"></div>
 
 <div class="col-lg-10">

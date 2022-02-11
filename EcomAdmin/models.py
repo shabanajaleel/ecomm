@@ -13,19 +13,21 @@ class AdminRole(models.Model):
         return self.role_name
 
 class Banners(models.Model):
-    bannner_name=models.CharField(max_length=100)
+    banner_name=models.CharField(max_length=100)
     banner_url=models.URLField(max_length=100)
     banner_image=models.FileField(upload_to='images/Banner')
     app_banner_image=models.FileField(upload_to='images/Banner_app')
+    is_intermediate=models.BooleanField(default=True)
     display_order=models.IntegerField()
     status=models.CharField(max_length=20,default='active',choices=(
-        ('active','active'),
-        ('inactive','inactive')
+        ('Active','Active'),
+        ('Inactive','Inactive')
     ))
     Created_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'Banner'
+        ordering = ['-Created_at']
 
 class Brand(models.Model):
     brand_name=models.CharField(max_length=100)
@@ -133,6 +135,27 @@ class Pincode(models.Model):
 
     def __str__(self):
         return self.area_name
+
+
+class Customer(models.Model):
+    first_name=models.CharField(max_length=100)
+    last_name=models.CharField(max_length=100)
+    username=models.CharField(max_length=100)
+    email=models.EmailField(max_length=100)
+    phone=models.BigIntegerField()
+    profile_image=models.ImageField(upload_to='images/profile',null=True,blank=True)
+    registered_date=models.DateTimeField(auto_now_add=True)
+    password=models.CharField(max_length=20)
+    conf_password=models.CharField(max_length=20)
+    status=models.BooleanField(default=True)
+
+    class Meta:
+        db_table='Customer'
+        ordering = ['-registered_date']
+        
+
+    def __str__(self):
+        return self.username
 
 
 

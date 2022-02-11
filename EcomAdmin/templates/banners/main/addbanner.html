@@ -1,0 +1,132 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card-header">
+                    <h3 class="card-title">Add Banners</h3>
+                  </div>
+                  <div class="card-body">
+                    <!-- validation errors -->
+                    {% if form.errors %}
+                            <div class="col-lg-12 ">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {% for field in form %}
+                                    <!-- For each error in field -->
+                                        {% for error  in field.errors %}
+                                            <!-- Output error text message only -->
+                                                <div>{{error}}</div>
+                                            {% endfor %}
+                                      {% endfor %}
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                            </div>
+                        {% endif %}
+
+                    <div class="row">
+                      <div class="col-md-6 col-lg-6">
+                       
+                        <div class="form-group">
+                          <label class="form-label">Banner Name<span class="danger" style="color: red;"> *</span></label>
+                          {{form.banner_name}}
+                        </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6">
+                       
+                          <div class="form-group">
+                            <label class="form-label">Status<span class="danger" style="color: red;"> *</span></label>
+                            {{form.status}}
+                          </div>
+                          </div>
+                         
+                       
+                     
+                      <div class="col-md-6 col-lg-6">
+                         <div class="form-group">
+                          <label class="form-label">Banner Image<span class="danger" style="color: red;"> *</span><span style="font-size: smaller;font-style: italic;color: crimson;"> (Upload image of 235*145 px for better performance.)</span> </label>
+                          <div >
+                            {{form.banner_image}}
+              
+                          </div>
+                          </div>
+                          </div>
+                          <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                             <label class="form-label">Banner App Image<span class="danger" style="color: red;"> *</span><span style="font-size: smaller;font-style: italic;color: crimson;"> (Upload image of 900*450 px for better performance.)</span> </label>
+                             <div >
+                               {{form.app_banner_image}}
+                 
+                             </div>
+                             </div>
+                             </div>
+
+                             <div class="col-md-6 col-lg-6">
+                            <div class="form-group">
+                                <label class="form-label">Banner URL<span class="danger" style="color: red;"> *</span></label>
+                                {{form.banner_url}}
+                              </div>
+                              </div>
+
+
+                             <div class="col-md-6 col-lg-6">
+                       
+                                <div class="form-group">
+                                  <label class="form-label">Display Order<span class="danger" style="color: red;"> *</span></label>
+                                  {{form.display_order}}
+                                  <div id="orderData"></div>
+                                </div>
+                                </div>
+
+
+                            
+                           
+                      
+                    </div>
+                    <div class="col-lg-12">
+                        <center><button class="btn btn-secondary  mt-5">Submit</button></center>
+                    </div>
+                    </div>
+                    </div>
+           
+        </form>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+     $('#id_display_order').on('change',function(){
+             var order = $('#id_display_order').val()
+             $.ajax({
+                 data:{'p':order},
+                 url:"{% url 'maindisplay_order' %}",
+                 success: function (response) {
+                     console.log(response.data)
+                     if(response.data==true){
+                         let html_data = '<span style="font-size:smaller;font-style: italic;color: red">Display order already taken</span>'
+                         $("#orderData").html(html_data);
+                         $('#id_display_order').val('');
+                     }else{
+                         $("#orderData").html('');
+                     }  
+                 },
+                 error:function (response) {
+                     alert('error')
+                 },
+             })
+         })
+     })
+ 
+ 
+  
+ </script>
+
+{% endblock %}

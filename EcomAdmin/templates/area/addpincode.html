@@ -106,10 +106,10 @@
                                     <td>{{pincode.status}}</td>
 
                                     {% if pincode.status == 'Active' %}
-                                    <td><a href="{% url 'edit_pincode' editpin_id=pincode.id %}" class="btn btn-secondary">Edit</a></td>
+                                   
                                     <td><a href="{% url 'disable_pincode' dispin_id=pincode.id %}" class="btn btn-secondary">Disable</a></td>
                                     {% else %}
-                                    <td></td>
+                                    
                                     <td><a href="{% url 'disable_pincode' dispin_id=pincode.id %}" class="btn btn-secondary">Enable</a></td>
                                     {% endif %}
                                     
