@@ -27,6 +27,22 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
          -->
+         <style>
+             .modal-dialog {
+                position: absolute;
+                top: -400px;
+                right: 100px;
+                bottom: 0;
+                left: 0;
+                z-index: 10040;
+                overflow: auto;
+                overflow-y: auto;
+                            }
+
+             .modal-lg, .modal-xl {
+              max-width: 1034px;
+             }
+         </style>
         
          <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
          <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous"></script>
@@ -220,11 +236,16 @@
                                         <i class="mdi mdi-settings text-primary"></i>
                                         Settings
                                     </a>
-                                    <!-- {% if adminLogin %}
                                     <a class="dropdown-item" href="{% url 'logout' %}">
                                         <i class="mdi mdi-logout text-primary"></i>
                                         Logout
                                     </a>
+                                    <a class="dropdown-item" href="{% url 'change_password' %}">
+                                        <i class="mdi mdi-logout text-primary"></i>
+                                        Change Password
+                                    </a>
+                                    <!-- {% if adminLogin %}
+                                    
                                     {% endif %} -->
                                 </div>
                             </li>
@@ -247,7 +268,8 @@
                                 <i class="menu-arrow"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item"> 
+
                             <a href="#" class="nav-link">
                                 <i class="mdi mdi-cube-outline menu-icon"></i>
                                 <span class="menu-title">Admins</span>
@@ -257,11 +279,11 @@
                                 <ul>
                                     <!-- {% if permission == False %}
                                     {% else %} -->
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'add_role' %}">Role</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'roles' %}">Role</a></li>
                                     <!-- {% endif %}
                                     {% if permission1 == False %}
                                     {% else %} -->
-                                    <li class="nav-item"><a class="nav-link" href="">Admins</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'view_admin' %}">Admins</a></li>
                                     <!-- {% endif %} -->
                                     <li class="nav-item"><a class="nav-link" href="">path</a></li>
                                  
@@ -368,6 +390,17 @@
                             </a>
                             
                         </li>
+
+
+                        <li class="nav-item ">
+                            <a href="{% url 'orders' %}" class="nav-link">
+                                <i class="mdi mdi-cube-outline menu-icon"></i>
+                                <span class="menu-title">Orders</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            
+                        </li>
+
                         <li class="nav-item ">
                             <a href="{% url 'feedback' %}" class="nav-link">
                                 <i class="mdi mdi-cube-outline menu-icon"></i>

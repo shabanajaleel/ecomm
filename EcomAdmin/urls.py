@@ -1,11 +1,34 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
 
 urlpatterns=[ 
     path('',views.home,name="home"),
 
+    path('login/',views.fnlogin,name="login"),
+    path('logout/',views.fnlogout,name="logout"),
+    path('change_password/',views.fnchangepassword,name="change_password"),
+
+    # reset password
+    # path('reset_password/',auth_views.PasswordResetView.as_view(template_name="password_reset.html"),name="password_reset"),
+    # path('reset_password_sent/',auth_views.PasswordResetDoneView.as_view(),name="password_reset_done"),
+    # path('reset/<uidb64>/<token>',auth_views.PasswordResetConfirmView.as_view(),name="password_reset_confirm"),
+    # path('reset_password_complete/',auth_views.PasswordResetCompleteView.as_view(),name="password_reset_complete"),
+
     # Admin related urls
     path('add_role/',views.fnaddrole,name="add_role"),
+    path('roles/',views.fnrole,name="roles"),
+    path('disable_roles/<roledis_id>',views.fndisablerole,name="disable_roles"),
+    path('edit_role/<role_id>',views.fneditrole,name="edit_role"),
+    path('add_admin/',views.fnaddadmin,name="add_admin"),
+    path('view_admin/',views.fnviewadmin,name="view_admin"),
+    path('edit_admin/<editadminid>',views.fneditadmin,name="edit_admin"),
+    path('disable_admin/<disadminid>',views.fndisableadmin,name="disable_admin"),
+    path('add_path/',views.fnaddpath,name="add_path"),
+    path('add_sub_path/',views.fnaddsubpath,name="add_sub_path"),
+    path('main_path/',views.fnmainpath,name="main_path"),
+    path('sub_path/',views.fnsubpath,name="sub_path"),
+    path('set_permission/<per_id>',views.fnsetpermission,name="set_permission"),
 
     path('feedback/',views.fnfeedback,name="feedback"),
     # path('feedback_reply/<feed_id>',views.fnfeedbackreply,name="feedback_reply"),
@@ -62,6 +85,8 @@ urlpatterns=[
 
     path('customers/',views.fncustomers,name="customers"),
     path('disablecustomer/<customid>',views.fndisablecustomer,name="disablecustomer"),
+
+    path('orders/',views.fnorders,name="orders"),
 
 
 

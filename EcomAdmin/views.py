@@ -6,18 +6,104 @@ from EcomUser.models import Feedback
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth import login,logout,authenticate,get_user_model,update_session_auth_hash
 
 
-
+User=get_user_model()
 # Create your views here.
 
 def home(request):
     return render(request,'home.html')
 
+
+def fnlogin(request):
+    if request.method=="POST":
+        uname=request.POST['uname']
+        password=request.POST['password']
+        user=authenticate(username=uname,password=password)
+        print(user)
+        if user is not None:
+            login(request,user)
+            return render(request,'home.html')
+    return render(request,'login.html')
+
+def fnlogout(request):
+    logout(request)
+    return redirect(fnlogin)
+
+def fnchangepassword(request):
+    if request.method=="POST":
+        form=ChangePasswordForm(user=request.user,data=request.POST )
+        print(form)
+        if form.is_valid():
+            form.save()
+            update_session_auth_hash(request,form.user)
+            messages.success(request,'password changed successfully')
+    form=ChangePasswordForm(request.user)
+    print(request.user)
+    return render(request,'changepassword.html',{'form':form})
+
+
+
+
+def fnrole(request):
+    roles=AdminRole.objects.all()
+    context={'roles':roles}
+    if request.method=="POST":
+        role=request.POST['role']
+        status=request.POST['status']
+        if role:
+            roles=roles.filter(role_name=role)
+            context={'roles':roles}
+        if status:
+            roles=roles.filter(status=status)
+            context={'roles':roles}
+    return render(request,'admins/role/roles.html',context)
+
 def fnaddrole(request):
+    if request.method=="POST":
+        form=AdminRoleForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Admin Role added successfully')
+            return redirect(fnrole)
+            
+        else:
+            return render(request,'admins/role/add_role.html',{'form':form})
     form=AdminRoleForm()
     context={'form':form}
     return render(request,'admins/role/add_role.html',context)
+
+def fneditrole(request,role_id):
+    roles=AdminRole.objects.get(id=role_id)
+    form =AdminRoleForm(
+    data=(request.POST or None),
+    instance=roles,
+    )
+    if form.is_valid():
+        form.save()
+        messages.success(request,'Roles edited successfully')
+        return redirect(fncatogory)
+
+    return render(request,'admins/role/add_role.html',{'form':form})
+
+def fndisablerole(request,roledis_id):
+    roles=AdminRole.objects.get(id=roledis_id)
+    if roles.status== "Active":
+        roles.status ='Inactive'
+        roles.save()
+        return redirect(fnrole)
+    else:
+        roles.status ='Active'
+        roles.save()
+        return redirect(fnrole)
+
+def fnsetpermission(request,per_id):
+    path=MainPath.objects.all()
+    return render(request,'admins/role/addpermissions.html',{'path':path})
+
+
 
 def fnfeedback(request):
     feedback=Feedback.objects.all()
@@ -25,6 +111,94 @@ def fnfeedback(request):
     context={'feedback':feedback}
 
     return render(request,'feedback/feedback.html',context)
+
+def fnaddadmin(request):
+    form=CustomUserForm()
+    if request.method=='POST':
+        form=CustomUserForm(request.POST)
+        print(form)
+        if form.is_valid():
+            user=form.save()
+            messages.success(request,'data inserted successfully')
+            return redirect(fnaddadmin)
+    return render(request,'admins/admin/addadmin.html',{'form':form})
+
+def fnviewadmin(request):
+    admin=User.objects.all()
+    context={'admin':admin}
+    return render(request,'admins/admin/viewadmin.html',context)
+
+def fneditadmin(request,editadminid):
+    admin=User.objects.get(id=editadminid)
+    form =EditUserForm(request.POST or None,instance=admin)
+    print(form)
+    if form.is_valid():
+        form.save()
+        messages.success(request,'Admin edited successfully')
+        return redirect(fnviewadmin)
+    return render(request,'admins/admin/editadmin.html',{'form':form})
+
+
+def fndisableadmin(request,disadminid):
+    admin=User.objects.get(id=disadminid)
+    if admin.status== "Active":
+        admin.status ='Inactive'
+        admin.save()
+        return redirect(fnviewadmin)
+    else:
+        admin.status ='Active'
+        admin.save()
+        return redirect(fnviewadmin)
+
+def fnaddpath(request):
+    if request.method=="POST":
+        form=MainPathForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Path added successfully')
+            return redirect(fnaddpath)
+            
+        else:
+            return render(request,'admins/path/add_main_path.html',{'form':form})
+    form=MainPathForm()
+    context={'form':form}
+    return render(request,'admins/path/add_main_path.html',context)
+
+def fnmainpath(request):
+    path=MainPath.objects.all()
+    context={'path':path}
+    if request.method=="POST":
+        path=request.POST['path']
+        status=request.POST['status']
+        if path:
+            roles=roles.filter(role_name=path)
+            context={'roles':roles}
+        if status:
+            roles=roles.filter(status=status)
+            context={'roles':roles}
+    return render(request,'admins/path/add_main_path.html',context)
+
+
+def fnaddsubpath(request):
+    if request.method=="POST":
+        form=SubPathForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Path added successfully')
+            return redirect(fnaddsubpath)
+            
+        else:
+            return render(request,'admins/path/add_sub_path.html',{'form':form})
+    form=SubPathForm()
+    context={'form':form}
+    return render(request,'admins/path/add_sub_path.html',context)
+
+def fnmainpath(request):
+    pass 
+
+def fnsubpath(request):
+    pass
+
 
 # def fnfeedbackreply(request,feed_id):
 #     if request.method=="POST":
@@ -610,6 +784,10 @@ def fndisablemainbanner(request,mainban_id):
         banner.status="Active"
         banner.save()
         return redirect(fnmainbanner)
+
+def fnorders(request):
+    orders=OrderDetails.objects.all()
+    return render(request,'orders/order.html',{'orders':orders})
 
     
 

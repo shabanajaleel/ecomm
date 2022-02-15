@@ -2,17 +2,96 @@ from tkinter import Widget
 from django import forms
 from . models import *
 from django.core.files.images import get_image_dimensions
+from django.contrib.auth.forms import UserCreationForm,UserChangeForm,PasswordChangeForm
+from django.contrib.auth import get_user_model
+
+User=get_user_model()
+
+
+
 
 class AdminRoleForm(forms.ModelForm):
     class Meta:
         model=AdminRole
         fields="__all__"
-        widgets={
-            'role_name' : forms.TextInput(attrs={'class':'form-control'}),
-            'status' : forms.Select(attrs={'class':'form-control'})
-        }
+
+    def __init__(self, *args, **kwargs):
+        super(AdminRoleForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+class CustomUserForm(UserCreationForm):
+    class Meta:
+        model=CustomAdmin
+        fields=('username','password1','password2','email','role','phone')
+    
+    def __init__(self, *args, **kwargs):
+        super(CustomUserForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+    def save(self,commit=True):
+        user=super(CustomUserForm,self).save(commit=False)
+        user.role=self.cleaned_data['role']
+        user.phone=self.cleaned_data['phone']
+        if commit:
+            user.save()
+            return user
+
+class ChangePasswordForm(PasswordChangeForm):
+    class Meta:
+        model=User
+        fields=('old_password','new_password1','new_password2')
+    
+    def __init__(self, *args, **kwargs):
+        super(ChangePasswordForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+    def save(self,commit=True):
+        user=super(ChangePasswordForm,self).save(commit=False)
+        user.set_password(self.cleaned_data["new_password1"])
+        if commit:
+            user.save()
+            return user
+
+# class ChangePasswordForm(PasswordChangeForm):
+#     class Meta:
+#         model=CustomAdmin
+#         fields=('')
+    
+#     def __init__(self, *args, **kwargs):
+#         super(ChangePasswordForm, self).__init__(*args, **kwargs)
+#         for name in self.fields.keys():
+#             self.fields[name].widget.attrs.update({'class':'form-control'})
+
+#     def save(self,commit=True):
+#         user=super(ChangePasswordForm,self).save(commit=False)
+#         user.set_password(self.cleaned_data["password"])
+#         if commit:
+#             user.save()
+#             return user
 
 
+class MainPathForm(forms.ModelForm):
+    class Meta:
+        model=MainPath
+        fields="__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(MainPathForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+class SubPathForm(forms.ModelForm):
+    class Meta:
+        model=SubPath
+        fields="__all__"
+
+    def __init__(self, *args, **kwargs):
+        super(SubPathForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
 
 
 class BannerForm(forms.ModelForm):

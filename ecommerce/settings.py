@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+AUTH_USER_MODEL = 'EcomAdmin.CustomAdmin'
 
 ROOT_URLCONF = 'ecommerce.urls'
 
@@ -72,6 +73,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ecommerce.wsgi.application'
 
+TEMPLATE_LOADERS = (
+    'django.template.loaders.app_directories.Loader',
+    'django.template.loaders.filesystem.Loader',
+)
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -83,7 +88,8 @@ DATABASES = {
         'USER': 'root',
         'PORT': '3306',
         'PASSWD': '',
-        'HOST': 'localhost'
+        'HOST': 'localhost',
+        'OPTIONS': {'sql_mode': 'traditional',}
     }
 }
 

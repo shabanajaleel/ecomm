@@ -1,0 +1,367 @@
+{% extends 'main.html' %}
+{% block content %}
+<!-- <div class="col-lg-12">
+  <form action="" method="post" class="card filter" >
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 col-lg-3">
+          <div class="form-group">
+            <label class="form-label">Name</label>
+            <input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="eg: admin">
+          </div>
+        </div>
+        <div class="col-md-3 col-lg-3">
+          <div class="form-group">
+            <label class="form-label">Email</label>
+            <input type="text" class="form-control" name="filter_email" id="filter_email"
+              placeholder="eg: admin@example.com">
+          </div>
+        </div>
+
+        <!--  <div class="col-md-3 col-lg-3">
+        <div class="form-group">
+          <label class="form-label">Code</label>
+          <input type="text" class="form-control" name="filter_code" id="filter_code" placeholder="eg: Adm001">
+        </div>
+      </div>-->
+<!-- 
+        <div class="col-md-2 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Role</label>
+            <select class="form-control" name="filter_role" id="filter_role" style="height: 46px;">
+              <option selected="selected" value="">All</option>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+              <option value="2" style="text-transform:capitalize">Sub Admin</option>
+
+
+
+
+
+              <option value="3" style="text-transform:capitalize">Superadmin</option>
+
+
+
+
+
+
+              <option value="4" style="text-transform:capitalize">Test roles</option>
+
+
+
+
+
+
+
+              <option value="8" style="text-transform:capitalize">AdminBanglore</option>
+
+
+
+
+
+              <option value="9" style="text-transform:capitalize">Vendor</option>
+
+
+
+
+
+
+
+              <option value="20" style="text-transform:capitalize">testrole</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-control" name="filter_status" id="filter_status" style="height: 46px;">
+              <option value="">All</option>
+              <option value="1">Active</option>
+              <option value="2">Suspended</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-md-2 col-lg-2">
+          <div class="form-group" style="margin-top: 1.5rem;text-align: right;">
+
+
+            <button type="reset" style="height: 46px;" class="btn btn-secondary" data-toggle="tooltip" title=""
+              data-original-title="Reset"><i class="fa fa-check"></i></button>
+
+
+
+
+            <button type="submit" style="height: 46px;" class="btn btn-primary" data-toggle="tooltip" title=""
+              data-original-title="Apply"><i class="fa fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div> --> 
+
+
+<div class="col-lg-12 ">
+  <div class="card">
+   
+    <div class="card-header">
+      <div class="row">
+        <div class="col-4">
+          <h3 class="card-title" style="float: left;">New Orders</h3>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+          <div class="ml-auto" style="float: right;">
+            <button href="#" id="filter-btn" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Filter"><i
+                class="fa fa-filter"></i></button>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table card-table table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th><b>#</b></th>
+            <th><b>ORDER ID</b></th>
+            <th><b>CUSTOMER</b></th>
+            <th><b>ORDER DATE</b></th>
+            <th><b>PAYMENT MODE</b></th>
+            <th><b>PLATFORM</b></th>
+            <th><b>TOTAL</b></th>
+            <th><b>ORDER STATUS</b></th>
+            <th><b>PAYMENT STATUS</b></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ order.orderid }}</td>
+            <td>{{order.customer.username}}</td>
+            <td>{{ order.order_date }}</td>
+            <td>{{ order.payment_mode }}</td>
+            <td>{{ order.platform }}</td>
+            <td>{{ order.order_total }}</td>
+            <td><label >{{order.order_status}}</label></td>
+            <td><label >{{order.payment_status}}</label></td>
+           
+            <td> 
+                  
+                    
+            <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-secondary btn-sm order-edit-btn" value="{{order.id}}" >Orders</button>    
+              <!-- <button type="button" id="viewdetails{{i.id}}" name="value" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter2" value="{{i.id}}" onclick="order_detail(this)" >Edit</button>
+              <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-secondary btn-sm order-edit-btn" value="{{i.id}}" onclick="myfunction(this)">Change Status</button>  -->
+
+            </td>
+          </tr> 
+
+           {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <ul>
+      </ul>
+    </div>
+  </div>
+  <!-- Modal -->
+
+  <div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 100%;">
+  
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Orders</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+
+            <div class="table-responsive">
+                <table class="table card-table table-vcenter text-nowrap">
+                  <thead>
+                    <tr>
+                      <th><b>#</b></th>
+                      <th><b>PRODUCT NAME</b></th>
+                      <th><b>AMOUNT</b></th>
+                      <th><b>COUNT</b></th>
+                      
+                      <th><b>ORDER DATE</b></th>
+                      <th><b>TOTAL</b></th>
+                        
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for order in orders %}
+                    {% for orders in order.order_set.all %}
+                    <tr>
+                      <td>{{ forloop.counter }}</td>
+                      <td>{{ orders.product.Name }}</td>
+                      <td>{{orders.order_total}}</td>
+                      <td>{{ orders.count }}</td>
+                      <td>{{ orders.order_date }}</td>
+                      <td>{{ orders.order_total }}</td>
+                      
+                     
+                      <td> 
+                            
+                              
+                      
+          
+                      </td>
+                    </tr> 
+          
+                     {% endfor %}
+                     {% endfor %}
+          
+                  </tbody>
+                </table>
+              </div>
+       
+           
+          
+            
+      
+        </div>
+    
+      </div>
+    
+    </div>
+  
+  </div>
+
+
+
+
+
+<!-- <form method="POST">
+  {% csrf_token %}
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 100%;">
+  
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Change Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <div class="row">
+          <div class="col-5">
+            
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Order Status<span class="danger" style="color: red;"> *</span></label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="order_status">
+              
+              <option value="" >Choose...</option>
+              <option value="pending">pending</option>
+              <option value="processing">processing</option>
+              <option value="shipped">shipped</option>
+              <option value="out for delivery">out for delivery</option>
+              <option value="delivered">delivered</option>
+            </select>
+          </div>
+          <div class="col-5">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Payment Status<span class="danger" style="color: red;"> *</span></label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="payment_status">
+              <option value="" >Choose...</option>
+              <option value="pending">pending</option>
+              <option value="received">received</option>
+              
+            </select>
+          </div>
+          <div class="col-2">
+            <input hidden  type="text" id="answer" name="value_id">
+          </div>
+                
+             
+        </div>
+         
+        
+          
+    
+      </div>
+      <div class="modal-footer">
+        
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  
+  </div>
+
+</div>
+</form>
+
+
+<!-- Modal -->
+<!-- <div class="modal fade bd-example-modal-lg" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 100%;">
+  
+  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+    
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Change Status</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" >
+        <div class="row">
+          <div class="col-5">
+            
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Order Status<span class="danger" style="color: red;"> *</span></label>
+            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="order_status">
+              
+              <option value="" >Choose...</option>
+              <option value="pending">pending</option>
+              <option value="processing">processing</option>
+              <option value="shipped">shipped</option>
+              <option value="out for delivery">out for delivery</option>
+              <option value="delivered">delivered</option>
+            </select>
+          </div>
+          
+          <div class="col-2">
+            <input hidden  type="text" id="answer" name="value_id">
+          </div>
+                
+             
+        </div>
+         
+        
+          
+    
+      </div>
+      <div class="modal-footer">
+        
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  
+  </div>
+
+</div> --> 
+  {% endblock %}

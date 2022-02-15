@@ -1,0 +1,147 @@
+{% extends 'main.html' %}
+{% block content %}
+
+
+<div class="col-lg-12">
+    <div class="card">
+        <div class="card-header" >
+            
+              <div class="ml-auto" >
+                <h3 class="card-title"style="float: left;">Roles</h3>
+                
+               
+              </div>
+        </div>
+      <form method="POST" class="form-control">
+        {% csrf_token %}
+        <div class="card-body">
+    
+          {% include 'messages.html' %}
+          
+          <div class="table-responsive">
+            <table class="col-lg-12 table bordered">
+                <thead>
+                    <tr>
+         
+                      <th style="padding-top:10px ;padding-left: 100px;padding-bottom:20px;color:black">Role</th>
+                      <th style="padding-top:10px ;padding-left: 100px;color: black;padding-bottom:20px;">Permission&nbsp;&nbsp;<input type="checkbox"  class="form-checks"  id="myChecks" style="width: 15px;height:15px;"  onclick="myFunction(this)"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                  
+                      {% for i in path %}
+                      <tr>
+                          <td style="padding-top:10px ;padding-left: 100px;"><strong>{{ i.path_name}}</strong><input hidden type="text" value="" name="main_path[]"></td>
+                          <td  style="padding-top:10px ;padding-left: 100px;"><input type="checkbox" class="checked "  name="main_perm[]" id="cn{{i.id}}" style="width: 15px;height:15px;" value="{{i.id}}"{% if i.path_name in z %}checked{% endif %} onclick="select_Sub(this)"></td>
+                          
+                      </tr>
+                     
+                     {% for j in i.subpath_set.all %}
+                      <tr>
+                          <td style="padding-top:10px ;padding-left: 105px;">{{ j.path_name }}</td>
+                          <td  style="padding-top:10px ;padding-left: 100px;"><input type="checkbox" class="cn{{i.id}}" value="{{j.id}}" id="checked" name="sub_perm[]" style="width: 15px;height:15px;" {% if j.path_name in x %}checked{% endif %} onclick="singlecheck(this)"></td>
+                          
+                      </tr>
+                      {% endfor %}
+                      {% endfor %}
+                  
+                </tbody><br>
+                
+            </table>
+            
+          </div>
+        
+        </div>
+    
+        <div class="card-footer " style="text-align: center;background-color: white;">
+          <div class="col-sm-12" style="text-align: center;">
+              <button type="submit" class="btn btn-primary mr-2">Submit</button>
+              <a href="{% url 'roles' %}" class="btn btn-light">Cancel</a>
+          </div>
+         
+        </div>
+    </form>
+    </div>
+  </div>
+  <script>
+    var checkBox = document.querySelectorAll('input[type=checkbox]');
+    function myFunction(a) {
+      
+      if(a.checked == true){
+        checkBox.forEach((checkBox) => {
+          checkBox.checked = true;
+        })
+      }
+      else{
+        checkBox.forEach((checkBox) => {
+          checkBox.checked = false;
+        })
+      }
+     
+        
+       
+        
+      }
+      var checkBox = document.querySelectorAll('input[type=checkbox]');
+      function singlecheck(a) {
+        if(a.checked == true){
+          x =document.getElementsByClassName(a.id)
+          console.log(x)
+        }
+        
+      }
+
+      
+    
+    
+      
+       var check = document.querySelectorAll('input[type=checkbox]');
+       console.log(check)
+       function select_Sub(a){
+        
+        if (a.checked == true){
+          check.forEach((check) => {
+            if(a.id == check.className){
+              check.checked = true;
+            }
+         
+          
+        })
+         
+          }
+          else{
+            check.forEach((check) => {
+              if(a.id == check.className){
+                check.checked = false;
+              }
+            })
+          }
+         
+        }
+      
+      
+  </script>
+  <script>
+      // var checkBox = document.querySelectorAll('input[name=main_perm]');
+      // checkBox.forEach((checkBox) => {
+      //   alert(checkBox.className)
+      // })
+      
+    function singlecheck(a) {
+      console.log(a,"saye")
+      $("input[name='main_perm[]']").each(function (index, obj) {
+        console.log(index,obj,"list")
+        if(a.checked==true){
+          if(a.className == obj.id){
+            obj.checked = true
+          }
+          
+        }
+          
+          
+        
+    });
+    }
+  </script>
+  
+{% endblock  %}
