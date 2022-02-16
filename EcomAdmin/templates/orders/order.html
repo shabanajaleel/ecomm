@@ -1,121 +1,75 @@
 {% extends 'main.html' %}
 {% block content %}
-<!-- <div class="col-lg-12">
+<div class="col-lg-12">
   <form action="" method="post" class="card filter" >
+    {% csrf_token %}
     <div class="card-body">
+     
       <div class="row">
-        <div class="col-md-3 col-lg-3">
+        <div class="col-md-4 col-lg-2">
           <div class="form-group">
-            <label class="form-label">Name</label>
-            <input type="text" class="form-control" name="filter_name" id="filter_name" placeholder="eg: admin">
+            <label class="form-label">Customer</label>
+            <input type="text" class="form-control" name="customer"  placeholder="eg: admin">
           </div>
         </div>
-        <div class="col-md-3 col-lg-3">
-          <div class="form-group">
-            <label class="form-label">Email</label>
-            <input type="text" class="form-control" name="filter_email" id="filter_email"
-              placeholder="eg: admin@example.com">
-          </div>
-        </div>
+       
 
-        <!--  <div class="col-md-3 col-lg-3">
+        <div class="col-md-4 col-lg-2">
         <div class="form-group">
-          <label class="form-label">Code</label>
-          <input type="text" class="form-control" name="filter_code" id="filter_code" placeholder="eg: Adm001">
-        </div>
-      </div>-->
-<!-- 
-        <div class="col-md-2 col-lg-2">
-          <div class="form-group">
-            <label class="form-label">Role</label>
-            <select class="form-control" name="filter_role" id="filter_role" style="height: 46px;">
-              <option selected="selected" value="">All</option>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-              <option value="2" style="text-transform:capitalize">Sub Admin</option>
-
-
-
-
-
-              <option value="3" style="text-transform:capitalize">Superadmin</option>
-
-
-
-
-
-
-              <option value="4" style="text-transform:capitalize">Test roles</option>
-
-
-
-
-
-
-
-              <option value="8" style="text-transform:capitalize">AdminBanglore</option>
-
-
-
-
-
-              <option value="9" style="text-transform:capitalize">Vendor</option>
-
-
-
-
-
-
-
-              <option value="20" style="text-transform:capitalize">testrole</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-2 col-lg-2">
-          <div class="form-group">
-            <label class="form-label">Status</label>
-            <select class="form-control" name="filter_status" id="filter_status" style="height: 46px;">
-              <option value="">All</option>
-              <option value="1">Active</option>
-              <option value="2">Suspended</option>
-            </select>
-          </div>
-        </div>
-        <div class="col-md-2 col-lg-2">
-          <div class="form-group" style="margin-top: 1.5rem;text-align: right;">
-
-
-            <button type="reset" style="height: 46px;" class="btn btn-secondary" data-toggle="tooltip" title=""
-              data-original-title="Reset"><i class="fa fa-check"></i></button>
-
-
-
-
-            <button type="submit" style="height: 46px;" class="btn btn-primary" data-toggle="tooltip" title=""
-              data-original-title="Apply"><i class="fa fa-check"></i></button>
-          </div>
+          <label class="form-label">Order Status</label>
+          <select class="form-control" name="orderstatus" id="filter_role" style="height: 46px;">
+            <option selected="selected" value="">All</option>
+            <option value="Pending" style="text-transform:capitalize">Pending</option>
+            <option value="Processing" style="text-transform:capitalize">Processing</option>
+            <option value="Shipped" style="text-transform:capitalize">Shipped</option>
+            <option value="Out for delivery" style="text-transform:capitalize">Out for delivery</option>
+            <option value="Delivered" style="text-transform:capitalize">Delivered</option>
+          
+          </select>
         </div>
       </div>
+
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Payment Status</label>
+            <select class="form-control" name="paystatus" id="filter_role" style="height: 46px;">
+              <option selected="selected" value="">All</option>
+              <option value="Pending" style="text-transform:capitalize">Pending</option>
+              <option value="Received" style="text-transform:capitalize">Received</option>
+           
+            </select>
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Date From</label>
+            <input type="date" class="form-control" name="fromdate" 
+              >
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Date To</label>
+            <input type="date" class="form-control" name="todate" 
+           >
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mt-2">
+          <div class="form-group">
+              
+              <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
+                  data-original-title="Apply">Filter</button>
+          </div>
+      </div>
+    
+      </div>
+    
     </div>
   </form>
-</div> --> 
+</div> 
 
 
-<div class="col-lg-12 ">
+<div class="col-lg-12 mt-5 ">
   <div class="card">
    
     <div class="card-header">

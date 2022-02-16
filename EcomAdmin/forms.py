@@ -8,8 +8,6 @@ from django.contrib.auth import get_user_model
 User=get_user_model()
 
 
-
-
 class AdminRoleForm(forms.ModelForm):
     class Meta:
         model=AdminRole
@@ -37,6 +35,38 @@ class CustomUserForm(UserCreationForm):
         if commit:
             user.save()
             return user
+
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        if User.objects.filter(username=username).exists():
+            raise forms.ValidationError(u'Username already exist.')
+
+class EditUserForm(UserChangeForm):
+    class Meta:
+        model=CustomAdmin
+        fields=('username','email','role','phone')
+    
+    def __init__(self, *args, **kwargs):
+        super(EditUserForm, self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+    def save(self,commit=True):
+        user=super(EditUserForm,self).save(commit=False)
+        user.role=self.cleaned_data['role']
+        user.phone=self.cleaned_data['phone']
+        if commit:
+            user.save()
+            return user
+
+    # def clean_username(self, username):
+    #     user_model = get_user_model() # your way of getting the User
+    #     try:
+    #         user_model.objects.get(username__iexact=username)
+    #     except user_model.DoesNotExist:
+    #         return username
+    #     raise forms.ValidationError(_("This username has already existed."))
 
 class ChangePasswordForm(PasswordChangeForm):
     class Meta:

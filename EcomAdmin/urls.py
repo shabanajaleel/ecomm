@@ -29,6 +29,7 @@ urlpatterns=[
     path('main_path/',views.fnmainpath,name="main_path"),
     path('sub_path/',views.fnsubpath,name="sub_path"),
     path('set_permission/<per_id>',views.fnsetpermission,name="set_permission"),
+    path('permission/',views.fnhaspermission,name="permission"),
 
     path('feedback/',views.fnfeedback,name="feedback"),
     # path('feedback_reply/<feed_id>',views.fnfeedbackreply,name="feedback_reply"),

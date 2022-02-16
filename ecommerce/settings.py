@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'EcomAdmin',
     'EcomUser',
+    'django_filters'
     
 ]
 

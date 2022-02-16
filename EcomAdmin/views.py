@@ -6,13 +6,25 @@ from EcomUser.models import Feedback
 from django.conf import settings
 from django.core.mail import send_mail
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import login,logout,authenticate,get_user_model,update_session_auth_hash
-
+from . filters import OrderDetailsFilter
 
 User=get_user_model()
 # Create your views here.
+def fnhaspermission(request):
+    loginuser=request.user.is_superuser
+    print(loginuser)
+    if loginuser == False:
+        role=User.objects.get(username=request.user).role
+        permissions=AdminRole.objects.get(role_name=role).permissions.all()
+        perm=[i.path_name for i in permissions]
+        return perm
+    
 
+
+@login_required(login_url="/admin/login/")
 def home(request):
     return render(request,'home.html')
 
@@ -28,10 +40,12 @@ def fnlogin(request):
             return render(request,'home.html')
     return render(request,'login.html')
 
+@login_required(login_url="/admin/login/")
 def fnlogout(request):
     logout(request)
     return redirect(fnlogin)
 
+@login_required(login_url="/admin/login/")
 def fnchangepassword(request):
     if request.method=="POST":
         form=ChangePasswordForm(user=request.user,data=request.POST )
@@ -46,7 +60,7 @@ def fnchangepassword(request):
 
 
 
-
+@login_required(login_url="/admin/login/")
 def fnrole(request):
     roles=AdminRole.objects.all()
     context={'roles':roles}
@@ -61,6 +75,7 @@ def fnrole(request):
             context={'roles':roles}
     return render(request,'admins/role/roles.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnaddrole(request):
     if request.method=="POST":
         form=AdminRoleForm(request.POST)
@@ -75,6 +90,7 @@ def fnaddrole(request):
     context={'form':form}
     return render(request,'admins/role/add_role.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditrole(request,role_id):
     roles=AdminRole.objects.get(id=role_id)
     form =AdminRoleForm(
@@ -88,6 +104,7 @@ def fneditrole(request,role_id):
 
     return render(request,'admins/role/add_role.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fndisablerole(request,roledis_id):
     roles=AdminRole.objects.get(id=roledis_id)
     if roles.status== "Active":
@@ -99,9 +116,21 @@ def fndisablerole(request,roledis_id):
         roles.save()
         return redirect(fnrole)
 
+@login_required(login_url="/admin/login/")
 def fnsetpermission(request,per_id):
+    if request.method=="POST":
+        perm=request.POST.getlist('sub_perm')
+        print(perm)
+        addperm=AdminRole.objects.get(id=per_id)
+        print( addperm.permissions)
+        for i in perm:
+            addperm.permissions.add(SubPath.objects.get(id=i))
+        messages.success(request,'permissions added successfully')
+        return redirect(fnaddrole)
+    permission=[i.id for i in  AdminRole.objects.get(id=per_id).permissions.all()]
+    print(permission)
     path=MainPath.objects.all()
-    return render(request,'admins/role/addpermissions.html',{'path':path})
+    return render(request,'admins/role/addpermissions.html',{'path':path,'permission':permission})
 
 
 
@@ -112,6 +141,7 @@ def fnfeedback(request):
 
     return render(request,'feedback/feedback.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnaddadmin(request):
     form=CustomUserForm()
     if request.method=='POST':
@@ -121,13 +151,17 @@ def fnaddadmin(request):
             user=form.save()
             messages.success(request,'data inserted successfully')
             return redirect(fnaddadmin)
+        else:
+            return render(request,'admins/admin/addadmin.html',{'form':form})
     return render(request,'admins/admin/addadmin.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fnviewadmin(request):
     admin=User.objects.all()
     context={'admin':admin}
     return render(request,'admins/admin/viewadmin.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditadmin(request,editadminid):
     admin=User.objects.get(id=editadminid)
     form =EditUserForm(request.POST or None,instance=admin)
@@ -139,6 +173,7 @@ def fneditadmin(request,editadminid):
     return render(request,'admins/admin/editadmin.html',{'form':form})
 
 
+@login_required(login_url="/admin/login/")
 def fndisableadmin(request,disadminid):
     admin=User.objects.get(id=disadminid)
     if admin.status== "Active":
@@ -150,6 +185,7 @@ def fndisableadmin(request,disadminid):
         admin.save()
         return redirect(fnviewadmin)
 
+@login_required(login_url="/admin/login/")
 def fnaddpath(request):
     if request.method=="POST":
         form=MainPathForm(request.POST)
@@ -164,6 +200,7 @@ def fnaddpath(request):
     context={'form':form}
     return render(request,'admins/path/add_main_path.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnmainpath(request):
     path=MainPath.objects.all()
     context={'path':path}
@@ -178,7 +215,7 @@ def fnmainpath(request):
             context={'roles':roles}
     return render(request,'admins/path/add_main_path.html',context)
 
-
+@login_required(login_url="/admin/login/")
 def fnaddsubpath(request):
     if request.method=="POST":
         form=SubPathForm(request.POST)
@@ -222,6 +259,7 @@ def fnsubpath(request):
 #     context={'form':form}
 #     return render(request,'banners/addbanner.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnbrand(request):
     brands=Brand.objects.all()
     context={'brand':brands}
@@ -237,6 +275,7 @@ def fnbrand(request):
 
     return render(request,'brands/brands.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnaddbrand(request):
     
     if request.method=='POST':
@@ -252,6 +291,7 @@ def fnaddbrand(request):
     context={'form':form}
     return render(request,'brands/addbrand.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditbrand(request,brand_id):
     brands=Brand.objects.get(id=brand_id)
     print(brands)
@@ -265,6 +305,7 @@ def fneditbrand(request,brand_id):
           return redirect(fnbrand)
     return render(request, 'brands/addbrand.html', {'form': form})
 
+@login_required(login_url="/admin/login/")
 def fndisablebrand(request,branddis_id):
     brands=Brand.objects.get(id=branddis_id)
     if brands.status == 'active':
@@ -277,7 +318,7 @@ def fndisablebrand(request,branddis_id):
         return redirect(fnbrand)
 
 
-
+@login_required(login_url="/admin/login/")
 def fnaddcatogory(request):
     
     form=CatogoryForm(request.POST,request.FILES)
@@ -289,6 +330,7 @@ def fnaddcatogory(request):
     context={'form':form}
     return render(request,'catogory/addcatogory.html',context)
 
+@login_required(login_url="/admin/login/")
 def fncatogory(request):
     catogories=Catogory.objects.all()
     context={'cat':catogories}
@@ -310,6 +352,7 @@ def fncatogory(request):
 
     return render(request,'catogory/catogories.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditcatogory(request,cat_id):
     catogories=Catogory.objects.get(id=cat_id)
     form =CatogoryForm(
@@ -324,6 +367,7 @@ def fneditcatogory(request,cat_id):
 
     return render(request,'catogory/addcatogory.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fndisablecatogory(request,catdis_id):
     catogories=Catogory.objects.get(id=catdis_id)
     if catogories.status== "active":
@@ -345,7 +389,7 @@ def fndisplay(request):
     return JsonResponse({'data':data})
 
 
-
+@login_required(login_url="/admin/login/")
 def fnaddvarienttype(request):
     if request.method=="POST":
         form=VarientTypeForm(request.POST)
@@ -357,6 +401,7 @@ def fnaddvarienttype(request):
     context={'form':form}
     return render(request,'varients/varienttype/addvarienttype.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnvarienttype(request):
     varienttype=VarientType.objects.all()
     context={'varienttype':varienttype}
@@ -375,6 +420,7 @@ def fnvarienttype(request):
 
     return render(request,'varients/varienttype/varienttype.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditvarienttype(request,var_id):
     varienttypes=VarientType.objects.get(id=var_id)
     form=VarientTypeForm(request.POST or None,instance=varienttypes)
@@ -386,6 +432,7 @@ def fneditvarienttype(request,var_id):
 
     return render(request,'varients/varienttype/addvarienttype.html',context)
 
+@login_required(login_url="/admin/login/")
 def fndisablevarienttype(request,vardis_id):
     varienttypes=VarientType.objects.get(id=vardis_id)
     if varienttypes.status=="active":
@@ -407,6 +454,7 @@ def fndisablevarienttype(request,vardis_id):
 
 
 # Varient Values
+@login_required(login_url="/admin/login/")
 def fnaddvarientvalues(request):
     if request.method=="POST":
         form=VarientValuesForm(request.POST)
@@ -418,6 +466,7 @@ def fnaddvarientvalues(request):
     context={'form':form}
     return render(request,'varients/varientvalues/addvarientvalues.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnvarientvalues(request):
     varientvalues=VarientValues.objects.all()
     context={'varientvalues':varientvalues}
@@ -437,6 +486,7 @@ def fnvarientvalues(request):
         
     return render(request,'varients/varientvalues/varientvalues.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditvarientvalues(request,varval_id):
     varientvalues=VarientValues.objects.get(id=varval_id)
     form=VarientValuesForm(request.POST or None,instance=varientvalues)
@@ -448,6 +498,7 @@ def fneditvarientvalues(request,varval_id):
 
     return render(request,'varients/varientvalues/addvarientvalues.html',context)
 
+@login_required(login_url="/admin/login/")
 def fndisablevarientvalues(request,disval_id):
     varientvalues=VarientValues.objects.get(id=disval_id)
     if varientvalues.status=="active":
@@ -458,6 +509,7 @@ def fndisablevarientvalues(request,disval_id):
         varientvalues.save()
     return redirect(fnvarientvalues)
 
+@login_required(login_url="/admin/login/")
 def fnvarientdisplay(request):
     data = request.GET.get('order')
     if int(data) in [i.display_order for i in VarientType.objects.all()]:
@@ -480,6 +532,7 @@ def fnvarientvaluesdisplay(request):
 
 
 # Offers
+@login_required(login_url="/admin/login/")
 def fnaddoffers(request):
     if request.method=="POST":
         form=OffersForm(request.POST,request.FILES)
@@ -496,21 +549,42 @@ def fnaddoffers(request):
     context={'form':form}
     return render(request,'offers/addoffers.html',context)
 
-def fnoffers(request):
-    offers=Offers.objects.all()
-    context={'offers':offers}
-    if request.method=="POST":
-        offer=request.POST['offer']
-        status=request.POST['status']
-        if offer:
-            offers=offers.filter(Q(offer_name=offer))
-            context={'offers':offers}
-        if status:
-            offers=offers.filter(Q(status=status))
-            context={'offers':offers}
 
+@login_required(login_url="/admin/login/")
+def fnoffers(request):
+    if request.user.is_superuser:
+        offers=Offers.objects.all()
+        context={'offers':offers}
+        if request.method=="POST":
+            offer=request.POST['offer']
+            status=request.POST['status']
+            if offer:
+                offers=offers.filter(Q(offer_name=offer))
+                context={'offers':offers}
+            if status:
+                offers=offers.filter(Q(status=status))
+                context={'offers':offers}
+
+    elif 'View Offers' in fnhaspermission(request) and  'Add Offers' in fnhaspermission(request) :
+        offers=Offers.objects.all()
+        context={'offers':offers}
+        if request.method=="POST":
+            offer=request.POST['offer']
+            status=request.POST['status']
+            if offer:
+                offers=offers.filter(Q(offer_name=offer))
+                context={'offers':offers}
+            if status:
+                offers=offers.filter(Q(status=status))
+                context={'offers':offers}
+    else:
+        messages.error(request,'You dont have access to this page')
+        return render(request,'messages.html')
+
+   
     return render(request,'offers/offers.html',context)
 
+@login_required(login_url="/admin/login/")
 def fneditoffers(request,off_id):
     offers=Offers.objects.get(id=off_id)
     form =OffersForm(
@@ -524,6 +598,7 @@ def fneditoffers(request,off_id):
         return redirect(fnoffers)
     return render(request,'offers/addoffers.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fndisableoffers(request,offdis_id):
     offers=Offers.objects.get(id=offdis_id)
     if offers.status== "active":
@@ -535,7 +610,7 @@ def fndisableoffers(request,offdis_id):
         offers.save()
         return redirect(fnoffers)
 
-
+@login_required(login_url="/admin/login/")
 def fnareas(request):
     areas=Area.objects.all()
     context={'areas':areas}
@@ -550,7 +625,7 @@ def fnareas(request):
             context={'areas':areas}
     return render(request,'area/areas.html',context)
 
-
+@login_required(login_url="/admin/login/")
 def fnaddarea(request):
     if request.method=="POST":
         form=AreaForm(request.POST)
@@ -562,6 +637,7 @@ def fnaddarea(request):
     context={'form':form}
     return render(request,'area/addarea.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnaddpincode(request,pin_id):
     if request.method=="POST":
         form=PincodeForm(request.POST)
@@ -575,6 +651,7 @@ def fnaddpincode(request,pin_id):
 
     return render(request,'area/addpincode.html',context)
 
+@login_required(login_url="/admin/login/")
 def fndisablearea(request,disarea_id):
     areas=Area.objects.get(id=disarea_id)
     if areas.status=="Active":
@@ -585,6 +662,7 @@ def fndisablearea(request,disarea_id):
         areas.save()
     return redirect(fnareas)
 
+@login_required(login_url="/admin/login/")
 def fndisablepincode(request,dispin_id):
     pincode=Pincode.objects.get(id=dispin_id)
     pin_id=pincode.area
@@ -596,6 +674,7 @@ def fndisablepincode(request,dispin_id):
         pincode.save()
     return redirect(fnareas)
 
+@login_required(login_url="/admin/login/")
 def fneditareas(request,editarea_id):
     areas=Area.objects.get(id=editarea_id)
     form =AreaForm(
@@ -622,6 +701,7 @@ def fneditareas(request,editarea_id):
 #         return redirect(fnoffers)
 #     return render(request,'offers/addoffers.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fncustomers(request):
     customers=Customer.objects.all()
     context={'customers':customers}
@@ -637,6 +717,7 @@ def fncustomers(request):
     
     return render(request,'customer/customer.html',context)
 
+@login_required(login_url="/admin/login/")
 def fndisablecustomer(request,customid):
     customer=Customer.objects.get(id=customid)
     if customer.status== 1 :
@@ -648,6 +729,7 @@ def fndisablecustomer(request,customid):
         customer.save()
         return redirect(fncustomers)
 
+@login_required(login_url="/admin/login/")
 def fnaddbanner(request):
     if request.method=="POST":
         form=BannerForm(request.POST,request.FILES)
@@ -664,6 +746,7 @@ def fnaddbanner(request):
     context={'form':form}
     return render(request,'banners/main/addbanner.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnaddinnerbanner(request):
     if request.method=="POST":
         form=BannerForm(request.POST,request.FILES)
@@ -682,6 +765,7 @@ def fnaddinnerbanner(request):
     context={'form':form}
     return render(request,'banners/intermediate/addinnerbanner.html',context)
 
+@login_required(login_url="/admin/login/")
 def fninnerbanner(request):
     innerbanners=Banners.objects.filter(is_intermediate=1)
     context={'innerbanners':innerbanners}
@@ -701,6 +785,7 @@ def fninnerbanner(request):
 
     return render(request,'banners/intermediate/innerbanner.html',context)
 
+@login_required(login_url="/admin/login/")
 def fnmainbanner(request):
     innerbanners=Banners.objects.filter(is_intermediate=0)
     context={'innerbanners':innerbanners}
@@ -735,6 +820,7 @@ def fninnerdisplay(request):
         data = False
     return JsonResponse({'data':data})
 
+@login_required(login_url="/admin/login/")
 def fneditinner(request,inneredit_id):
     innerbanner=Banners.objects.get(id=inneredit_id)
     form =BannerForm(
@@ -750,6 +836,7 @@ def fneditinner(request,inneredit_id):
         return redirect(fninnerbanner)
     return render(request,'banners/intermediate/addinnerbanner.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fndisableinnerbanner(request,innerban_id):
     banner=Banners.objects.get(id=innerban_id)
     if banner.status== "Active" :
@@ -761,6 +848,7 @@ def fndisableinnerbanner(request,innerban_id):
         banner.save()
         return redirect(fninnerbanner)
 
+@login_required(login_url="/admin/login/")
 def fneditmain(request,mainedit_id):
     innerbanner=Banners.objects.get(id=mainedit_id)
     form =BannerForm(
@@ -774,6 +862,7 @@ def fneditmain(request,mainedit_id):
         return redirect(fnmainbanner)
     return render(request,'banners/intermediate/addinnerbanner.html',{'form':form})
 
+@login_required(login_url="/admin/login/")
 def fndisablemainbanner(request,mainban_id):
     banner=Banners.objects.get(id=mainban_id)
     if banner.status== "Active" :
@@ -785,9 +874,33 @@ def fndisablemainbanner(request,mainban_id):
         banner.save()
         return redirect(fnmainbanner)
 
+@login_required(login_url="/admin/login/")
 def fnorders(request):
     orders=OrderDetails.objects.all()
-    return render(request,'orders/order.html',{'orders':orders})
+    context={'orders':orders}
+    if request.method=="POST":
+        customer=request.POST['customer']
+        orderstatus=request.POST['orderstatus']
+        paymentstatus=request.POST['paystatus']
+        fromdate=request.POST['fromdate']
+        todate=request.POST['todate']
+        if customer:
+            orders=orders.filter(Q(customer__username=customer))
+            context={'orders':orders}
+        if orderstatus:
+            orders=orders.filter(Q(order_status=orderstatus))
+            context={'orders':orders}
+        if paymentstatus:
+            orders=orders.filter(Q(payment_status=paymentstatus))
+            context={'orders':orders}
+        if fromdate:
+            orders=orders.filter(Q(order_date__gte=fromdate))
+            context={'orders':orders}
+        if todate:
+            orders=orders.filter(Q(order_date__lte=todate))
+            context={'orders':orders}
+    
+    return render(request,'orders/order.html',context)
 
     
 

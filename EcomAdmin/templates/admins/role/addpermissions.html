@@ -16,7 +16,7 @@
         {% csrf_token %}
         <div class="card-body">
     
-          {% include 'messages.html' %}
+         
           
           <div class="table-responsive">
             <table class="col-lg-12 table bordered">
@@ -32,14 +32,14 @@
                       {% for i in path %}
                       <tr>
                           <td style="padding-top:10px ;padding-left: 100px;"><strong>{{ i.path_name}}</strong><input hidden type="text" value="" name="main_path[]"></td>
-                          <td  style="padding-top:10px ;padding-left: 100px;"><input type="checkbox" class="checked "  name="main_perm[]" id="cn{{i.id}}" style="width: 15px;height:15px;" value="{{i.id}}"{% if i.path_name in z %}checked{% endif %} onclick="select_Sub(this)"></td>
+                          <td  style="padding-top:10px ;padding-left: 100px;"><input type="checkbox" class="cn{{i.id}}"  name="main_perm" id="maincheck" style="width: 15px;height:15px;" value="{{i.id}}"{% if i.path_name in z %}checked{% endif %} onclick="select_Sub(this)"></td>
                           
                       </tr>
                      
                      {% for j in i.subpath_set.all %}
                       <tr>
                           <td style="padding-top:10px ;padding-left: 105px;">{{ j.path_name }}</td>
-                          <td  style="padding-top:10px ;padding-left: 100px;"><input type="checkbox" class="cn{{i.id}}" value="{{j.id}}" id="checked" name="sub_perm[]" style="width: 15px;height:15px;" {% if j.path_name in x %}checked{% endif %} onclick="singlecheck(this)"></td>
+                          <td  style="padding-top:10px ;padding-left: 100px;"><input type="checkbox" class="cn{{i.id}}" value="{{j.id}}" id="checked" name="sub_perm" style="width: 15px;height:15px;" {% if j.id in permission %}checked{% endif %} onclick="singlecheck(this)"></td>
                           
                       </tr>
                       {% endfor %}
@@ -64,84 +64,72 @@
     </div>
   </div>
   <script>
-    var checkBox = document.querySelectorAll('input[type=checkbox]');
-    function myFunction(a) {
-      
-      if(a.checked == true){
-        checkBox.forEach((checkBox) => {
+     var checkBox = document.querySelectorAll('input[type=checkbox]')
+    function myFunction(a){
+      var checkbox1=document.getElementById('myChecks').checked
+      console.log(checkbox1)
+      if (checkbox1==true){
+          checkBox.forEach((checkBox) => {
           checkBox.checked = true;
         })
+
       }
-      else{
-        checkBox.forEach((checkBox) => {
+      else
+      {
+          checkBox.forEach((checkBox) => {
           checkBox.checked = false;
         })
       }
+
+    }
+
+    function select_Sub(a){
+      console.log(a.className)
+      console.log(a.checked)
      
-        
-       
-        
+      var checkBox2=document.getElementById('checked')
+      console.log(checkBox2.className)
+      if (a.checked==true){
+          checkBox.forEach((checkBox2) => {
+            if (a.className==checkBox2.className)
+            checkBox2.checked = true;
+        })
+      
       }
-      var checkBox = document.querySelectorAll('input[type=checkbox]');
-      function singlecheck(a) {
-        if(a.checked == true){
-          x =document.getElementsByClassName(a.id)
-          console.log(x)
-        }
-        
+      else{
+        checkBox.forEach((checkBox2) => {
+            if (a.className==checkBox2.className)
+            checkBox2.checked = false;
+        })
+
       }
 
-      
-    
-    
-      
-       var check = document.querySelectorAll('input[type=checkbox]');
-       console.log(check)
-       function select_Sub(a){
-        
-        if (a.checked == true){
-          check.forEach((check) => {
-            if(a.id == check.className){
-              check.checked = true;
-            }
-         
+      }
+
+      function singlecheck(a){
+     
+     
+      var checkBox3=document.getElementById('maincheck')
+      console.log(checkBox3.className)
+      if (a.checked==true){
           
-        })
-         
-          }
-          else{
-            check.forEach((check) => {
-              if(a.id == check.className){
-                check.checked = false;
-              }
-            })
-          }
-         
-        }
+            checkBox3.checked = true;
+     
       
+      }
+      else{
+     
+          
+            checkBox3.checked = false;
+     
+
+      }
+
+      }
       
+
+  
   </script>
-  <script>
-      // var checkBox = document.querySelectorAll('input[name=main_perm]');
-      // checkBox.forEach((checkBox) => {
-      //   alert(checkBox.className)
-      // })
-      
-    function singlecheck(a) {
-      console.log(a,"saye")
-      $("input[name='main_perm[]']").each(function (index, obj) {
-        console.log(index,obj,"list")
-        if(a.checked==true){
-          if(a.className == obj.id){
-            obj.checked = true
-          }
-          
-        }
-          
-          
-        
-    });
-    }
-  </script>
+  
   
 {% endblock  %}
