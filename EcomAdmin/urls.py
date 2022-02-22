@@ -3,7 +3,7 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 urlpatterns=[ 
-    path('',views.home,name="home"),
+    path('home/',views.home,name="home"),
 
     path('login/',views.fnlogin,name="login"),
     path('logout/',views.fnlogout,name="logout"),
@@ -25,9 +25,10 @@ urlpatterns=[
     path('edit_admin/<editadminid>',views.fneditadmin,name="edit_admin"),
     path('disable_admin/<disadminid>',views.fndisableadmin,name="disable_admin"),
     path('add_path/',views.fnaddpath,name="add_path"),
-    path('add_sub_path/',views.fnaddsubpath,name="add_sub_path"),
-    path('main_path/',views.fnmainpath,name="main_path"),
-    path('sub_path/',views.fnsubpath,name="sub_path"),
+    path('edit_path/<path_id>',views.fneditpath,name="edit_path"),
+    path('path/',views.fnpath,name="path"),
+    path('disable_path/<pathdis_id>',views.fndisablepath,name="disable_path"),
+    # path('sub_path/',views.fnsubpath,name="sub_path"),
     path('set_permission/<per_id>',views.fnsetpermission,name="set_permission"),
     path('permission/',views.fnhaspermission,name="permission"),
 
@@ -56,6 +57,17 @@ urlpatterns=[
     path('edit_catogory/<cat_id>',views.fneditcatogory,name="edit_catogory"),
     path('disable_catogory/<catdis_id>',views.fndisablecatogory,name="disable_catogory"),
     path('display_order/',views.fndisplay,name="display_order"),
+    path('cat_csv/<catcsv_id>',views.fncatcsv,name="cat_csv"),
+
+    path('add_product/',views.fnaddproducts,name="add_product"),
+    path('list_product/',views.fnlistproducts,name="list_product"),
+    path('edit_product/<editprod_id>',views.fneditproducts,name="edit_product"),
+    path('disable_product/<productdis_id>',views.fndisableproduct,name="disable_product"),
+    path('view_product/<productview_id>',views.fnviewproducts,name="view_product"),
+    path('add_varients/<prodvar_id>',views.fnaddproditems,name="add_varients"),
+    path('edit_prodvarients/<edititem_id>',views.fnedititems,name="edit_prodvarients"),
+    path('disable_prodvarients/<disitem_id>',views.fndisableitem,name="disable_prodvarients"),
+    path('bulk_stock',views.fnbulkstock,name="bulk_stock"),
 
 
     path('varienttype/',views.fnvarienttype,name="varienttype"),
@@ -63,6 +75,7 @@ urlpatterns=[
     path('edit_varienttype/<var_id>',views.fneditvarienttype,name="edit_varienttype"),
     path('disable_varienttype/<vardis_id>',views.fndisablevarienttype,name="disable_varienttype"),
     path('varient_display_order/',views.fnvarientdisplay,name="varient_display_order"),
+    path('varient_select/',views.fnvarientselect,name="varient_select"),
 
     path('varientvalues/',views.fnvarientvalues,name="varientvalues"),
     path('add_varientvalues/',views.fnaddvarientvalues,name="add_varientvalues"),
@@ -88,6 +101,8 @@ urlpatterns=[
     path('disablecustomer/<customid>',views.fndisablecustomer,name="disablecustomer"),
 
     path('orders/',views.fnorders,name="orders"),
+    path('change_status/',views.fnchangestatus,name="change_status"),
+    path('view_orders/<order_id>',views.fnvieworders,name="view_orders"),
 
 
 

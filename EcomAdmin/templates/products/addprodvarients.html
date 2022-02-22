@@ -1,0 +1,61 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="col-md-12 col-sm-12 col-xl-12 ">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="ml-auto">
+                        <h3 class="card-title">Add Items</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <form method="post" action="">{% csrf_token %}
+                <div class="row varient">
+                    <div class="col-lg-10 row" id="varientId">
+                        <div class="form-group col-3">
+                            <label for="exampleInputUsername1">SKU Code</label>
+                            <input type="text" name="code" maxlength="255" class="form-control form-control-sm" required="" id="id_Varient_name">
+                        </div>
+                        <div class="form-group col-3">
+                            <label for="exampleInputUsername1" class="varient_Values1">{{varient_type}}</label>
+                          
+                            <select name="varient_values" class="form-control form-control-sm VarientSelect"
+                                required="" id="id_Varient_Values">
+                                {% for i in varient_values %}
+                                <option value="{{i.id}}">{{i.varient_values}}</option>
+                                {% endfor %}
+                            </select>
+                         
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="exampleInputUsername1">Selling Prize</label>
+                            <input type="text" name="selling_price" maxlength="255" class="form-control form-control-sm" required="" id="id_Selling_Prize">
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="exampleInputUsername1">Display Price</label>
+                            <input type="text" name="display_price" maxlength="255" class="form-control form-control-sm" required="" id="id_Display_Prize">
+                        </div>
+                        <div class="form-group col-2">
+                            <label for="exampleInputUsername1">Product Stock</label>
+                            <input type="number" name="product_stock" class="form-control form-control-sm" required>
+                        </div>
+                    </div>
+  
+                </div>
+                <br>
+                <div class="col-sm-12" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary mr-2">Submit</button>
+                    <a href="" class="btn btn-light">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}

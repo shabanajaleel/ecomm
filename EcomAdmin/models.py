@@ -1,38 +1,25 @@
 import os
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 
-class MainPath(models.Model):
+class Path(models.Model):
     path_name=models.CharField(max_length=100)
     status=models.CharField(max_length=20,default="Active",choices=(
         ('Active','Active'),
         ('Inactive','Inactive')
     ))
+    parent=models.ForeignKey('Path',on_delete=models.CASCADE,null=True,blank=True)
     Created_at = models.DateTimeField(auto_now=True)
     class Meta:
-        db_table = 'Main Path'
+        db_table = 'Path'
         ordering = ['-Created_at']
 
     def __str__(self):
         return self.path_name
 
-class SubPath(models.Model):
-    main_path=models.ForeignKey(MainPath,on_delete=models.CASCADE)
-    path_name=models.CharField(max_length=100)
-    status=models.CharField(max_length=20,default="Active",choices=(
-        ('Active','Active'),
-        ('Inactive','Inactive')
-    ))
-    display_order=models.IntegerField()
-    Created_at = models.DateTimeField(auto_now=True)
-    class Meta:
-        db_table = 'Sub Path'
-        ordering = ['-Created_at']
-
-    def __str__(self):
-        return self.path_name
 
 class AdminRole(models.Model):
     role_name=models.CharField(max_length=100)
@@ -40,7 +27,7 @@ class AdminRole(models.Model):
         ('Active','Active'),
         ('Inactive','Inactive')
     ))
-    permissions=models.ManyToManyField(SubPath,null=True,blank=True)
+    permissions=models.ManyToManyField(Path,null=True,blank=True)
     Created_at = models.DateTimeField(auto_now=True)
 
     
@@ -190,8 +177,28 @@ class Pincode(models.Model):
     def __str__(self):
         return self.area_name
 
+class Product(models.Model):
+    Name = models.CharField(max_length=250)
+    Description = RichTextField(null=True)
+    Features = RichTextField(null=True,default=None) 
+    Varient_Type = models.ForeignKey(VarientType,on_delete=models.CASCADE)
+    Product_Category = models.ForeignKey(Catogory,on_delete=models.CASCADE)
+    Product_Brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True)
+    
+    status = models.CharField(default='Active',max_length=20, choices=(
+        ('Active','Active'),
+        ('Inactive','Inactive')
+    ))
+    created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        db_table = "Products"
+        ordering = ['-created_at']
+    def __str__(self) -> str:
+        return self.Name
+
 class Product_Varients(models.Model):
-    Varient_name = models.CharField(max_length=255)
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    Sku_Code=models.CharField(max_length=100)
     Varient_Values = models.ForeignKey(VarientValues,on_delete=models.CASCADE)
     Product_Offers = models.ManyToManyField(Offers,blank=True)
     Selling_Prize = models.DecimalField(max_digits=12,decimal_places=2)
@@ -200,30 +207,18 @@ class Product_Varients(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(default='Active',max_length=20, choices=(
         ('Active','Active'),
-        ('Pending','Pending'),
-        ('Suspended','Suspended'),
+        ('Inactive','Inactive')
     ))
     class Meta:
         db_table = "Product_Varients"
+        ordering = ['-created_at']
 
-class Product(models.Model):
-    Name = models.CharField(max_length=250)
-    Description = models.TextField()
-    Thumbnail_image = models.FileField(upload_to='Products',null=True)
-    Varient_Type = models.ForeignKey(VarientType,on_delete=models.CASCADE)
-    Product_Category = models.ForeignKey(Catogory,on_delete=models.CASCADE)
-    Product_Brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True)
-    Product_Items = models.ManyToManyField(Product_Varients,verbose_name='ProductItems',blank=True)
-    status = models.CharField(default='Active',max_length=20, choices=(
-        ('Active','Active'),
-        ('Pending','Pending'),
-        ('Suspended','Suspended'),
-    ))
-    created_at = models.DateTimeField(auto_now_add=True)
-    class Meta:
-        db_table = "Products"
-    def __str__(self) -> str:
-        return self.Name
+
+
+class ProductImage(models.Model):
+    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    Thumbnail_image = models.ImageField(upload_to='Products',null=True)
+    
 
 
 class Customer(models.Model):
@@ -265,7 +260,7 @@ class OrderDetails(models.Model):
     orderid=models.CharField(max_length=100)
     customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
     address=models.ForeignKey(Address,on_delete=models.CASCADE)
-    order_date=models.DateField(auto_now_add=True)
+    order_date=models.DateField(auto_now_add=True,null=True)
     order_status = models.CharField(max_length=20,choices=(
         ('Pending','Pending'),
         ('Processing','Processing'),

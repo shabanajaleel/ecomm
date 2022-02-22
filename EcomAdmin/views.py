@@ -1,5 +1,6 @@
+import csv
 from django.shortcuts import render,redirect
-from django.http import JsonResponse
+from django.http import JsonResponse,HttpResponse
 from . forms import *
 from django.db.models import Q
 from EcomUser.models import Feedback
@@ -10,17 +11,36 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import login,logout,authenticate,get_user_model,update_session_auth_hash
 from . filters import OrderDetailsFilter
+from django.core.files.base import ContentFile
+from django.core.files.storage import FileSystemStorage
+fs=FileSystemStorage(location='temp/')
 
 User=get_user_model()
 # Create your views here.
+class PermisionsOf:
+    def __init__(self,request,Path):
+        self.Path=Path
+        self.request=request
+        self.User=request.user
+    def has_permission(self):
+        if self.User.is_active:
+            if self.User.role is not None:
+                if self.Path in[i.path_name for i in self.User.role.permissions.all()]:
+                    return True
+                else:
+                    return False
+            return False
+       
 def fnhaspermission(request):
-    loginuser=request.user.is_superuser
-    print(loginuser)
-    if loginuser == False:
-        role=User.objects.get(username=request.user).role
-        permissions=AdminRole.objects.get(role_name=role).permissions.all()
-        perm=[i.path_name for i in permissions]
-        return perm
+    perm=request.user.role.permissions.all()
+    print(perm)
+    # loginuser=request.user.is_superuser
+    # print(loginuser)
+    # if loginuser == False:
+    #     role=User.objects.get(username=request.user).role
+    #     permissions=AdminRole.objects.get(role_name=role).permissions.all()
+    #     perm=[i.path_name for i in permissions]
+    #     return perm
     
 
 
@@ -37,7 +57,7 @@ def fnlogin(request):
         print(user)
         if user is not None:
             login(request,user)
-            return render(request,'home.html')
+            return redirect(home)
     return render(request,'login.html')
 
 @login_required(login_url="/admin/login/")
@@ -120,16 +140,20 @@ def fndisablerole(request,roledis_id):
 def fnsetpermission(request,per_id):
     if request.method=="POST":
         perm=request.POST.getlist('sub_perm')
+        mainperm=request.POST.getlist('main_perm')
         print(perm)
         addperm=AdminRole.objects.get(id=per_id)
+        addperm.permissions.clear()
         print( addperm.permissions)
         for i in perm:
-            addperm.permissions.add(SubPath.objects.get(id=i))
+            addperm.permissions.add(Path.objects.get(id=i))
+        for j in mainperm:
+            addperm.permissions.add(Path.objects.get(id=j))
         messages.success(request,'permissions added successfully')
-        return redirect(fnaddrole)
+        return redirect(fnrole)
     permission=[i.id for i in  AdminRole.objects.get(id=per_id).permissions.all()]
     print(permission)
-    path=MainPath.objects.all()
+    path=Path.objects.filter(parent=None)
     return render(request,'admins/role/addpermissions.html',{'path':path,'permission':permission})
 
 
@@ -150,7 +174,7 @@ def fnaddadmin(request):
         if form.is_valid():
             user=form.save()
             messages.success(request,'data inserted successfully')
-            return redirect(fnaddadmin)
+            return redirect(fnviewadmin)
         else:
             return render(request,'admins/admin/addadmin.html',{'form':form})
     return render(request,'admins/admin/addadmin.html',{'form':form})
@@ -192,7 +216,7 @@ def fnaddpath(request):
         if form.is_valid():
             form.save()
             messages.success(request,'Path added successfully')
-            return redirect(fnaddpath)
+            return redirect(fnpath)
             
         else:
             return render(request,'admins/path/add_main_path.html',{'form':form})
@@ -201,34 +225,45 @@ def fnaddpath(request):
     return render(request,'admins/path/add_main_path.html',context)
 
 @login_required(login_url="/admin/login/")
-def fnmainpath(request):
-    path=MainPath.objects.all()
-    context={'path':path}
-    if request.method=="POST":
-        path=request.POST['path']
-        status=request.POST['status']
-        if path:
-            roles=roles.filter(role_name=path)
-            context={'roles':roles}
-        if status:
-            roles=roles.filter(status=status)
-            context={'roles':roles}
-    return render(request,'admins/path/add_main_path.html',context)
+def fnpath(request):
+    if request.user.is_superuser or PermisionsOf(request,'Path').has_permission():
+        path=Path.objects.all()
+        context={'path':path}
+        if request.method=="POST":
+            path=request.POST['path']
+            status=request.POST['status']
+            if path:
+                roles=roles.filter(role_name=path)
+                context={'roles':roles}
+            if status:
+                roles=roles.filter(status=status)
+                context={'roles':roles}
+        return render(request,'admins/path/path.html',context)
+
+def fneditpath(request,path_id):
+    path=Path.objects.get(id=path_id)
+    form =MainPathForm(request.POST or None,instance=path)
+    print(form)
+    if form.is_valid():
+        form.save()
+        messages.success(request,'path edited successfully')
+        return redirect(fnpath)
+    return render(request,'admins/path/add_main_path.html',{'form':form}) 
+
+def fndisablepath(request,pathdis_id):
+    path=Path.objects.get(id=pathdis_id)
+    if path.status== "Active":
+        path.status ='Inactive'
+        path.save()
+        return redirect(fnpath)
+    else:
+        path.status ='Active'
+        path.save()
+        return redirect(fnpath)   
 
 @login_required(login_url="/admin/login/")
 def fnaddsubpath(request):
-    if request.method=="POST":
-        form=SubPathForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'Path added successfully')
-            return redirect(fnaddsubpath)
-            
-        else:
-            return render(request,'admins/path/add_sub_path.html',{'form':form})
-    form=SubPathForm()
-    context={'form':form}
-    return render(request,'admins/path/add_sub_path.html',context)
+    pass
 
 def fnmainpath(request):
     pass 
@@ -320,37 +355,42 @@ def fndisablebrand(request,branddis_id):
 
 @login_required(login_url="/admin/login/")
 def fnaddcatogory(request):
+    if request.user.is_superuser or PermisionsOf(request,'Add Catogory').has_permission():
     
-    form=CatogoryForm(request.POST,request.FILES)
-    if form.is_valid():
-        form.save()
-        messages.success(request,'Catogory added successfully')
-        return redirect(fncatogory)
-    form=CatogoryForm()
-    context={'form':form}
-    return render(request,'catogory/addcatogory.html',context)
+        form=CatogoryForm(request.POST,request.FILES)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Catogory added successfully')
+            return redirect(fncatogory)
+        form=CatogoryForm()
+        context={'form':form}
+        return render(request,'catogory/addcatogory.html',context)
+    else:
+        messages.error(request,'you have no access to this page')
+        return render(request,'home.html')
 
 @login_required(login_url="/admin/login/")
 def fncatogory(request):
-    catogories=Catogory.objects.all()
-    context={'cat':catogories}
-    if request.method=="POST":
-        catogory=request.POST['catogory']
-        parent=request.POST['parent']
-        status=request.POST['status']
+    if request.user.is_superuser or PermisionsOf(request,'Catogory').has_permission():
+        catogories=Catogory.objects.all()
+        context={'cat':catogories}
+        if request.method=="POST":
+            catogory=request.POST['catogory']
+            parent=request.POST['parent']
+            status=request.POST['status']
 
-        if catogory:
-            catogories=catogories.filter(catogory_name=catogory)
-            context={'cat':catogories}
-        if parent:
-            catogories=catogories.filter(parent__catogory_name=parent)
-            context={'cat':catogories}
-        if status:
-            catogories=catogories.filter(status=status)
-            context={'cat':catogories}
-       
+            if catogory:
+                catogories=catogories.filter(catogory_name=catogory)
+                context={'cat':catogories}
+            if parent:
+                catogories=catogories.filter(parent__catogory_name=parent)
+                context={'cat':catogories}
+            if status:
+                catogories=catogories.filter(status=status)
+                context={'cat':catogories}
+        return render(request,'catogory/catogories.html',context)
+    
 
-    return render(request,'catogory/catogories.html',context)
 
 @login_required(login_url="/admin/login/")
 def fneditcatogory(request,cat_id):
@@ -378,6 +418,20 @@ def fndisablecatogory(request,catdis_id):
         catogories.status ='active'
         catogories.save()
         return redirect(fncatogory)
+
+def fncatcsv(request,catcsv_id):
+    
+    Products = Product_Varients.objects.filter(status="Active",product__status="Active",product__Product_Category=catcsv_id).order_by('-id')
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="ProductList.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['no:', 'ProductId', 'Product', 'Varient','Stocks','SellingPrice'])
+    Product_Fields = Products.values_list('id','product__Name','Varient_Values__varient_values','Product_stock','Selling_Prize')
+    count=0
+    for pro in Product_Fields:
+        count+=1
+        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4]])
+    return response
 
 def fndisplay(request):
 
@@ -554,35 +608,39 @@ def fnaddoffers(request):
 def fnoffers(request):
     if request.user.is_superuser:
         offers=Offers.objects.all()
-        context={'offers':offers}
+        context={'offers':offers,'offerpermission':1}
         if request.method=="POST":
             offer=request.POST['offer']
             status=request.POST['status']
             if offer:
                 offers=offers.filter(Q(offer_name=offer))
-                context={'offers':offers}
+                context={'offers':offers,'permission':1}
+                print(context['offerpermission'])
             if status:
                 offers=offers.filter(Q(status=status))
-                context={'offers':offers}
+                context={'offers':offers,'offerpermission':1}
 
     elif 'View Offers' in fnhaspermission(request) and  'Add Offers' in fnhaspermission(request) :
         offers=Offers.objects.all()
-        context={'offers':offers}
+        context={'offers':offers,'offerpermission':1}
         if request.method=="POST":
             offer=request.POST['offer']
             status=request.POST['status']
             if offer:
                 offers=offers.filter(Q(offer_name=offer))
-                context={'offers':offers}
+                context={'offers':offers,'offerpermission':1}
             if status:
                 offers=offers.filter(Q(status=status))
-                context={'offers':offers}
+                context={'offers':offers,'offerpermission':1}
     else:
         messages.error(request,'You dont have access to this page')
-        return render(request,'messages.html')
+        return render(request,'home.html')
 
    
     return render(request,'offers/offers.html',context)
+
+@login_required(login_url="/admin/login/")
+
 
 @login_required(login_url="/admin/login/")
 def fneditoffers(request,off_id):
@@ -876,31 +934,279 @@ def fndisablemainbanner(request,mainban_id):
 
 @login_required(login_url="/admin/login/")
 def fnorders(request):
-    orders=OrderDetails.objects.all()
-    context={'orders':orders}
-    if request.method=="POST":
-        customer=request.POST['customer']
-        orderstatus=request.POST['orderstatus']
-        paymentstatus=request.POST['paystatus']
-        fromdate=request.POST['fromdate']
-        todate=request.POST['todate']
-        if customer:
-            orders=orders.filter(Q(customer__username=customer))
-            context={'orders':orders}
-        if orderstatus:
-            orders=orders.filter(Q(order_status=orderstatus))
-            context={'orders':orders}
-        if paymentstatus:
-            orders=orders.filter(Q(payment_status=paymentstatus))
-            context={'orders':orders}
-        if fromdate:
-            orders=orders.filter(Q(order_date__gte=fromdate))
-            context={'orders':orders}
-        if todate:
-            orders=orders.filter(Q(order_date__lte=todate))
-            context={'orders':orders}
+    if request.user.is_superuser or PermisionsOf(request,'Orders').has_permission():
+        orders=OrderDetails.objects.all()
+        context={'orders':orders}
+        if request.method=="POST":
+            customer=request.POST['customer']
+            orderstatus=request.POST['orderstatus']
+            paymentstatus=request.POST['paystatus']
+            fromdate=request.POST['fromdate']
+            todate=request.POST['todate']
+            if customer:
+                orders=orders.filter(Q(customer__username=customer))
+                context={'orders':orders}
+            if orderstatus:
+                orders=orders.filter(Q(order_status=orderstatus))
+                context={'orders':orders}
+            if paymentstatus:
+                orders=orders.filter(Q(payment_status=paymentstatus))
+                context={'orders':orders}
+            if fromdate:
+                orders=orders.filter(Q(order_date__gte=fromdate))
+                context={'orders':orders}
+            if todate:
+                orders=orders.filter(Q(order_date__lte=todate))
+                context={'orders':orders}
     
-    return render(request,'orders/order.html',context)
+        return render(request,'orders/order.html',context)
+
+def fnvieworders(request,order_id):
+  
+    orders=Order.objects.filter(order_id=order_id)
+    return render(request,'orders/customerorders.html',{'orders':orders})
+
+def fnchangestatus(request):
+    if request.method=="POST":
+        order=request.POST['order_status']
+        print(order)
+        payment=request.POST['payment_status']
+        print(payment)
+        id=request.POST.get('id')
+        order_details=OrderDetails.objects.get(id=id)
+        if order != '':
+            order_details.order_status=order
+            order_details.save()
+        if payment != '':
+            print('hai')
+            order_details.payment_status=payment
+            order_details.save()
+        return redirect(fnorders)
+
+def fnaddproducts(request):
+    form=ProductForm()
+    if request.method=="POST":
+        images=request.FILES.getlist('imagefile')
+        form=ProductForm(request.POST or None)
+        if form.is_valid():
+            product=form.save()
+            print(product.id)
+            id=product.id
+            for image in images:
+                print(image)
+                ProductImage(product_id=id,Thumbnail_image=image).save()
+      
+        VarientDatas = zip(
+                    request.POST.getlist('code'),
+                    request.POST.getlist('varient_values'),
+                    request.POST.getlist('selling_price'),
+                    request.POST.getlist('display_price'),
+                    request.POST.getlist('product_stock'),
+                    )
+        data_dicts = [{
+                'Sku_Code': code,
+                'Varient_Values': varient_values,
+                'Selling_Prize':selling_price,
+                'Display_Prize':display_price,
+                'Product_stock':product_stock,
+                'status':'Active',
+                'product':id
+                }
+                for code, varient_values, selling_price, display_price, product_stock in VarientDatas]
+        print(data_dicts)
+        for data in data_dicts:
+            form=ProductVarientForm(data)
+            if form.is_valid():
+                varient=form.save()
+        messages.success(request,'product added successfully')
+        return redirect(fnlistproducts)
+                          
+    return render(request,'products/addproduct.html',{'form':form})
+
+def fnvarientselect(request):
+    if request.method=="POST":
+        id=request.POST['id']
+        varienttype=VarientType.objects.get(id=id)
+        print(varienttype)
+        varientValues=VarientValues.objects.filter(varient_type=id,status='active')
+        print(varientValues)
+        data = {
+            'values':list(varientValues.values('id', 'varient_values')),
+            'Type':varienttype.varient_name,
+        }
+        return JsonResponse(data)
+
+def fnlistproducts(request):
+    products=Product.objects.all()
+    catogories=Catogory.objects.all()
+    varients=VarientType.objects.all()
+    if request.method=="POST":
+        product=request.POST['product']
+        varient=request.POST['varient']
+        catogory=request.POST['catogory']
+        status=request.POST['status']
+        
+        if product:
+            products=products.filter(Q(Name=product))
+            context={'products':products,'catogories':catogories,'varients':varients} 
+        if catogory:
+            products=products.filter(Q(Product_Category=catogory))
+            context={'products':products,'catogories':catogories,'varients':varients}
+        if varient:
+            products=products.filter(Q(Varient_Type=varient))
+            context={'products':products,'catogories':catogories,'varients':varients}
+        if status:
+            products=products.filter(Q(status=status))
+            context={'products':products,'catogories':catogories,'varients':varients}
+    context={'products':products,'catogories':catogories,'varients':varients}   
+    
+    return render(request,'products/listproducts.html',context)
+
+def fndisableproduct(request,productdis_id):
+    products=Product.objects.get(id=productdis_id)
+    if products.status== "Active" :
+        products.status='Inactive'
+        products.save()
+        return redirect(fnlistproducts)
+    else:
+        products.status="Active"
+        products.save()
+        return redirect(fnlistproducts)
+
+def fneditproducts(request,editprod_id):
+    products=Product.objects.get(id=editprod_id)
+    id=products.id
+    images=products.productimage_set.all()
+    product_varients=products.product_varients_set.all()
+    varients=VarientValues.objects.filter(varient_type=products.Varient_Type)
+    print(product_varients)
+    form =ProductForm(request.POST or None,instance=products)
+    if form.is_valid():
+        form.save()
+
+
+    image=request.FILES.getlist('imagefile')
+    VarientDatas = zip(
+                    request.POST.getlist('code'),
+                    request.POST.getlist('varient_values'),
+                    request.POST.getlist('selling_price'),
+                    request.POST.getlist('display_price'),
+                    request.POST.getlist('product_stock'),
+                    )
+    data_dicts = [{
+                'Sku_Code': code,
+                'Varient_Values': varient_values,
+                'Selling_Prize':selling_price,
+                'Display_Prize':display_price,
+                'Product_stock':product_stock,
+                'status':'Active',
+                'product':id
+                }
+                for code, varient_values, selling_price, display_price, product_stock in VarientDatas]
+    print(data_dicts)
+    for data in data_dicts:
+        Product_Varients.objects.filter(product=id).delete()
+        form=ProductVarientForm(data)
+        if form.is_valid():
+            varient=form.save()
+    
+    if image is not None:
+        for img in image:
+                print(img)
+                oldimage=ProductImage.objects.filter(product=editprod_id).delete()
+                ProductImage(product_id=editprod_id,Thumbnail_image=img).save()
+    messages.success(request,'product changed successfully')
+    return redirect(fnlistproducts)
+
+   
+        
+
+    return render(request,'products/editproducts.html',{'form':form,'images':images,'items':product_varients,'varients':varients})
+
+def fnviewproducts(request,productview_id):
+    products=Product.objects.get(id=productview_id)
+    context={'products':products}
+    return render(request,'products/viewproducts.html',context)
+
+def fnaddproditems(request,prodvar_id):
+    if request.method=="POST":
+        code=request.POST['code']
+        varient_val=request.POST['varient_values']
+        selling_price=request.POST['selling_price']
+        display_price=request.POST['display_price']
+        stock=request.POST['product_stock']
+        var=Product_Varients(product_id=prodvar_id,Sku_Code=code,Varient_Values_id=varient_val,Selling_Prize=selling_price,Display_Prize=display_price,Product_stock=stock,status="Active").save()
+        messages.success(request,'Product items added successfully')
+        return redirect('view_product',productview_id=prodvar_id)
+
+    products=Product.objects.get(id=prodvar_id)
+    varient_type=products.Varient_Type
+    varient_values=VarientValues.objects.filter(varient_type=varient_type)
+    print(varient_values)
+    context={'varient_type':varient_type,'varient_values':varient_values}
+    return render(request,'products/addprodvarients.html',context)
+
+def fnedititems(request,edititem_id):
+    items=Product_Varients.objects.get(id=edititem_id)
+    product=items.product.Varient_Type
+    varients=VarientValues.objects.filter(varient_type=product)
+    print(varients)
+    if request.method=="POST":
+        code=request.POST['code']
+        varient_val=request.POST['varient_values']
+        selling_price=request.POST['selling_price']
+        display_price=request.POST['display_price']
+        stock=request.POST['product_stock']
+        var=Product_Varients.objects.filter(id=edititem_id).update(Sku_Code=code,Varient_Values_id=varient_val,Selling_Prize=selling_price,Display_Prize=display_price,Product_stock=stock,status="Active")
+        if var:
+            messages.success(request,'Product updated successfully')
+            return redirect('view_product',productview_id=edititem_id)
+
+
+    context={'items':items,'varients':varients}
+    return render(request,'products/editprodvarients.html',context)
+
+def fndisableitem(request,disitem_id):
+    items=Product_Varients.objects.get(id=disitem_id)
+    prod_id=items.product_id
+    if items.status== "Active" :
+        items.status='Inactive'
+        items.save()
+        return redirect('view_product',productview_id=prod_id)
+    else:
+        items.status="Active"
+        items.save()
+        return redirect('view_product',productview_id=prod_id)
+
+def fnbulkstock(request):
+    if request.method=="POST":
+        csvFile = request.FILES.get('getCSV')
+        content = csvFile.read()
+        file_content = ContentFile(content)
+        file_name = fs.save("temp.csv",file_content)
+        temp_file = fs.path(file_name)
+        csv_file = open(temp_file, errors='ignore')
+        reader = csv.reader(csv_file)
+        next(reader)
+        
+        for row in enumerate(reader):
+            print(row[1])
+            (count,ProductId,Products,Varients,Stocks,SellingPrice) = row[1] 
+            if len(Stocks) > 0:
+                Product_Varients.objects.filter(id=ProductId).update(Product_stock=int(Stocks),Selling_Prize=float(SellingPrice))
+    return redirect(fnlistproducts)        
+        
+                
+                
+                
+
+    
+
+
+
+    
+
+
 
     
 

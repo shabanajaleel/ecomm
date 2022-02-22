@@ -128,6 +128,7 @@
                         <td>{{catogory.status}}</td>
 
                         {% if catogory.status == 'active' %}
+                        <td><a href="{% url 'cat_csv' catcsv_id=catogory.id %}" class="btn btn-primary">Catogory CSV</a></td></td>
                         <td><a href="{% url 'edit_catogory' cat_id=catogory.id %}" class="btn btn-secondary">Edit</a></td>
                         <td><a href="{% url 'disable_catogory' catdis_id=catogory.id %}" class="btn btn-secondary">Disable</a></td>
                         {% else %}

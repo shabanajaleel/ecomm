@@ -1,0 +1,254 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-1"></div>
+        <div class="col-lg-10">
+            <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                
+                <div class="card-header">
+                    <h3 class="card-title">Add Product</h3>
+                  </div>
+                  <div class="card-body">
+                    <div class="row">
+                      
+                      {% if messages %}
+                      <div class="col-lg-12 ">
+                          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                             {% for message in messages %} 
+                             {{message}} 
+                             {% endfor %}
+                              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                          </div>
+                      </div>
+                      {% endif %}
+
+                        {% if form.errors %}
+                            <div class="col-lg-12 ">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {% for field in form %}
+                                    <!-- For each error in field -->
+                                        <!-- {% for error  in field.errors %} -->
+                                            <!-- Output error text message only -->
+                                                <div>{{field.errors}}</div>
+                                            <!-- {% endfor %} -->
+                                      {% endfor %}
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                            </div>
+                            {% endif %}
+
+
+                      <div class="col-md-6 col-lg-6">
+                       
+                        <div class="form-group">
+                          <label class="form-label">Product Name<span class="danger" style="color: red;"> *</span></label>
+                          {{form.Name}}
+                        </div>
+                        </div>
+                     
+                   
+                    <div class="col-md-6 col-lg-6">
+                       <label for="">Currently:{% for image in images %}
+                           {{forloop.counter}}.{{image.Thumbnail_image | cut:'Products/'}},
+                           {% endfor %}
+                        </label>
+                        <div class="form-group">
+                          <label class="form-label">Product Image<span class="danger" style="color: red;"> *</span></label>
+                          <input type="file" name="imagefile" id="" class="form-control" multiple>
+                        </div>
+                        </div>
+
+                        <div class="col-md-6 col-lg-6">
+                          <div class="form-group">
+                           <label class="form-label">Varient Type<span class="danger" style="color: red;"> *</span> </label>
+                           <div >
+                             {{form.Varient_Type}}
+               
+                           </div>
+                           
+                            
+                       </div>
+                     </div>
+
+                     
+                     <div class="col-md-6 col-lg-6">
+                        <div class="form-group">
+                         <label class="form-label">Brand<span class="danger" style="color: red;"> *</span></label>
+                         <div >
+                           {{form.Product_Brand}}
+             
+                         </div>
+                         
+                          
+                     </div>
+                   </div>
+
+                    
+                   <div class="col-md-6 col-lg-6">
+                    <div class="form-group">
+                     <label class="form-label">Catogory<span class="danger" style="color: red;"> *</span> </label>
+                     <div >
+                       {{form.Product_Category}}
+         
+                     </div>
+                     
+                      
+                 </div>
+               </div>
+
+               <div class="col-md-6 col-lg-6">
+                <div class="form-group">
+                 <label class="form-label">Status<span class="danger" style="color: red;"> *</span> </label>
+                 <div >
+                   {{form.status}}
+     
+                 </div>
+                 
+                  
+             </div>
+           </div>
+
+           <div class="col-md-12 col-lg-12">
+            <div class="form-group">
+             <label class="form-label">Description<span class="danger" style="color: red;"> *</span> </label>
+             <div >
+                 {{form.media}}
+               {{form.Description}}
+ 
+             </div>
+             
+              
+         </div>
+       </div>
+
+       <div class="col-md-12 col-lg-12">
+        <div class="form-group">
+         <label class="form-label">Features<span class="danger" style="color: red;"> *</span> </label>
+         <div >
+             {{form.media}}
+           {{form.Features}}
+
+         </div>
+         
+          
+     </div>
+   </div>
+   <hr>
+   <div class="card" id="VarientElement" >
+       <div class="card-header" >
+           <div class="row ">
+               <div class="col-sm-4">
+                   <div class="ml-auto">
+                       <h3 class="card-title">Varients</h3>
+                   </div>
+               </div>
+               <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+            <div class="ml-auto">
+                <button id="addnewrow" style="float:right" class="btn btn-primary" >add</button>
+            </div>
+        </div>
+           </div>
+       </div>
+       
+       <div class="card-body">
+        {% for item in items %}
+           <div class="row varient">
+            
+               <div class="col-lg-10 row" id="varientId">
+                   <div class="form-group col-3">
+                       <label for="exampleInputUsername1">SKU Code</label>
+                       <input type="text" name="code" maxlength="255" value="{{item.Sku_Code}}" class="form-control form-control-sm" required="" id="id_Varient_name">
+                   </div>
+                   <div class="form-group col-3">
+                       <label for="exampleInputUsername1" class="varient_Values1">{{item.product.Varient_Type}}</label>
+                       <select name="varient_values" class="form-control form-control-sm VarientSelect"
+                       required="" id="id_Varient_Values">
+                       <!-- <option value="{{items.Varient_Values.id}}" selected >{{items.Varient_Values.varient_values}}</option> -->
+                       {% for i in varients %} 
+                       {% if i.varient_values == item.Varient_Values.varient_values %}
+                       <option value="{{i.id}}" selected>{{i.varient_values}}</option>
+                       {% else %}
+                       <option value="{{i.id}}">{{i.varient_values}}</option>
+                       {% endif %}
+                       {% endfor %}
+                   </select>
+                
+                   </div>
+                   <div class="form-group col-2">
+                       <label for="exampleInputUsername1">Selling Prize</label>
+                       <input type="text" name="selling_price"  value="{{item.Selling_Prize}}" maxlength="255" class="form-control form-control-sm" required="" id="id_Selling_Prize">
+                   </div>
+                   <div class="form-group col-2">
+                       <label for="exampleInputUsername1">Display Price</label>
+                       <input type="text" name="display_price"  value="{{item.Display_Prize}}" maxlength="255" class="form-control form-control-sm" required="" id="id_Display_Prize">
+                   </div>
+                   <div class="form-group col-2">
+                       <label for="exampleInputUsername1">Product Stock</label>
+                       <input type="number" name="product_stock"  value="{{item.Product_stock}}" class="form-control form-control-sm" required>
+                   </div>
+               </div>
+              
+               <div class="col-lg-2">
+                   <div class="form-group" style="text-align: center;margin-top:30px;" id="but">
+                    <button type="button" class="btn btn-primary remove" >remove</button>
+                   </div>
+               </div>
+             
+           </div>
+           {% endfor %}
+       </div>
+   
+   </div>
+
+
+
+
+                    <div class="col-lg-12">
+                        <center><button class="btn btn-secondary  mt-5">Submit</button></center>
+                    </div>
+                    </div>
+                    </div>
+           
+        </form>
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>
+
+<script>
+    $('#id_Varient_Type').click(function(){
+        var varient_type=$('#id_Varient_Type').val()
+        console.log(varient_type)
+        if (varient_type) {
+            $("#VarientElement").show(500)
+            $.ajax({
+                type:'POST',
+                url:'{%url "varient_select" %}',
+                data:{
+                    'id':varient_type,
+                    'csrfmiddlewaretoken': $('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success: (data) => {
+                    
+                        console.log(data.Type)
+                        let html_data = '<option value=0>None</option>';
+                        data.values.forEach(function (data) {
+                            html_data += `<option value="${data.id}">${data.varient_values}</option>`
+                        });
+                        $(".VarientSelect").html(html_data);
+                        $('.varient_Values1').html('<p>' + data.Type + '</p>')
+                    }
+            })
+        }
+    })
+
+// </script>
+
+
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends 'main.html' %}
+{% block content %}
+
+<div class="col-lg-12 grid-margin stretch-card">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="ml-auto">
+                        <h3 class="card-title">Product
+                            <label
+                                class="badge {% if ProductDetails.status == 'Active' %}badge-success{% elif ProductDetails.status == 'Pending' %}badge-warning{%else%}badge-danger{%endif%}">{{products.status}}</label>
+                        </h3>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                </div>
+                <div class="col-sm-2 col-12 col-md-12 col-lg-12 col-xl-2">
+
+                </div>
+            </div>
+        </div>
+        {% include 'messages.html' %}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="card">
+                        <div class="card-header" style="background: white;">
+                            <div class="row">
+                                <div class="col-sm-6 col-lg-12" style="text-align: center;">
+                                    <div class="ml-auto">
+                                        <h3 class="card-title">{{products.Name}}</h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            {% for image in products.productimage_set.all %}
+                            {% if forloop.first %}
+                            <div class="col-sm-6 col-lg-12" style="text-align: center;">
+                                <div class="ml-auto">
+                                    <img src="/media/{{image.Thumbnail_image}}" alt="" width="100%">
+                                </div>
+                            </div>
+                            {% endif %}
+                            {% endfor%}
+                            <div class="row p-3">
+                                <div class="col-6 col-md-6 col-lg-6 p-1" style="font-size:small;">
+                                    <div class="col-11 text-justify">
+                                        <label style="font-weight: bold;">Product Brand:</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6 p-1" style="font-size:small;">
+                                    <div class="col-11 text-justify">
+                                        <label>{{products.Product_Brand}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6 p-1" style="font-size:small;">
+                                    <div class="col-11 text-justify">
+                                        <label style="font-weight: bold;">Product Category:</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6 p-1" style="font-size:small;">
+                                    <div class="col-11 text-justify">
+                                        <label>{{products.Product_Category}}</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6 p-1" style="font-size:small;">
+                                    <div class="col-11 text-justify">
+                                        <label style="font-weight: bold;">Varient:</label>
+                                    </div>
+                                </div>
+                                <div class="col-6 col-md-6 col-lg-6 p-1" style="font-size:small;">
+                                    <div class="col-11 text-justify">
+                                        <label>{{products.Varient_Type}}</label>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-9">
+                    <div class="card">
+                        <div class="card-header" style="background: white;">
+                            <div class="row">
+                                <div class="col-sm-12" style="text-align: center;">
+                                    <div class="ml-auto">
+                                        <div class="row">
+                                            <div class="col-9 col-lg-9 colxl-9">
+                                                <h3 class="card-title">Product Details</h3>
+                                            </div>
+                                            <div class="col-3 col-lg-3 col-xl-2">
+                                                <a href="{% url 'add_varients' prodvar_id=products.id %}" class="btn-sm btn-primary" style="text-decoration: none;float: right;">Add Items</a>
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+
+                        <div class="row p-3">
+                            <div class="col-sm-12" style="text-align: center;">
+                                <div class="ml-auto">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>SKU Code</th>
+                                                    <th>VARIENT</th>
+                                                    <th>SELLING PRIZE</th>
+                                                    <th>DISPLAY PRIZE</th>
+                                                    <!-- <th>OFFER</th> -->
+                                                    <th>STOCK</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {% for varients in products.product_varients_set.all %}
+                                                <tr>
+                                                    <td>{{forloop.counter}}</td>
+                                                    <td>{{varients.Sku_Code}}</td>
+                                                    <td>{{varients.Varient_Values.varient_values}}
+                                                        <label
+                                    class="badge {% if varients.status == 'Active' %}badge-success {%else%}badge-danger{%endif%}">{{varients.status}}</label>
+
+                                                    </td>
+                                                    <td>₹ {{varients.Selling_Prize}}</td>
+                                                    <td>₹ {{varients.Display_Prize}}</td>
+                                                    
+                                                    <td>{{varients.Product_stock}}</td>
+                                                    <td>
+                                                        {% if varients.status == 'Active' %}
+                                                       
+                                                        <a href="{% url 'edit_prodvarients' edititem_id=varients.id %}"
+                                                            class="btn-sm btn-light"
+                                                            style="text-decoration: none;width: 100;">Edit</a>
+                                                                         <!-- disable -->
+                                                        <a href="{% url 'disable_prodvarients' disitem_id=varients.id %}" class="dis btn-sm btn-light">Disable</a>
+                                                        {% else %}
+                                                        <!-- enable -->
+                                                        <a href="{% url 'disable_prodvarients' disitem_id=varients.id %}" class="dis btn-sm btn-light">Enable</a>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="card">
+                            <div class="card-header" style="background: white;">
+                                <div class="row">
+                                    <div class="col-sm-12" style="text-align: center;">
+                                        <div class="ml-auto">
+                                            <h3 class="card-title">Description</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="col-sm-12" style="text-align: center;">
+                                <div class="ml-auto">
+                                    <p>{{ products.Description }}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endblock %}

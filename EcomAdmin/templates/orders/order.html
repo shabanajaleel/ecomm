@@ -1,7 +1,7 @@
 {% extends 'main.html' %}
 {% block content %}
 <div class="col-lg-12">
-  <form action="" method="post" class="card filter" >
+  <form action="/admin/orders/" method="POST" class="card filter" >
     {% csrf_token %}
     <div class="card-body">
      
@@ -120,11 +120,11 @@
            
             <td> 
                   
-                    
-            <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-secondary btn-sm order-edit-btn" value="{{order.id}}" >Orders</button>    
-              <!-- <button type="button" id="viewdetails{{i.id}}" name="value" class="btn btn-secondary btn-sm" data-toggle="modal" data-target="#exampleModalCenter2" value="{{i.id}}" onclick="order_detail(this)" >Edit</button>
-              <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-secondary btn-sm order-edit-btn" value="{{i.id}}" onclick="myfunction(this)">Change Status</button>  -->
-
+             <a href="{% url 'view_orders' order_id=order.id %}" class="btn btn-secondary">Orders</a>       
+            <!-- <button type="button" data-toggle="modal" data-target="#exampleModalCenter" class="btn btn-secondary btn-sm order-edit-btn something" value="{{order.id}}" >Orders</button>     -->
+           
+              <button type="button" data-toggle="modal" data-target="#exampleModalCenter1" class="btn btn-secondary btn-sm order-edit-btn myclick" value="{{order.id}}"  >Order Status</button> 
+  
             </td>
           </tr> 
 
@@ -154,6 +154,7 @@
         <div class="modal-body" >
 
             <div class="table-responsive">
+              <input hidden  type="text" class="answer" >
                 <table class="table card-table table-vcenter text-nowrap">
                   <thead>
                     <tr>
@@ -164,12 +165,15 @@
                       
                       <th><b>ORDER DATE</b></th>
                       <th><b>TOTAL</b></th>
+                      <th></th>
+                      <th></th>
                         
                     </tr>
                   </thead>
                   <tbody>
-                    {% for order in orders %}
+                    {% for order in orders %} 
                     {% for orders in order.order_set.all %}
+                    
                     <tr>
                       <td>{{ forloop.counter }}</td>
                       <td>{{ orders.product.Name }}</td>
@@ -177,6 +181,9 @@
                       <td>{{ orders.count }}</td>
                       <td>{{ orders.order_date }}</td>
                       <td>{{ orders.order_total }}</td>
+                     
+                      <!-- <td> <td><a href="" class="btn btn-secondary">Payment Status</a></td></td> -->
+                      
                       
                      
                       <td> 
@@ -206,19 +213,20 @@
   
   </div>
 
+ 
 
 
 
-
-<!-- <form method="POST">
+<form method="POST" action="/admin/change_status/">
   {% csrf_token %}
-<div class="modal fade bd-example-modal-lg" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 100%;">
+
+<div class="modal fade bd-example-modal-lg" id="exampleModalCenter1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 100%;">
   
   <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
     
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Change Status</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle">Change Order Status</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -228,7 +236,7 @@
           <div class="col-5">
             
             <label class="mr-sm-2" for="inlineFormCustomSelect">Order Status<span class="danger" style="color: red;"> *</span></label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="order_status">
+            <select class="custom-select mr-sm-2"  name="order_status">
               
               <option value="" >Choose...</option>
               <option value="pending">pending</option>
@@ -240,7 +248,7 @@
           </div>
           <div class="col-5">
             <label class="mr-sm-2" for="inlineFormCustomSelect">Payment Status<span class="danger" style="color: red;"> *</span></label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="payment_status">
+            <select class="custom-select mr-sm-2" id="payment" name="payment_status">
               <option value="" >Choose...</option>
               <option value="pending">pending</option>
               <option value="received">received</option>
@@ -248,7 +256,7 @@
             </select>
           </div>
           <div class="col-2">
-            <input hidden  type="text" id="answer" name="value_id">
+            <input hidden  type="text" name="id" class="answer1" name="value_id">
           </div>
                 
              
@@ -260,7 +268,7 @@
       </div>
       <div class="modal-footer">
         
-        <button type="submit" class="btn btn-primary">Save changes</button>
+     <button type="submit" class="btn btn-primary" >Save Changes</button>
       </div>
     </div>
   
@@ -269,53 +277,19 @@
 </div>
 </form>
 
+<script>
+  $(document).ready(function(){
+    $('.myclick').click(function(){
+      id=$('.myclick').val()
+      console.log(id)
+      newid=$('.answer1').val(id)
+      console.log($('.answer1').val())
 
-<!-- Modal -->
-<!-- <div class="modal fade bd-example-modal-lg" id="exampleModalCenter2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" style="width: 100%;">
-  
-  <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-    
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">Change Status</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body" >
-        <div class="row">
-          <div class="col-5">
-            
-            <label class="mr-sm-2" for="inlineFormCustomSelect">Order Status<span class="danger" style="color: red;"> *</span></label>
-            <select class="custom-select mr-sm-2" id="inlineFormCustomSelect" name="order_status">
-              
-              <option value="" >Choose...</option>
-              <option value="pending">pending</option>
-              <option value="processing">processing</option>
-              <option value="shipped">shipped</option>
-              <option value="out for delivery">out for delivery</option>
-              <option value="delivered">delivered</option>
-            </select>
-          </div>
-          
-          <div class="col-2">
-            <input hidden  type="text" id="answer" name="value_id">
-          </div>
-                
-             
-        </div>
-         
-        
-          
-    
-      </div>
-      <div class="modal-footer">
-        
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  
-  </div>
+    })
+  })
 
-</div> --> 
+ 
+
+</script>
+
   {% endblock %}

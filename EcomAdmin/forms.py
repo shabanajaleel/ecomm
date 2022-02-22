@@ -105,7 +105,7 @@ class ChangePasswordForm(PasswordChangeForm):
 
 class MainPathForm(forms.ModelForm):
     class Meta:
-        model=MainPath
+        model=Path
         fields="__all__"
 
     def __init__(self, *args, **kwargs):
@@ -113,15 +113,7 @@ class MainPathForm(forms.ModelForm):
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
 
-class SubPathForm(forms.ModelForm):
-    class Meta:
-        model=SubPath
-        fields="__all__"
 
-    def __init__(self, *args, **kwargs):
-        super(SubPathForm, self).__init__(*args, **kwargs)
-        for name in self.fields.keys():
-            self.fields[name].widget.attrs.update({'class':'form-control'})
 
 
 class BannerForm(forms.ModelForm):
@@ -299,6 +291,27 @@ class CustomerForm(forms.ModelForm):
         super(CustomerForm,self).__init__(*args, **kwargs)
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
+
+class ProductForm(forms.ModelForm):
+    class Meta:
+        model=Product
+        fields="__all__"
+
+    def __init__(self,*args , **kwargs):
+        super(ProductForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+class ProductVarientForm(forms.ModelForm):
+    class Meta:
+        model=Product_Varients
+        fields="__all__"
+
+    def __init__(self,*args , **kwargs):
+        super(ProductVarientForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
 
 
 
