@@ -1,0 +1,134 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="col-lg-12">
+  <form action="" method="POST" class="card filter" >
+    {% csrf_token %}
+    <div class="card-body">
+     
+      <div class="row">
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Customer</label>
+            <input type="text" class="form-control" name="customer"  placeholder="eg: admin">
+          </div>
+        </div>
+
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Order Status</label>
+            <select class="form-control" name="orderstatus" id="filter_role" style="height: 46px;">
+              <option selected="selected" value="">All</option>
+              <option value="Pending" style="text-transform:capitalize">Pending</option>
+              <option value="Processing" style="text-transform:capitalize">Processing</option>
+              <option value="Shipped" style="text-transform:capitalize">Shipped</option>
+              <option value="Out for delivery" style="text-transform:capitalize">Out for delivery</option>
+              <option value="Delivered" style="text-transform:capitalize">Delivered</option>
+            
+            </select>
+          </div>
+        </div>
+  
+          <div class="col-md-4 col-lg-2">
+            <div class="form-group">
+              <label class="form-label">Payment Status</label>
+              <select class="form-control" name="paystatus" id="filter_role" style="height: 46px;">
+                <option selected="selected" value="">All</option>
+                <option value="Pending" style="text-transform:capitalize">Pending</option>
+                <option value="Received" style="text-transform:capitalize">Received</option>
+             
+              </select>
+            </div>
+          </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Date From</label>
+            <input type="date" class="form-control" name="fromdate" 
+              >
+          </div>
+        </div>
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Date To</label>
+            <input type="date" class="form-control" name="todate" 
+           >
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-4 mt-2">
+          <div class="form-group">
+              
+              <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
+                  data-original-title="Apply">Filter</button>
+          </div>
+      </div>
+    
+      </div>
+    
+    </div>
+  </form>
+</div> 
+
+
+<div class="col-lg-12 mt-5 ">
+  <div class="card">
+   
+    <div class="card-header">
+      <div class="row">
+        <div class="col-4">
+          <h3 class="card-title" style="float: left;">Sales Report</h3>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+          <div class="ml-auto" style="float: right;">
+            <a href="{% url 'order_csv' %}" class="btn btn-primary">Order Report</a>
+            <button href="#" id="filter-btn" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Filter"><i
+                class="fa fa-filter"></i></button>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table card-table table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th><b>#</b></th>
+            <th><b>ORDER ID</b></th>
+            <th><b>CUSTOMER</b></th>
+            <th><b>CONTACT</b></th>
+            <th><b>PAYMENT MODE</b></th>
+            <th><b>AMOUNT</b></th>
+            <th><b>ORDER STATUS</b></th>
+            <th><b>PAYMENT STATUS</b></th>
+            <th><b>PLATFORM</b></th>
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ order.orderid }}</td>
+            <td>{{order.customer.username}}</td>
+            <td>{{order.customer.phone}}</td>
+            <td>{{ order.payment_mode }}</td>
+            <td>{{ order.order_total }}</td>
+            <td><label >{{order.order_status}}</label></td>
+            <td><label >{{order.payment_status}}</label></td>
+            <td>{{ order.platform }}</td>
+         
+          </tr> 
+
+           {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <ul>
+      </ul>
+    </div>
+  </div>
+ 
+  {% endblock %}

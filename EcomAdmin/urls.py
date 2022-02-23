@@ -28,7 +28,6 @@ urlpatterns=[
     path('edit_path/<path_id>',views.fneditpath,name="edit_path"),
     path('path/',views.fnpath,name="path"),
     path('disable_path/<pathdis_id>',views.fndisablepath,name="disable_path"),
-    # path('sub_path/',views.fnsubpath,name="sub_path"),
     path('set_permission/<per_id>',views.fnsetpermission,name="set_permission"),
     path('permission/',views.fnhaspermission,name="permission"),
 
@@ -104,8 +103,12 @@ urlpatterns=[
     path('change_status/',views.fnchangestatus,name="change_status"),
     path('view_orders/<order_id>',views.fnvieworders,name="view_orders"),
 
-
-
+    path('salesreport',views.fnsalesreport,name="salesreport"),
+    path('sales_csv',views.fnsalescsv,name="sales_csv"),
+    path('orderreport',views.fnorderreport,name="orderreport"),
+    path('order_csv',views.fnordercsv,name="order_csv"),
+    path('customerreport',views.fncustomerreport,name="customerreport"),
+    path('customer_csv',views.fncustomercsv,name="customer_csv"),
 
    
 ]

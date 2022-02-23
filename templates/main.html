@@ -16,6 +16,8 @@
     <!-- plugin css for this page -->
     <!-- End plugin css for this page -->
     <!-- inject:css -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+        integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <link rel="stylesheet" href="/static/css/style.css">
     <!-- endinject -->
     <link rel="shortcut icon" href="/static/images/logo/title.png" />
@@ -467,6 +469,25 @@
                                 <i class="menu-arrow"></i>
                             </a>
                             
+                        </li>
+
+                        <li class="nav-item ">
+                            <a href="" class="nav-link">
+                                <i class="mdi mdi-cube-outline menu-icon"></i>
+                                <span class="menu-title">Reports</span>
+                                <i class="menu-arrow"></i>
+                            </a>
+                            <div class="submenu" style="margin-top: -20px;">
+                                <ul>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'salesreport' %}">Sales Report</a>
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'orderreport' %}">Order Report</a>   
+                                    </li>
+                                    <li class="nav-item"><a class="nav-link" href="{% url 'customerreport' %}">Customer Report</a>   
+                                    </li>
+
+                                </ul>
+                            </div>
                         </li>
                         <!-- <li class="nav-item ">
                             <a href="#" class="nav-link">

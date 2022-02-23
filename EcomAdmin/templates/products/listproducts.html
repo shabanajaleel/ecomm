@@ -82,10 +82,10 @@
                     </div>
                 </div>
                
-                <div class="col-sm-2">
+                <div class="col-sm-2 ml-auto">
                     <div class="form-group">
-                        
-                        <button type="submit" class="btn btn-primary mt-4 " style="float:right" data-toggle="tooltip" title=""
+                        <a href="{% url 'list_product' %}" id="filter-btn" class="btn btn-primary btn-sm mt-4" data-toggle="tooltip" title="Filter"><i class="fas fa-undo-alt"></i></a>
+                        <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
                             data-original-title="Apply">Filter</button>
                     </div>
                 </div>
@@ -113,11 +113,11 @@
                         <h3 class="mt-2">Products</h3>
 
                     </div>
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-primary" style="float:right" data-toggle="modal" data-target="#deliveryInfo">
+                    <div class="col-sm-6 " >
+                        <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#deliveryInfo">
                             Bulk Stock Updation
                           </button>
-                        <a href="{% url 'add_product' %}" class="btn btn-secondary" style="float:right">Add Product</a>
+                        <a href="{% url 'add_product' %}" class="btn btn-secondary">Add Product</a>
                         
                     </div>
 

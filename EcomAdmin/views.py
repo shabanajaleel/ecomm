@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import login,logout,authenticate,get_user_model,update_session_auth_hash
-from . filters import OrderDetailsFilter
+
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 fs=FileSystemStorage(location='temp/')
@@ -723,14 +723,14 @@ def fndisablearea(request,disarea_id):
 @login_required(login_url="/admin/login/")
 def fndisablepincode(request,dispin_id):
     pincode=Pincode.objects.get(id=dispin_id)
-    pin_id=pincode.area
+    pin_id=pincode.area_id
     if pincode.status=="Active":
         pincode.status='Inactive'
         pincode.save() 
     else:
         pincode.status ="Active"
         pincode.save()
-    return redirect(fnareas)
+    return redirect('add_pincode',pin_id=pin_id)
 
 @login_required(login_url="/admin/login/")
 def fneditareas(request,editarea_id):
@@ -1079,47 +1079,44 @@ def fneditproducts(request,editprod_id):
     images=products.productimage_set.all()
     product_varients=products.product_varients_set.all()
     varients=VarientValues.objects.filter(varient_type=products.Varient_Type)
-    print(product_varients)
     form =ProductForm(request.POST or None,instance=products)
     if form.is_valid():
         form.save()
 
-
-    image=request.FILES.getlist('imagefile')
-    VarientDatas = zip(
-                    request.POST.getlist('code'),
-                    request.POST.getlist('varient_values'),
-                    request.POST.getlist('selling_price'),
-                    request.POST.getlist('display_price'),
-                    request.POST.getlist('product_stock'),
-                    )
-    data_dicts = [{
-                'Sku_Code': code,
-                'Varient_Values': varient_values,
-                'Selling_Prize':selling_price,
-                'Display_Prize':display_price,
-                'Product_stock':product_stock,
-                'status':'Active',
-                'product':id
-                }
-                for code, varient_values, selling_price, display_price, product_stock in VarientDatas]
-    print(data_dicts)
-    for data in data_dicts:
+    if request.method=="POST":
         Product_Varients.objects.filter(product=id).delete()
-        form=ProductVarientForm(data)
-        if form.is_valid():
-            varient=form.save()
-    
-    if image is not None:
-        for img in image:
-                print(img)
-                oldimage=ProductImage.objects.filter(product=editprod_id).delete()
-                ProductImage(product_id=editprod_id,Thumbnail_image=img).save()
-    messages.success(request,'product changed successfully')
-    return redirect(fnlistproducts)
 
-   
-        
+        image=request.FILES.getlist('imagefile')
+        VarientDatas = zip(
+                        request.POST.getlist('code'),
+                        request.POST.getlist('varient_values'),
+                        request.POST.getlist('selling_price'),
+                        request.POST.getlist('display_price'),
+                        request.POST.getlist('product_stock'),
+                        )
+        data_dicts = [{
+                    'Sku_Code': code,
+                    'Varient_Values': varient_values,
+                    'Selling_Prize':selling_price,
+                    'Display_Prize':display_price,
+                    'Product_stock':product_stock,
+                    'status':'Active',
+                    'product':id
+                    }
+                    for code, varient_values, selling_price, display_price, product_stock in VarientDatas]
+        print(data_dicts)
+        for data in data_dicts:
+            form=ProductVarientForm(data)
+            if form.is_valid():
+                varient=form.save()
+
+        if image is not None:
+            for img in image:
+                    print(img)
+                    oldimage=ProductImage.objects.filter(product=editprod_id).delete()
+                    ProductImage(product_id=editprod_id,Thumbnail_image=img).save()
+        messages.success(request,'product changed successfully')
+        return redirect(fnlistproducts)
 
     return render(request,'products/editproducts.html',{'form':form,'images':images,'items':product_varients,'varients':varients})
 
@@ -1194,7 +1191,113 @@ def fnbulkstock(request):
             (count,ProductId,Products,Varients,Stocks,SellingPrice) = row[1] 
             if len(Stocks) > 0:
                 Product_Varients.objects.filter(id=ProductId).update(Product_stock=int(Stocks),Selling_Prize=float(SellingPrice))
-    return redirect(fnlistproducts)        
+    return redirect(fnlistproducts)  
+
+def fnsalesreport(request):
+    orders=OrderDetails.objects.filter(order_status='Delivered',payment_status='Received')
+    context={'orders':orders}
+    if request.method=="POST":
+        customer=request.POST['customer']
+        status=request.POST['status']
+        fromdate=request.POST['fromdate']
+        todate=request.POST['todate']
+        if customer:
+            orders=orders.filter(Q(customer__username=customer))
+            context={'orders':orders}
+        if status:
+            orders=orders.filter(Q(customer__status=status))
+            context={'orders':orders}
+        if fromdate:
+            orders=orders.filter(Q(order_date__gte=fromdate))
+            context={'orders':orders}
+        if todate:
+            orders=orders.filter(Q(order_date__lte=todate))
+            context={'orders':orders}
+        
+    return render(request,'reports/salesreport.html',context) 
+
+def fnorderreport(request):
+    orders=OrderDetails.objects.all()
+    context={'orders':orders}
+    if request.method=="POST":
+        customer=request.POST['customer']
+        orderstatus=request.POST['orderstatus']
+        paymentstatus=request.POST['paystatus']
+        fromdate=request.POST['fromdate']
+        todate=request.POST['todate']
+        if customer:
+            orders=orders.filter(Q(customer__username=customer))
+            context={'orders':orders}
+        if orderstatus:
+            orders=orders.filter(Q(order_status=orderstatus))
+            context={'orders':orders}
+        if paymentstatus:
+            orders=orders.filter(Q(payment_status=paymentstatus))
+            context={'orders':orders}
+        if fromdate:
+            orders=orders.filter(Q(order_date__gte=fromdate))
+            context={'orders':orders}
+        if todate:
+            orders=orders.filter(Q(order_date__lte=todate))
+            context={'orders':orders}
+    return render(request,'reports/orderreport.html',context)   
+
+def fncustomerreport(request):
+    customers=Customer.objects.all()
+    context={'customers':customers}
+    if request.method=="POST":
+        customer=request.POST['customer']
+        status=request.POST['status']
+        if customer:
+            customers=customers.filter(Q(first_name=customer))
+            context={'customers':customers}
+        if status:
+            customers=customers.filter(Q(status=status))
+            context={'customers':customers}
+    
+    return render(request,'reports/customerreport.html',context)
+
+def fnsalescsv(request):
+    orders=OrderDetails.objects.filter(order_status='Delivered',payment_status='Received')
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="SalesReport.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['no:', 'ORDER ID', 'CUSTOMER', 'CONTACT','PAYMENT MODE','AMOUNT','ORDER STATUS','PAYMENT STATUS','PLATFORM'])
+    Order_Fields = orders.values_list('orderid','customer__username','customer__phone','payment_mode','order_total','order_status','payment_status','platform' )
+    count=0
+    for pro in Order_Fields:
+        count+=1
+        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4],pro[5],pro[6],pro[7],pro[8]])
+    return response
+
+def fnordercsv(request):
+    orders=OrderDetails.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="OrderReport.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['no:', 'ORDER ID', 'CUSTOMER', 'CONTACT','PAYMENT MODE','AMOUNT','ORDER STATUS','PAYMENT STATUS','PLATFORM'])
+    Order_Fields = orders.values_list('orderid','customer__username','customer__phone','payment_mode','order_total','order_status','payment_status','platform' )
+    count=0
+    for pro in Order_Fields:
+        count+=1
+        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4],pro[5],pro[6],pro[7],pro[8]])
+    return response
+
+def fncustomercsv(request):
+    customers=Customer.objects.all()
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="OrderReport.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['No:','CUSTOMER', 'CONTACT','JOINED AT','TOTAL ORDERS','TOTAL AMOUNT'])
+    customer_Fields = customers.values_list('first_name','phone','registered_date','orderdetails__totalcount','orderdetails__order_total' )
+    count=0
+    for pro in customer_Fields:
+        count+=1
+        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4]])
+    return response
+
+
+
         
                 
                 

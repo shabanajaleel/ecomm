@@ -167,7 +167,7 @@
                    </div>
                    <div class="form-group col-3">
                        <label for="exampleInputUsername1" class="varient_Values1">{{item.product.Varient_Type}}</label>
-                       <select name="varient_values" class="form-control form-control-sm VarientSelect"
+                       <select name="varient_values" class="form-control form-control-sm "
                        required="" id="id_Varient_Values">
                        <!-- <option value="{{items.Varient_Values.id}}" selected >{{items.Varient_Values.varient_values}}</option> -->
                        {% for i in varients %} 
@@ -222,7 +222,7 @@
 </div>
 
 <script>
-    $('#id_Varient_Type').click(function(){
+    $('#addnewrow').click(function(){
         var varient_type=$('#id_Varient_Type').val()
         console.log(varient_type)
         if (varient_type) {

@@ -83,7 +83,7 @@ $(document).ready(function(){
     order=$('#id_display_order').val()
     $.ajax({
       type:'GET',
-      url:"{% url 'varient_display_order' %}",
+      url:"{% url 'varientvalues_display_order' %}",
       data:{
         order:order
       },

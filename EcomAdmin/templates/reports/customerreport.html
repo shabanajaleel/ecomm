@@ -1,0 +1,108 @@
+{% extends 'main.html' %}
+{% block content %}
+<div class="col-lg-12">
+  <form action="" method="POST" class="card filter" >
+    {% csrf_token %}
+    <div class="card-body">
+     
+      <div class="row">
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Customer</label>
+            <input type="text" class="form-control" name="customer"  placeholder="eg: admin">
+          </div>
+        </div>
+
+        <div class="col-md-4 col-lg-2">
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-control" name="status" id="filter_role" style="height: 46px;">
+              <option selected="selected" value="">All</option>
+              <option value="1" style="text-transform:capitalize">Active</option>
+              <option value="0" style="text-transform:capitalize">Inactive</option>
+           
+            </select>
+          </div>
+
+
+        </div>
+        
+       
+        <div class="col-lg-2 col-md-4 mt-2">
+          <div class="form-group">
+              
+              <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
+                  data-original-title="Apply">Filter</button>
+          </div>
+      </div>
+    
+      </div>
+    
+    </div>
+  </form>
+</div> 
+
+
+<div class="col-lg-12 mt-5 ">
+  <div class="card">
+   
+    <div class="card-header">
+      <div class="row">
+        <div class="col-4">
+          <h3 class="card-title" style="float: left;">Customer Report</h3>
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+          <div class="ml-auto" style="float: right;">
+            <a href="{%  url 'customer_csv'%}" class="btn btn-primary">Customer Report</a>
+            <button href="#" id="filter-btn" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Filter"><i
+                class="fa fa-filter"></i></button>
+
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+    <div class="table-responsive">
+      <table class="table card-table table-vcenter text-nowrap">
+        <thead>
+          <tr>
+            <th><b>#</b></th>
+            <th><b>CUSTOMER</b></th>
+            <th><b>CUSTOMER IMAGE</b></th>
+            <th><b>CONTACT</b></th>
+            <th><b>JOINED AT</b></th>
+            <th><b>TOTAL ORDERS</b></th>
+            <th><b>TOTAL AMOUNT</b></th>
+           
+
+          </tr>
+        </thead>
+        <tbody>
+          {% for customer in customers %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ customer.first_name }}</td>
+            <td>{{customer.profile_image}}</td>
+            <td>{{customer.phone}}</td>
+            <td>{{ customer.registered_date}}</td>
+            {% for i in customer.orderdetails_set.all %}
+            <td>{{ i.totalcount}}</td>
+            <td>{{ i.order_total}}</td>
+            {% endfor %}
+         
+          </tr> 
+
+           {% endfor %}
+
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <ul>
+      </ul>
+    </div>
+  </div>
+ 
+  {% endblock %}
