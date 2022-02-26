@@ -344,99 +344,157 @@
                                 </ul>
                             </div>
                         </li> -->
-                        <li class="nav-item ">
-                            <a href="{% url 'brand' %}" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Brand</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            
-                        </li>
+        <!-- Brand -->
+
+                {%if request.user.is_superuser%}
+                <li class="nav-item ">
+                    <a href="{% url 'brand' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Brand</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
+                              
+                {% else %}
+                {% for i in request.user.role.permissions.all %}
+                {% if i.path_name == 'Catogory' %}
+                <li class="nav-item ">
+                    <a href="{% url 'brand' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Brand</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
+                {% endif%}
+                {% endfor %}
+                {% endif%}
+
+        <!-- End Brand -->
+        
+        <!-- Catogory -->               
+            {%if request.user.is_superuser%}
+            <li class="nav-item ">
+                <a href="{% url 'catogory' %}" class="nav-link">
+                    <i class="mdi mdi-cube-outline menu-icon"></i>
+                    <span class="menu-title">Catogory</span>
+                    <i class="menu-arrow"></i>
+                </a>
+                
+            </li>
+                        
+            {% else %}
+            {% for i in request.user.role.permissions.all %}
+            {% if i.path_name == 'Catogory' %}
+                            <li class="nav-item ">
+                                <a href="{% url 'catogory' %}" class="nav-link">
+                                    <i class="mdi mdi-cube-outline menu-icon"></i>
+                                    <span class="menu-title">Catogory</span>
+                                    <i class="menu-arrow"></i>
+                                </a>
+                                
+                            </li>
+            {% endif%}
+            {% endfor %}
+            {% endif%}
+        <!-- End Catogory -->
+
+        <!-- Products -->
                         {%if request.user.is_superuser%}
                         <li class="nav-item ">
-                            <a href="{% url 'catogory' %}" class="nav-link">
+                            <a href="{% url 'list_product' %}" class="nav-link">
                                 <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Catogory</span>
+                                <span class="menu-title">Product</span>
                                 <i class="menu-arrow"></i>
                             </a>
                             
                         </li>
-                      
-        {% else %}
-        {% for i in request.user.role.permissions.all %}
-        {% if i.path_name == 'Catogory' %}
-                        <li class="nav-item ">
-                            <a href="{% url 'catogory' %}" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Catogory</span>
-                                <i class="menu-arrow"></i>
-                            </a>
+
                             
-                        </li>
-        {% endif%}
-        {% endfor %}
-        {% endif%}
-
-
-        <li class="nav-item ">
-            <a href="{% url 'list_product' %}" class="nav-link">
-                <i class="mdi mdi-cube-outline menu-icon"></i>
-                <span class="menu-title">Product</span>
-                <i class="menu-arrow"></i>
-            </a>
-            
-        </li>
-
-
-
-
-
-
-
-
-                        <li class="nav-item ">
-                            <a href="#" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Varients</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="submenu" style="margin-top: -20px;">
-                                <ul>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'varienttype'%}">Varient Type</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'varientvalues'%}">Varient Values</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                {% else %}
+                {% for i in request.user.role.permissions.all %}
+                {% if i.path_name == 'Products' %}
+                    <li class="nav-item ">
+                        <a href="{% url 'list_product' %}" class="nav-link">
+                            <i class="mdi mdi-cube-outline menu-icon"></i>
+                            <span class="menu-title">Product</span>
+                            <i class="menu-arrow"></i>
+                        </a>
                         
-                        <li class="nav-item ">
-                            <a href="{% url 'offers' %}" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Offers</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            
-                        </li>
-                       
-                        <li class="nav-item ">
-                            <a href="{% url 'areas' %}" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Area</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            
-                        </li>
-                        <li class="nav-item ">
-                            <a href="{% url 'customers' %}" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Customers</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            
-                        </li>
+                    </li>
 
-        {% if request.user.is_superuser %}
+                {% endif%}
+                {% endfor %}
+                {% endif%}
+
+        <!-- End Products -->
+
+
+                <li class="nav-item ">
+                    <a href="#" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Varients</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="submenu" style="margin-top: -20px;">
+                        <ul>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'varienttype'%}">Varient Type</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'varientvalues'%}">Varient Values</a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
+                        
+                <li class="nav-item ">
+                    <a href="{% url 'offers' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Offers</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
+
+
+                       
+                <li class="nav-item ">
+                    <a href="{% url 'areas' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Area</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
+
+
+                <li class="nav-item ">
+                    <a href="{% url 'customers' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Customers</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
+
+        <!-- Orders -->
+
+                {% if request.user.is_superuser %}
+                                <li class="nav-item ">
+                                    <a href="{% url 'orders' %}" class="nav-link">
+                                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                                        <span class="menu-title">Orders</span>
+                                        <i class="menu-arrow"></i>
+                                    </a>
+                                    
+                                </li>
+                {% else %}
+                {% for i in request.user.role.permissions.all %}
+                {% if i.path_name == 'Orders' %}
+                            
+                
                         <li class="nav-item ">
                             <a href="{% url 'orders' %}" class="nav-link">
                                 <i class="mdi mdi-cube-outline menu-icon"></i>
@@ -445,50 +503,67 @@
                             </a>
                             
                         </li>
-        {% else %}
-        {% for i in request.user.role.permissions.all %}
-        {% if i.path_name == 'Orders' %}
-                      
-           
-                <li class="nav-item ">
-                    <a href="{% url 'orders' %}" class="nav-link">
-                        <i class="mdi mdi-cube-outline menu-icon"></i>
-                        <span class="menu-title">Orders</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    
-                </li>
-    {% endif%}
-    {% endfor %}
-    {% endif%}
+                {% endif%}
+                {% endfor %}
+                {% endif%}
 
+    <!-- End Orders -->
+
+    <!-- Coupon Code -->
+        {% if request.user.is_superuser %}
                         <li class="nav-item ">
-                            <a href="{% url 'feedback' %}" class="nav-link">
+                            <a href="{% url 'coupon' %}" class="nav-link">
                                 <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Feedback</span>
+                                <span class="menu-title">Coupon Code</span>
                                 <i class="menu-arrow"></i>
                             </a>
                             
                         </li>
+        {% else %}
+        {% for i in request.user.role.permissions.all %}
+        {% if i.path_name == 'Coupon' %}
+                      
+           
+                <li class="nav-item ">
+                    <a href="{% url 'coupon' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Coupon Code</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
+        {% endif%}
+        {% endfor %}
+        {% endif %}
+    <!-- End Coupon code -->
 
-                        <li class="nav-item ">
-                            <a href="" class="nav-link">
-                                <i class="mdi mdi-cube-outline menu-icon"></i>
-                                <span class="menu-title">Reports</span>
-                                <i class="menu-arrow"></i>
-                            </a>
-                            <div class="submenu" style="margin-top: -20px;">
-                                <ul>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'salesreport' %}">Sales Report</a>
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'orderreport' %}">Order Report</a>   
-                                    </li>
-                                    <li class="nav-item"><a class="nav-link" href="{% url 'customerreport' %}">Customer Report</a>   
-                                    </li>
+                <li class="nav-item ">
+                    <a href="{% url 'feedback' %}" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Feedback</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    
+                </li>
 
-                                </ul>
-                            </div>
-                        </li>
+                <li class="nav-item ">
+                    <a href="" class="nav-link">
+                        <i class="mdi mdi-cube-outline menu-icon"></i>
+                        <span class="menu-title">Reports</span>
+                        <i class="menu-arrow"></i>
+                    </a>
+                    <div class="submenu" style="margin-top: -20px;">
+                        <ul>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'salesreport' %}">Sales Report</a>
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'orderreport' %}">Order Report</a>   
+                            </li>
+                            <li class="nav-item"><a class="nav-link" href="{% url 'customerreport' %}">Customer Report</a>   
+                            </li>
+
+                        </ul>
+                    </div>
+                </li>
                         <!-- <li class="nav-item ">
                             <a href="#" class="nav-link">
                                 <i class="mdi mdi-cube-outline menu-icon"></i>

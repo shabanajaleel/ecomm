@@ -55,16 +55,17 @@
                             <label for="exampleInputUsername1">Status</label>
                             <select id="status" class="form-control form-control-sm" name="status">
                                 <option value="">Select</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
+                                <option value="Active">Active</option>
+                                <option value="Inactive">Inactive</option>
                             </select>
                         </div>
                     </div>
                    
                     <div class="col-sm-4">
-                        <div class="form-group">
+                        <div class="form-group ml-auto" style="float:right">
+                            <a href="{% url 'varienttype' %}" id="filter-btn" class="btn btn-primary btn-sm mt-4" data-toggle="tooltip" title="Filter"><i class="fas fa-undo-alt"></i></a>
                             
-                            <button type="submit" class="btn btn-primary mt-4 " style="float:right" data-toggle="tooltip" title=""
+                            <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
                                 data-original-title="Apply">Filter</button>
                         </div>
                     </div>
@@ -91,6 +92,7 @@
         </div>
         <div class="card-body">
             <table class="table table-striped">
+                {% if varienttype %}
                 <tr>
                   
                     <th>Varient Type</th>
@@ -108,7 +110,7 @@
                     <td>{{data.display_order}}</td>
                     <td>{{data.status}}</td>
                     
-                    {% if data.status == 'active' %}
+                    {% if data.status == 'Active' %}
                     <td><a href="{% url 'edit_varienttype' var_id=data.id %}" class="btn btn-secondary">Edit</a></td>
                     <td><a href="{% url 'disable_varienttype' vardis_id=data.id %}" class="btn btn-secondary">Disable</a></td>
                     {% else %}
@@ -117,6 +119,9 @@
                     {% endif %}
                 </tr>
                 {% endfor %}
+                {% else %}
+                <label for="" class="text-primary">No Matches Found</label>
+                {% endif %}
     
             </table>
     

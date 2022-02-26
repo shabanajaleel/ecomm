@@ -44,47 +44,40 @@
             <div class="row">
                 <div class="col-sm-2">
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Product Name</label>
-                        <input type="text" class="form-control form-control-sm" placeholder="search by Product name.."
-                            name="product">
+                        <label for="exampleInputUsername1">Coupon Code</label>
+                        <input type="text" class="form-control form-control-sm" placeholder="search by Coupon Code.."
+                            name="coupon">
                     </div>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-md-4 col-lg-2">
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Varient</label>
-                        <select name="varient" id="" class="form-control">
-                            {% for j in varients %}
-                            <option value="{{j.id}}">{{j.varient_name}}</option>
-                            {% endfor %}
-                        </select>
-                       
+                      <label class="form-label">Start Date</label>
+                      <input type="date" class="form-control" name="fromdate" 
+                        >
                     </div>
-                </div>
-                <div class="col-sm-2">
+                  </div>
+                  <div class="col-md-4 col-lg-2">
                     <div class="form-group">
-                        <label for="exampleInputUsername1">Catogory</label>
-                        <select name="catogory" id="" class="form-control">
-                            {% for i in catogories %}
-                            <option value="{{i.id}}">{{i.catogory_name}}</option>
-                            {% endfor %}
-                        </select>
+                      <label class="form-label">End Date</label>
+                      <input type="date" class="form-control" name="todate" 
+                     >
                     </div>
-                </div>
+                  </div>
                
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="exampleInputUsername1">Status</label>
                         <select id="status" class="form-control form-control-sm" name="status">
                             <option value="">Select</option>
-                            <option value="active">Active</option>
-                            <option value="inactive">Inactive</option>
+                            <option value="True">Active</option>
+                            <option value="False">Inactive</option>
                         </select>
                     </div>
                 </div>
                
                 <div class="col-sm-2 ml-auto">
                     <div class="form-group">
-                        <a href="{% url 'list_product' %}" id="filter-btn" class="btn btn-primary btn-sm mt-4" data-toggle="tooltip" title="Filter"><i class="fas fa-undo-alt"></i></a>
+                        <a href="{% url 'coupon' %}" id="filter-btn" class="btn btn-primary btn-sm mt-4" data-toggle="tooltip" title="Filter"><i class="fas fa-undo-alt"></i></a>
                         <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
                             data-original-title="Apply">Filter</button>
                     </div>
@@ -110,14 +103,12 @@
             <div class="card-header">
                 <div class="row">
                     <div class="col-sm-6">
-                        <h3 class="mt-2">Products</h3>
+                        <h3 class="mt-2">Coupon Code</h3>
 
                     </div>
-                    <div class="col-sm-6 ml-auto" style="float:right" >
-                        <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#deliveryInfo">
-                            Bulk Stock Updation
-                          </button>
-                        <a href="{% url 'add_product' %}" class="btn btn-secondary">Add Product</a>
+                    <div class="col-sm-6"  >
+                        
+                        <a href="{% url 'add_coupon' %}" class="btn btn-secondary" style="float:right">Add Coupon</a>
                         
                     </div>
 
@@ -130,48 +121,55 @@
             </div>
             <div class="card-body">
                 <table class="table table-striped">
-                    {% if products %}
+                    {% if coupons %}
                     <tr>
                         
-                        <th>Product Name</th>
-                        <th>Varient Type</th>
-                        <th>Catogory</th>
-                        <th>Image</th>
+                        <th>Coupon Code</th>
+                        <th>Discount</th>
+                        <th>Minimum Amount</th>
+                        <th>User_Count</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                         <th>Status</th>
                         
                         <th></th>
                         <th></th>
                     </tr>
-                    {% for product in products %}
+                    {% for coupon in coupons %}
+
                     <tr>
-                        
-                        
-                        <td>{{product.Name}}</td>
-                        <td>{{product.Varient_Type}}</td>
-                        <td>{{product.Product_Category}}</td>
-                        {% for image in product.productimage_set.all %}
-                        {% if forloop.first %}
-                        <td><img src="/media/{{image.Thumbnail_image}}" alt=""></td>
-                        {% endif %}
-                        {% endfor %}
-                        <td>{{product.status}}</td>
+                        <td>{{coupon.code}}</td>
+                        <!-- <td>{{coupon.disc_type}}</td> -->
+                        <td>{{coupon.discount}} 
+                            {% if coupon.disc_type == 'Percentage' %}
+                            %
+                            {% else %}
+                            Rs
+                            {% endif %}
+                        </td>
+                        <td>{{coupon.min_amount}}</td>
+                        <td>{{coupon.usercount}}</td>
+                        <td>{{coupon.startdate}}</td>
+                        <td>{{coupon.enddate}}</td>
+                        <td>{% if coupon.is_expired == True %}
+                            
+                            <label for="" class="badge-success">Active</label>   
+                            
+                            {% else %}
 
+                            <label for="" class="badge-warning">Inactive</label>
 
-                        {% if product.status == 'Active' %}
-                        <td><a href="{% url 'edit_product' editprod_id=product.id %}" class="btn btn-secondary">Edit</a></td>
-                        <td><a href="{% url 'view_product' productview_id=product.id %}" class="btn btn-secondary">View</a></td>
-                        <td><a href="{% url 'disable_product' productdis_id=product.id %}" class="btn btn-secondary">Disable</a></td>
-                        {% else %}
+                            {% endif %}</td>
+                        
+                        <td><a href="{% url 'edit_coupon' editcoup_id=coupon.id %}" class="btn btn-secondary">Edit</a></td>
                         <td></td>
-                        <td><a href="{% url 'disable_product' productdis_id=product.id %}" class="btn btn-secondary">Enable</a></td>
-                        {% endif %}
-
-                        
                     </tr>
+
                     {% endfor %}
                     {% else %}
                     <label for="" class="text-primary">No Matches Found</label>
                     {% endif %}
+          
         
                 </table>
         
@@ -210,24 +208,6 @@
 </div>
 
 
-<!-- <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ...
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
-      </div>
-    </div>
-  </div> -->
+
 
 {% endblock%}

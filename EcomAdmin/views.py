@@ -74,6 +74,7 @@ def fnchangepassword(request):
             form.save()
             update_session_auth_hash(request,form.user)
             messages.success(request,'password changed successfully')
+            return redirect(home)
     form=ChangePasswordForm(request.user)
     print(request.user)
     return render(request,'changepassword.html',{'form':form})
@@ -90,9 +91,10 @@ def fnrole(request):
         if role:
             roles=roles.filter(role_name=role)
             context={'roles':roles}
-        if status:
+        elif status:
             roles=roles.filter(status=status)
             context={'roles':roles}
+        
     return render(request,'admins/role/roles.html',context)
 
 @login_required(login_url="/admin/login/")
@@ -120,7 +122,7 @@ def fneditrole(request,role_id):
     if form.is_valid():
         form.save()
         messages.success(request,'Roles edited successfully')
-        return redirect(fncatogory)
+        return redirect(fnrole)
 
     return render(request,'admins/role/add_role.html',{'form':form})
 
@@ -230,14 +232,15 @@ def fnpath(request):
         path=Path.objects.all()
         context={'path':path}
         if request.method=="POST":
-            path=request.POST['path']
+            paths=request.POST['path']
             status=request.POST['status']
-            if path:
-                roles=roles.filter(role_name=path)
-                context={'roles':roles}
-            if status:
-                roles=roles.filter(status=status)
-                context={'roles':roles}
+            if paths:
+                path=path.filter(path_name=paths)
+                context={'path':path}
+            elif status:
+                path=path.filter(status=status)
+                context={'path':path}
+           
         return render(request,'admins/path/path.html',context)
 
 def fneditpath(request,path_id):
@@ -304,9 +307,10 @@ def fnbrand(request):
         if brand:
             brands=brands.filter(brand_name=brand)
             context={'brand':brands}
-        if status:
+        elif status:
             brands=brands.filter(status=status)
             context={'brand':brands}
+       
 
     return render(request,'brands/brands.html',context)
 
@@ -343,12 +347,12 @@ def fneditbrand(request,brand_id):
 @login_required(login_url="/admin/login/")
 def fndisablebrand(request,branddis_id):
     brands=Brand.objects.get(id=branddis_id)
-    if brands.status == 'active':
-        brands.status ='inactive'
+    if brands.status == 'Active':
+        brands.status ='Inactive'
         brands.save()
         return redirect(fnbrand)
     else:
-        brands.status ='active'
+        brands.status ='Active'
         brands.save()
         return redirect(fnbrand)
 
@@ -382,12 +386,14 @@ def fncatogory(request):
             if catogory:
                 catogories=catogories.filter(catogory_name=catogory)
                 context={'cat':catogories}
-            if parent:
+            elif parent:
                 catogories=catogories.filter(parent__catogory_name=parent)
                 context={'cat':catogories}
-            if status:
+            elif status:
                 catogories=catogories.filter(status=status)
                 context={'cat':catogories}
+            
+                
         return render(request,'catogory/catogories.html',context)
     
 
@@ -410,12 +416,12 @@ def fneditcatogory(request,cat_id):
 @login_required(login_url="/admin/login/")
 def fndisablecatogory(request,catdis_id):
     catogories=Catogory.objects.get(id=catdis_id)
-    if catogories.status== "active":
-        catogories.status ='inactive'
+    if catogories.status== "Active":
+        catogories.status ='Inactive'
         catogories.save()
         return redirect(fncatogory)
     else:
-        catogories.status ='active'
+        catogories.status ='Active'
         catogories.save()
         return redirect(fncatogory)
 
@@ -471,6 +477,7 @@ def fnvarienttype(request):
         if varient and status:
             varienttype=varienttype.filter(varient_name=varient,status=status)
             context={'varienttype':varienttype}
+        
 
     return render(request,'varients/varienttype/varienttype.html',context)
 
@@ -489,20 +496,20 @@ def fneditvarienttype(request,var_id):
 @login_required(login_url="/admin/login/")
 def fndisablevarienttype(request,vardis_id):
     varienttypes=VarientType.objects.get(id=vardis_id)
-    if varienttypes.status=="active":
-        varienttypes.status='inactive'
+    if varienttypes.status=="Active":
+        varienttypes.status='Inactive'
         varienttypes.save()
         varientvalues=VarientValues.objects.filter(varient_type_id=varienttypes.id)
         for i in varientvalues:
-            i.status="inactive"
+            i.status="Inactive"
             i.save()
         return redirect(fnvarienttype)
     else:
-        varienttypes.status ="active"
+        varienttypes.status ="Active"
         varienttypes.save()
         varientvalues=VarientValues.objects.filter(varient_type_id=varienttypes.id)
         for i in varientvalues:
-            i.status="active"
+            i.status="Active"
             i.save()
         return redirect(fnvarienttype)
 
@@ -538,6 +545,7 @@ def fnvarientvalues(request):
             varientvalues=varientvalues.filter(status=status)
             context={'varientvalues':varientvalues}
         
+        
     return render(request,'varients/varientvalues/varientvalues.html',context)
 
 @login_required(login_url="/admin/login/")
@@ -555,11 +563,11 @@ def fneditvarientvalues(request,varval_id):
 @login_required(login_url="/admin/login/")
 def fndisablevarientvalues(request,disval_id):
     varientvalues=VarientValues.objects.get(id=disval_id)
-    if varientvalues.status=="active":
-        varientvalues.status='inactive'
+    if varientvalues.status=="Active":
+        varientvalues.status='Inactive'
         varientvalues.save() 
     else:
-        varientvalues.status ="active"
+        varientvalues.status ="Active"
         varientvalues.save()
     return redirect(fnvarientvalues)
 
@@ -619,6 +627,7 @@ def fnoffers(request):
             if status:
                 offers=offers.filter(Q(status=status))
                 context={'offers':offers,'offerpermission':1}
+            
 
     elif 'View Offers' in fnhaspermission(request) and  'Add Offers' in fnhaspermission(request) :
         offers=Offers.objects.all()
@@ -632,6 +641,7 @@ def fnoffers(request):
             if status:
                 offers=offers.filter(Q(status=status))
                 context={'offers':offers,'offerpermission':1}
+            
     else:
         messages.error(request,'You dont have access to this page')
         return render(request,'home.html')
@@ -659,12 +669,12 @@ def fneditoffers(request,off_id):
 @login_required(login_url="/admin/login/")
 def fndisableoffers(request,offdis_id):
     offers=Offers.objects.get(id=offdis_id)
-    if offers.status== "active":
-        offers.status ='inactive'
+    if offers.status== "Active":
+        offers.status ='Inactive'
         offers.save()
         return redirect(fnoffers)
     else:
-        offers.status ='active'
+        offers.status ='Active'
         offers.save()
         return redirect(fnoffers)
 
@@ -681,6 +691,7 @@ def fnareas(request):
         if status:
             areas=areas.filter(status=status)
             context={'areas':areas}
+       
     return render(request,'area/areas.html',context)
 
 @login_required(login_url="/admin/login/")
@@ -772,13 +783,14 @@ def fncustomers(request):
         if status:
             customers=customers.filter(Q(status=status))
             context={'customers':customers}
+        
     
     return render(request,'customer/customer.html',context)
 
 @login_required(login_url="/admin/login/")
 def fndisablecustomer(request,customid):
     customer=Customer.objects.get(id=customid)
-    if customer.status== 1 :
+    if customer.status == 1 :
         customer.status=0
         customer.save()
         return redirect(fncustomers)
@@ -840,6 +852,7 @@ def fninnerbanner(request):
         if status:
             innerbanners=innerbanners.filter(Q(status=status),Q(is_intermediate=1))
             context={'innerbanners':innerbanners}
+       
 
     return render(request,'banners/intermediate/innerbanner.html',context)
 
@@ -860,6 +873,7 @@ def fnmainbanner(request):
         if status:
             innerbanners=innerbanners.filter(Q(status=status),Q(is_intermediate=0))
             context={'innerbanners':innerbanners}
+        
     return render(request,'banners/main/mainbanner.html',context)
 
 def fnmaindisplay(request):
@@ -958,6 +972,7 @@ def fnorders(request):
             if todate:
                 orders=orders.filter(Q(order_date__lte=todate))
                 context={'orders':orders}
+            
     
         return render(request,'orders/order.html',context)
 
@@ -1058,6 +1073,7 @@ def fnlistproducts(request):
         if status:
             products=products.filter(Q(status=status))
             context={'products':products,'catogories':catogories,'varients':varients}
+        
     context={'products':products,'catogories':catogories,'varients':varients}   
     
     return render(request,'products/listproducts.html',context)
@@ -1214,6 +1230,7 @@ def fnsalesreport(request):
             orders=orders.filter(Q(order_date__lte=todate))
             context={'orders':orders}
         
+        
     return render(request,'reports/salesreport.html',context) 
 
 def fnorderreport(request):
@@ -1240,6 +1257,7 @@ def fnorderreport(request):
         if todate:
             orders=orders.filter(Q(order_date__lte=todate))
             context={'orders':orders}
+        
     return render(request,'reports/orderreport.html',context)   
 
 def fncustomerreport(request):
@@ -1254,7 +1272,7 @@ def fncustomerreport(request):
         if status:
             customers=customers.filter(Q(status=status))
             context={'customers':customers}
-    
+
     return render(request,'reports/customerreport.html',context)
 
 def fnsalescsv(request):
@@ -1295,6 +1313,62 @@ def fncustomercsv(request):
         count+=1
         writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4]])
     return response
+
+def fncoupon(request):
+    coupons=CoupenCode.objects.all()
+    context={'coupons':coupons}
+    if request.method=="POST":
+        coupon=request.POST['coupon']
+        startdate=request.POST['fromdate']
+        enddate=request.POST['todate']
+        status=request.POST['status']
+        if coupon:
+            coupons=coupons.filter(code=coupon)
+            context={'coupons':coupons}
+        elif startdate:
+            coupons=coupons.filter(Q(startdate__gte=startdate))
+            context={'coupons':coupons}
+        elif enddate:
+            coupons=coupons.filter(Q(enddate__lte=enddate))
+            context={'coupons':coupons}
+        elif(status=='True'):
+            for coup in coupons:
+                if(coup.is_expired == True):
+                    print(coup.is_expired)
+                    coupons=coupons.filter(id=coup.id)
+                    context={'coupons':coupons}
+
+        elif(status=='False'):
+            for coup in coupons:
+                if(coup.is_expired == False):
+                    print(coup.is_expired)
+                    coupons=coupons.filter(id=coup.id)
+                    context={'coupons':coupons}
+        
+    return render(request,'coupon/coupons.html',context)
+
+def fnaddcoupon(request):
+    if request.method=="POST":
+        form=CouponCodeForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+            messages.success(request,'Coupon Code Added Successfully')
+            return redirect(fncoupon)
+    form=CouponCodeForm()
+    context={'form':form}
+    return render(request,'coupon/addcoupons.html',context)
+
+def fneditcoupon(request,editcoup_id):
+    coupons=CoupenCode.objects.get(id=editcoup_id)
+    form=CouponCodeForm(request.POST or None,instance=coupons)
+    if form.is_valid():
+        form.save()
+        messages.success(request,'Coupon Code Added Successfully')
+        return redirect(fncoupon)
+    return render(request,'coupon/addcoupons.html',{'form':form})
+    
+
+
 
 
 

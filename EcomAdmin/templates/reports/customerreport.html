@@ -6,14 +6,14 @@
     <div class="card-body">
      
       <div class="row">
-        <div class="col-md-4 col-lg-2">
+        <div class="col-md-4 col-lg-4">
           <div class="form-group">
             <label class="form-label">Customer</label>
             <input type="text" class="form-control" name="customer"  placeholder="eg: admin">
           </div>
         </div>
 
-        <div class="col-md-4 col-lg-2">
+        <div class="col-md-4 col-lg-4">
           <div class="form-group">
             <label class="form-label">Status</label>
             <select class="form-control" name="status" id="filter_role" style="height: 46px;">
@@ -28,12 +28,13 @@
         </div>
         
        
-        <div class="col-lg-2 col-md-4 mt-2">
-          <div class="form-group">
-              
-              <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
-                  data-original-title="Apply">Filter</button>
-          </div>
+        <div class="col-lg-4 col-md-4 mt-2">
+          <div class="form-group ml-auto" style="float:right">
+            <a href="{% url 'customerreport' %}" id="filter-btn" class="btn btn-primary btn-sm mt-4" data-toggle="tooltip" title="Filter"><i class="fas fa-undo-alt"></i></a>
+            
+            <button type="submit" class="btn btn-primary mt-4 "  data-toggle="tooltip" title=""
+                data-original-title="Apply">Filter</button>
+        </div>
       </div>
     
       </div>
@@ -55,8 +56,8 @@
         <div class="col-4">
           <div class="ml-auto" style="float: right;">
             <a href="{%  url 'customer_csv'%}" class="btn btn-primary">Customer Report</a>
-            <button href="#" id="filter-btn" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Filter"><i
-                class="fa fa-filter"></i></button>
+            <!-- <button href="#" id="filter-btn" class="btn btn-primary btn-sm" data-toggle="tooltip" title="Filter"><i
+                class="fa fa-filter"></i></button> -->
 
           </div>
         </div>
@@ -67,6 +68,7 @@
     <div class="table-responsive">
       <table class="table card-table table-vcenter text-nowrap">
         <thead>
+          {% if customers %}
           <tr>
             <th><b>#</b></th>
             <th><b>CUSTOMER</b></th>
@@ -95,6 +97,10 @@
           </tr> 
 
            {% endfor %}
+           {% else %}
+               <label for="" class="text-primary">No Matches Found</label>
+            {% endif %}
+        
 
         </tbody>
       </table>

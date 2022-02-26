@@ -7,6 +7,9 @@ from django.contrib.auth import get_user_model
 
 User=get_user_model()
 
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 
 class AdminRoleForm(forms.ModelForm):
     class Meta:
@@ -309,6 +312,20 @@ class ProductVarientForm(forms.ModelForm):
 
     def __init__(self,*args , **kwargs):
         super(ProductVarientForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})
+
+class CouponCodeForm(forms.ModelForm):
+    class Meta:
+        model=CoupenCode
+        fields="__all__"
+        widgets={
+            'startdate':DateInput(),
+            'enddate':DateInput(),
+        }
+
+    def __init__(self,*args , **kwargs):
+        super(CouponCodeForm,self).__init__(*args, **kwargs)
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
 

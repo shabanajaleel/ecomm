@@ -110,5 +110,9 @@ urlpatterns=[
     path('customerreport',views.fncustomerreport,name="customerreport"),
     path('customer_csv',views.fncustomercsv,name="customer_csv"),
 
+    path('coupon/',views.fncoupon,name="coupon"),
+    path('add_coupon/',views.fnaddcoupon,name="add_coupon"),
+    path('edit_coupon/<editcoup_id>',views.fneditcoupon,name="edit_coupon"),
+
    
 ]

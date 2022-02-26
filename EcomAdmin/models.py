@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from ckeditor.fields import RichTextField
@@ -74,8 +75,8 @@ class Brand(models.Model):
     brand_name=models.CharField(max_length=100)
     brand_image=models.ImageField(upload_to='images/brand')
     status=models.CharField(max_length=20,default='active',choices=(
-        ('active','active'),
-        ('inactive','inactive')
+        ('Active','Active'),
+        ('Inactive','Inactive')
     ))
     Created_at = models.DateTimeField(auto_now_add=True)
 
@@ -92,8 +93,8 @@ class Catogory(models.Model):
     display_order=models.IntegerField()
     parent=models.ForeignKey('Catogory',on_delete=models.CASCADE,null=True,blank=True)
     status=models.CharField(max_length=20,default='active',choices=(
-        ('active','active'),
-        ('inactive','inactive')
+        ('Active','Active'),
+        ('Inactive','Inactive')
     ))
     Created_at = models.DateTimeField(auto_now_add=True)
 
@@ -108,8 +109,8 @@ class VarientType(models.Model):
     varient_name=models.CharField(max_length=100)
     display_order=models.IntegerField()
     status=models.CharField(max_length=20,default='active',choices=(
-        ('active','active'),
-        ('inactive','inactive')
+        ('Active','Active'),
+        ('Inactive','Inactive')
     ))
     Created_at = models.DateTimeField(auto_now_add=True)
 
@@ -125,8 +126,8 @@ class VarientValues(models.Model):
     varient_type=models.ForeignKey(VarientType,on_delete=models.CASCADE)
     display_order=models.IntegerField()
     status=models.CharField(max_length=20,default='active',choices=(
-        ('active','active'),
-        ('inactive','inactive')
+        ('Active','Active'),
+        ('Inactive','Inactive')
     ))
     Created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
@@ -138,8 +139,8 @@ class Offers(models.Model):
     offer_image=models.ImageField(upload_to='images/offers')
     offer_app_image=models.ImageField(upload_to='images/offers/app_image')
     status=models.CharField(max_length=30,choices=(
-        ('active','active'),
-        ('inactive','inactive')
+        ('Active','Active'),
+        ('Inactive','Inactive')
     ))
     Created_at = models.DateTimeField(auto_now_add=True)
     class Meta:
@@ -228,7 +229,7 @@ class Customer(models.Model):
     email=models.EmailField(max_length=100)
     phone=models.BigIntegerField()
     profile_image=models.ImageField(upload_to='images/profile',null=True,blank=True)
-    registered_date=models.DateTimeField(auto_now_add=True)
+    registered_date=models.DateTimeField(auto_now_add=True,null=True)
     password=models.CharField(max_length=20)
     conf_password=models.CharField(max_length=20)
     status=models.BooleanField(default=True)
@@ -284,6 +285,30 @@ class Order(models.Model):
     count=models.CharField(max_length=50)
     order_total = models.DecimalField(max_digits=20,decimal_places=2)
     order_date=models.DateField(auto_now_add=True)
+
+class CoupenCode(models.Model):
+    code=models.CharField(max_length=100)
+    startdate=models.DateField()
+    enddate=models.DateField()
+    discount=models.IntegerField()
+    disc_type=models.CharField(max_length=20,choices=(
+        ('Amount','Amount'),
+        ('Percentage','Percentage')))
+    usercount=models.PositiveIntegerField()
+    min_amount=models.PositiveIntegerField()
+  
+    @property
+    def is_expired(self):
+        if datetime.now().date() > self.enddate or datetime.now().date() < self.startdate :
+            return False
+        return True
+
+    class Meta:
+        db_table = 'CoupenCode'
+        ordering = ['-id']
+    
+    def __str__(self):
+        return self.code
     
         
 
