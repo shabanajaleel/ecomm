@@ -65,9 +65,9 @@
 
       </div>
     </div>
-    <div class="table-responsive">
-      <table class="table card-table table-vcenter text-nowrap">
-        <thead>
+    <div class="card-body table-responsive">
+      <table class="table table-striped">
+       
           {% if customers %}
           <tr>
             <th><b>#</b></th>
@@ -80,8 +80,8 @@
            
 
           </tr>
-        </thead>
-        <tbody>
+    
+      
           {% for customer in customers %}
           <tr>
             <td>{{ forloop.counter }}</td>
@@ -102,7 +102,7 @@
             {% endif %}
         
 
-        </tbody>
+    
       </table>
     </div>
     <div class="pagination">

@@ -10,7 +10,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import login,logout,authenticate,get_user_model,update_session_auth_hash
-
+from django.core.paginator import Paginator
 from django.core.files.base import ContentFile
 from django.core.files.storage import FileSystemStorage
 fs=FileSystemStorage(location='temp/')
@@ -230,7 +230,10 @@ def fnaddpath(request):
 def fnpath(request):
     if request.user.is_superuser or PermisionsOf(request,'Path').has_permission():
         path=Path.objects.all()
-        context={'path':path}
+        paginator=Paginator(path,8)
+        page_num=request.GET.get('page')
+        newpath=paginator.get_page(page_num)
+        context={'path':newpath}
         if request.method=="POST":
             paths=request.POST['path']
             status=request.POST['status']
@@ -1285,7 +1288,7 @@ def fnsalescsv(request):
     count=0
     for pro in Order_Fields:
         count+=1
-        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4],pro[5],pro[6],pro[7],pro[8]])
+        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4],pro[5],pro[6],pro[7]])
     return response
 
 def fnordercsv(request):
@@ -1298,13 +1301,13 @@ def fnordercsv(request):
     count=0
     for pro in Order_Fields:
         count+=1
-        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4],pro[5],pro[6],pro[7],pro[8]])
+        writer.writerow([count,pro[0],pro[1],pro[2],pro[3],pro[4],pro[5],pro[6],pro[7]])
     return response
 
 def fncustomercsv(request):
     customers=Customer.objects.all()
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="OrderReport.csv"'
+    response['Content-Disposition'] = 'attachment; filename="CustomerReport.csv"'
     writer = csv.writer(response)
     writer.writerow(['No:','CUSTOMER', 'CONTACT','JOINED AT','TOTAL ORDERS','TOTAL AMOUNT'])
     customer_Fields = customers.values_list('first_name','phone','registered_date','orderdetails__totalcount','orderdetails__order_total' )

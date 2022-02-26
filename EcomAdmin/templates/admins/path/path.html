@@ -139,4 +139,27 @@
 <div class="col-lg-1"></div>
 </div>
 
+<div class="row mt-5">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+        <div class="card p-3">
+            <center>
+               
+            {% if path.has_previous %}
+            <a href="?page={{path.previous_page_number}}" class="m-3" >Previous &nbsp; &nbsp; |</a>
+            {% endif %}
+            <span class="m-3">{{path.number}} &nbsp;&nbsp;  |</span>
+            {% if path.has_next %}
+            <a href="?page={{path.next_page_number}}" class="m-3" >Next</a>
+            {% endif %}
+               
+            </center>
+            
+            
+        </div>
+    </div>
+    <div class="col-lg-1"></div>
+    
+</div>
+
 {% endblock%}
