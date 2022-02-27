@@ -133,6 +133,9 @@ class VarientValues(models.Model):
     class Meta:
         db_table='Varient Values'
         ordering = ['-Created_at']
+        
+    def __str__(self):
+        return self.varient_values
 
 class Offers(models.Model):
     offer_name=models.CharField(max_length=100)

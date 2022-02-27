@@ -189,9 +189,9 @@ class CatogoryForm(forms.ModelForm):
             raise forms.ValidationError("No image!")
         else:
             w, h = get_image_dimensions(catogory_image)
-            if w > 1200:
+            if w > 1200 or w < 1200:
                 raise forms.ValidationError("The image is %i pixel wide. It's supposed to be 1200px" % w)
-            if h > 600:
+            if h > 600 or h < 600:
                 raise forms.ValidationError("The image is %i pixel high. It's supposed to be 600px" % h)
         return catogory_image
        

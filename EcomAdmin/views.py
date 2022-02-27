@@ -369,6 +369,8 @@ def fnaddcatogory(request):
             form.save()
             messages.success(request,'Catogory added successfully')
             return redirect(fncatogory)
+        else:
+            return render(request,'catogory/addcatogory.html',{'form':form})
         form=CatogoryForm()
         context={'form':form}
         return render(request,'catogory/addcatogory.html',context)
