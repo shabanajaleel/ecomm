@@ -7,8 +7,8 @@ from EcomAdmin.models import Banners,Catogory,Brand,Product
 def fnhome(request):
     products=Product.objects.all()
     brands=Brand.objects.all()
-    catogory=Catogory.objects.filter(parent=None).order_by('display_order')
-    allcatogory=Catogory.objects.all()
+    catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+    allcatogory=Catogory.objects.filter(status="Active")
     banners=Banners.objects.all()
     context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products}
     return render(request,'usermain.html',context)
