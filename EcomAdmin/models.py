@@ -229,12 +229,12 @@ class Customer(models.Model):
     first_name=models.CharField(max_length=100)
     last_name=models.CharField(max_length=100)
     username=models.CharField(max_length=100)
-    email=models.EmailField(max_length=100)
+    email=models.EmailField(max_length=100,unique=True)
     phone=models.BigIntegerField()
     profile_image=models.ImageField(upload_to='images/profile',null=True,blank=True)
     registered_date=models.DateTimeField(auto_now_add=True,null=True)
-    password=models.CharField(max_length=20)
-    conf_password=models.CharField(max_length=20)
+    password=models.CharField(max_length=200)
+    conf_password=models.CharField(max_length=200)
     status=models.BooleanField(default=True)
 
     class Meta:

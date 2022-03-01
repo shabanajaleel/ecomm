@@ -288,12 +288,21 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model=Customer
         fields="__all__"
+        exclude=['profile_image','status']
 
 
     def __init__(self,*args , **kwargs):
         super(CustomerForm,self).__init__(*args, **kwargs)
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
+
+    def clean_conf_password(self):
+        password = self.cleaned_data.get("password")
+        conf_password = self.cleaned_data.get("conf_password")
+        if password and conf_password and password != conf_password:
+            raise forms.ValidationError("Passwords do not match")
+        return conf_password
+
 
 class ProductForm(forms.ModelForm):
     class Meta:

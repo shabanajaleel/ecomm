@@ -1,4 +1,5 @@
 from django.db import models
+from EcomAdmin.models import Product
 
 
 # Create your models here.
@@ -11,3 +12,5 @@ class Feedback(models.Model):
 
     def __str__(self):
         return self.name
+
+
