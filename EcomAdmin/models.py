@@ -236,6 +236,7 @@ class Customer(models.Model):
     password=models.CharField(max_length=200)
     conf_password=models.CharField(max_length=200)
     status=models.BooleanField(default=True)
+    otp=models.CharField(max_length=10,default=False)
 
     class Meta:
         db_table='Customer'

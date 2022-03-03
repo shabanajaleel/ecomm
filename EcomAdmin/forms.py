@@ -126,29 +126,29 @@ class BannerForm(forms.ModelForm):
         fields="__all__"
     
 
-    def clean_banner_image(self):
-       banner_image = self.cleaned_data.get("banner_image")
-       if not banner_image:
-           raise forms.ValidationError("No image!")
-       else:
-           w, h = get_image_dimensions(banner_image)
-           if w > 235:
-               raise forms.ValidationError("The Banner image is %i pixel wide. It's supposed to be 235px" % w)
-           if h > 145:
-               raise forms.ValidationError("The Banner Imageis %i pixel high. It's supposed to be 145px" % h)
-       return banner_image
+    # def clean_banner_image(self):
+    #    banner_image = self.cleaned_data.get("banner_image")
+    #    if not banner_image:
+    #        raise forms.ValidationError("No image!")
+    #    else:
+    #        w, h = get_image_dimensions(banner_image)
+    #        if w > 235:
+    #            raise forms.ValidationError("The Banner image is %i pixel wide. It's supposed to be 235px" % w)
+    #        if h > 145:
+    #            raise forms.ValidationError("The Banner Imageis %i pixel high. It's supposed to be 145px" % h)
+    #    return banner_image
 
-    def clean_banner_app_image(self):
-        banner_app_image = self.cleaned_data.get("banner_app_image")
-        if not banner_app_image:
-            raise forms.ValidationError("No image!")
-        else:
-            w, h = get_image_dimensions(banner_app_image)
-            if w > 900:
-                raise forms.ValidationError("The Banner App image is %i pixel wide. It's supposed to be 900px" % w)
-            if h > 450:
-                raise forms.ValidationError("The Banner App Imageis %i pixel high. It's supposed to be 450px" % h)
-        return banner_app_image
+    # def clean_banner_app_image(self):
+    #     banner_app_image = self.cleaned_data.get("banner_app_image")
+    #     if not banner_app_image:
+    #         raise forms.ValidationError("No image!")
+    #     else:
+    #         w, h = get_image_dimensions(banner_app_image)
+    #         if w > 900:
+    #             raise forms.ValidationError("The Banner App image is %i pixel wide. It's supposed to be 900px" % w)
+    #         if h > 450:
+    #             raise forms.ValidationError("The Banner App Imageis %i pixel high. It's supposed to be 450px" % h)
+    #     return banner_app_image
 
     def __init__(self, *args, **kwargs):
         super(BannerForm, self).__init__(*args, **kwargs)
@@ -183,17 +183,17 @@ class CatogoryForm(forms.ModelForm):
         model=Catogory
         fields="__all__"
 
-    def clean_catogory_image(self):
-        catogory_image = self.cleaned_data.get("catogory_image")
-        if not catogory_image:
-            raise forms.ValidationError("No image!")
-        else:
-            w, h = get_image_dimensions(catogory_image)
-            if w > 1200 or w < 1200:
-                raise forms.ValidationError("The image is %i pixel wide. It's supposed to be 1200px" % w)
-            if h > 600 or h < 600:
-                raise forms.ValidationError("The image is %i pixel high. It's supposed to be 600px" % h)
-        return catogory_image
+    # def clean_catogory_image(self):
+    #     catogory_image = self.cleaned_data.get("catogory_image")
+    #     if not catogory_image:
+    #         raise forms.ValidationError("No image!")
+    #     else:
+    #         w, h = get_image_dimensions(catogory_image)
+    #         if w > 1200 or w < 1200:
+    #             raise forms.ValidationError("The image is %i pixel wide. It's supposed to be 1200px" % w)
+    #         if h > 600 or h < 600:
+    #             raise forms.ValidationError("The image is %i pixel high. It's supposed to be 600px" % h)
+    #     return catogory_image
        
 
 

@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'EcomAdmin',
     'EcomUser',
     'ckeditor',
+    'twilio',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -145,10 +146,12 @@ EMAIL_HOST='smtp.gmail.com'
 
 EMAIL_PORT='587'
 
-EMAIL_HOST_USER='shabanac722@gmail.com'
+EMAIL_HOST_USER='evatazein@gmail.com'
 
-EMAIL_HOST_PASSWORD='shabana123'
+EMAIL_HOST_PASSWORD='evatazein123'
 
 EMAIL_USE_TLS=True
 
 EMAIL_USE_SSL=False
+
+

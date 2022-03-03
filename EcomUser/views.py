@@ -1,3 +1,4 @@
+from random import randint
 from django.shortcuts import render,redirect
 from . forms import *
 from django.contrib.auth.hashers import make_password,check_password
@@ -6,7 +7,18 @@ from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer
 from EcomAdmin.forms import CustomerForm
 from django.contrib.auth.decorators import user_passes_test
 
+# twilio
+import os
+from twilio.rest import Client
 
+account_sid = 'AC8016c06bf0b958a0c7f9a16b98e5ed97'
+auth_token = 'd125a7e2d8023f81ba66faeff926ee03'
+client = Client(account_sid, auth_token)
+
+def fnindex(request):
+    return render(request,'newindex.html')
+
+  
 def login_required_custom(request):
     if 'customer' in request.session:
         return True
@@ -21,9 +33,9 @@ def fnhome(request):
     if 'customer' in request.session:
         currentUser=request.session['customer']
         context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products,'currentUser':currentUser}
-        return render(request,'index.html',context)
+        return render(request,'newindex.html',context)
     context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products}
-    return render(request,'index.html',context)
+    return render(request,'newindex.html',context)
 
 def fnregister(request):
     if request.method=="POST":
@@ -64,8 +76,49 @@ def fnchangeuserpassword(request):
 
     return render(request,'changeUserPassword.html',{'currentUser':currentUser})
 
+def fnotplogin(request):
+    if request.method=="POST":
+        username=request.POST['username']
+        email=request.POST['email']
+        customer=Customer.objects.get(username=username,email=email)
+        if customer:
+            mobile=customer.phone
+            print(mobile)
+            otp=str(randint(1000,9999))
+            customer.otp=otp
+            customer.save()
+            request.session['customer']=customer.id
+            message = client.messages \
+                    .create(
+                        body="Your OTP for login is " + otp,
+                        from_='+19107765960',
+                        to='+91' + str(mobile)
+                    )
+            if message:
+                return render(request,'enter_otp.html')
+            else:
+                return render(request,'user_otp_login.html')
 
 
+        else:
+            messages.error(request,'invalid username or email')
+            return redirect(fnotplogin)
+
+    return render(request,'user_otp_login.html')
+
+def fnenterotp(request):
+    if request.method=="POST":
+        otp=request.POST['otp']
+        if request.session.has_key('customer'):
+            user=request.session['customer']
+            customer=Customer.objects.get(id=user)
+            if otp==customer.otp :
+                return redirect(fnhome)
+            else:
+                messages.error(request,'incorrect otp')
+                return render(request,'enter_otp.html')
+
+    return render(request,'enter_otp.html')
 
 def fnlogin(request):
     if request.method=='POST':

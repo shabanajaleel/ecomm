@@ -363,14 +363,15 @@ def fndisablebrand(request,branddis_id):
 @login_required(login_url="/admin/login/")
 def fnaddcatogory(request):
     if request.user.is_superuser or PermisionsOf(request,'Add Catogory').has_permission():
-    
-        form=CatogoryForm(request.POST,request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request,'Catogory added successfully')
-            return redirect(fncatogory)
-        else:
-            return render(request,'catogory/addcatogory.html',{'form':form})
+        if request.method=="POST":
+            form=CatogoryForm(request.POST,request.FILES )
+            if form.is_valid():
+                form.save()
+                messages.success(request,'Catogory added successfully')
+                return redirect(fncatogory)
+            else:
+                return render(request,'catogory/addcatogory.html',{'form':form})
+
         form=CatogoryForm()
         context={'form':form}
         return render(request,'catogory/addcatogory.html',context)
