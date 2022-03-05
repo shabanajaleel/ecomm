@@ -4,8 +4,12 @@ from . models import *
 from django.core.files.images import get_image_dimensions
 from django.contrib.auth.forms import UserCreationForm,UserChangeForm,PasswordChangeForm
 from django.contrib.auth import get_user_model
+import re
 
 User=get_user_model()
+
+PHONE_REGEX="^(\+91[\-\s]?)?[0]?(91)?[789]\d{9}$"
+
 
 class DateInput(forms.DateInput):
     input_type = 'date'
@@ -288,13 +292,21 @@ class CustomerForm(forms.ModelForm):
     class Meta:
         model=Customer
         fields="__all__"
-        exclude=['profile_image','status']
+        exclude=['profile_image','status','otp']
 
 
     def __init__(self,*args , **kwargs):
         super(CustomerForm,self).__init__(*args, **kwargs)
+        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
+        self.fields['username'].widget.attrs['placeholder'] = 'UserName'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email'
+        self.fields['phone'].widget.attrs['placeholder'] = 'Mobile No'
+        self.fields['password'].widget.attrs['placeholder'] = 'Password'
+        self.fields['conf_password'].widget.attrs['placeholder'] = 'Confirm Password'
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
+            self.fields[name].label = ""
 
     def clean_conf_password(self):
         password = self.cleaned_data.get("password")
@@ -302,6 +314,12 @@ class CustomerForm(forms.ModelForm):
         if password and conf_password and password != conf_password:
             raise forms.ValidationError("Passwords do not match")
         return conf_password
+
+    def clean_phone(self):
+        phone = self.cleaned_data.get('phone')
+        if phone and not re.match(PHONE_REGEX,str(phone))  :
+            raise forms.ValidationError('Invalid phone Number')
+        return phone
 
 
 class ProductForm(forms.ModelForm):
@@ -324,6 +342,13 @@ class ProductVarientForm(forms.ModelForm):
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
 
+    # def clean_Selling_Prize(self):
+    #     Selling_Prize=self.cleaned_data.get("Selling_Prize")
+    #     Display_Prize=self.cleaned_data.get("Display_Prize")
+    #     if Selling_Prize > Display_Prize:
+    #         raise forms.ValidationError("Selling price greater than display price")
+    #     return Selling_Prize
+    
 class CouponCodeForm(forms.ModelForm):
     class Meta:
         model=CoupenCode

@@ -1,104 +1,58 @@
-{% extends 'usermain.html' %}
-{% load static %}
+{% extends 'user_main.html' %}
 {% block content %}
 
 
-<section id="form"><!--form-->
+<div class="login_sec">
     <div class="container">
-        <div class="row">
-            <div class="col-sm-4 col-sm-offset-1">
-                <div class="login-form"><!--login form-->
-                    <h2>Login to your account</h2>
-                    <form action="" method="POST">
-                        {% csrf_token %}
-                        <input type="text" name="username" placeholder="Username" />
-                        <input type="email" name="email" placeholder="Email Address" />
-                        <input type="password" name="password" placeholder="Password"/>
-
-                        <span>
-                            <input type="checkbox" class="checkbox"> 
-                            Keep me signed in
-                        </span>
-                        <div class="row">
-                            <div class="col-sm-4"><button type="submit" class="btn btn-default">Login</button></div>
-                            <!-- <div class="col-sm-4"><a type="submit" class="btn btn-default">Login with OTP</a></div> -->
-                            <div class="col-sm-6 "><a href="{% url 'login_otp' %}" style="background: #FE980F;
-                                border: medium none;
-                                border-radius: 0;
-                                color: #FFFFFF;
-                                display: block;
-                                font-family: 'Roboto', sans-serif;
-                                padding: 6px 25px;
-                                margin-top:23px;
-                                margin-left: 10px;"
-                                class="btn btn-default">Login with OTP</a></div>
-                        </div>
-                        
-                        
-                    </form>
-                </div><!--/login form-->
-            </div>
-            <div class="col-sm-1">
-                <h2 class="or">OR</h2>
-            </div>
-            <div class="col-sm-4">
-                <div class="signup-form"><!--sign up form-->
-                    <h2>New User Signup!</h2>
-<!-- messages -->
-                    {% if messages %}
-                    <div class="row" >
-                      <div class="col-lg-1"></div>
-                      <div class="col-lg-10">
-                          {% for message in messages %} 
-                                  <div class="col-lg-12 " style="opacity:4">
-                                      <div class="alert alert-dark alert-dismissible fade show" role="alert">
-                                         {{message}} 
-                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>
-                                  </div>
-                      {% endfor %}
-                      </div>
-                      <div class="col-lg-1"></div>
-                      </div>
-                      {% endif %}
-
-                      {% if form.errors %}
-                      <div class="col-lg-12 ">
-                          <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                              {% for field in form %}
-                              <!-- For each error in field -->
-                                  {% for error  in field.errors %}
-                                      <!-- Output error text message only -->
-                                          <div>{{error}}</div>
-                                      {% endfor %}
-                                {% endfor %}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                      </div>
-                    {% endif %}
-    <!-- end of messages -->
-
-
-                    <form action="/register/" method="POST">
-                        {% csrf_token %}
-                        {{form.as_p}}
-                        <!-- <input type="text" placeholder="FirstName"/>
-                        <input type="text" placeholder="LastName"/>
-                        <input type="text" placeholder="Username"/>
-                        <input type="text" placeholder="Mobile"/>
-                        <input type="email" placeholder="Email Address"/>
-                        <input type="password" placeholder="Password"/>
-                        <input type="password" placeholder="Confirm Password"/> -->
-                        <button type="submit" class="btn btn-default">Signup</button>
-                    </form>
-                </div><!--/sign up form-->
-            </div>
-        </div>
+    <ol class="breadcrumb">
+    <li><a href="https://wazaitoon.com/index">Home</a></li>
+    <li class="active">Login</li>
+    </ol>
+    <div class="col-md-4 col-sm-6 col-xs-10 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 log " id="login">
+    <h2>Login</h2>
+    <p style="color:red;"></p>
+    <p style="color:red;"></p>
+    <p style="color:red;"></p>
+    <p style="color:green;"></p>
+    <p>Welcome, please enter the following to continue.</p>
+    <form action="" method="POST" >
+        {% csrf_token %}
+    <h5>Phone:</h5>
+    <input type="text" class="numberonly" placeholder="Enter your phone" name="mobile" required="" maxlength="10" minlength="10" value="">
+    <!-- <input type="hidden" id="is_guest_login" value="0" placeholder="" name="is_guest_login">
+    <input type="hidden" id="product_id" value="" placeholder="" name="product_id">
+    <input type="hidden" id="cart_product_id" value="" placeholder="" name="cart_product_id"> -->
+    <h5>Password: <a href="#" id="forgotbtn" class="lost-pass" onclick="myForgot()" style="color: #B05B25;
+        float: right;
+        font-size: 11px;">Forgot Password?</a></h5>
+    <input type="password" value="" name="password" required="" placeholder="******">
+    <div class="col-md-12 col-sm-6 ">
+    <input type="submit" value="Login">
+    <a class="acount-btn" href="{% url 'user_register' %}">Create an Account</a>
     </div>
-</section><!--/form-->
+    
+    
+    
+    </form>
+    <h5 style="color: red;"></h5>
+    </div>
+    
+    <div class="col-md-4 col-sm-6 col-xs-10 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 log " id="forgot" style="display: none;">
+    
+    <h2>Forgot Password</h2>
+    <p></p>
+    
+    <p style="color:red;"></p>
+    <form action="https://wazaitoon.com/Account/forgot" method="post" style="">
+    <h5>Phone Number</h5>
+    <input type="text" value="" placeholder="Enter your phone number" name="phone">
+    <input type="submit" value="Submit">
+    
+    </form>
+    
+    </div>
+    <div class="clearfix"></div>
+    </div>
+    </div>
 
-{% endblock %}
+    {% endblock %}

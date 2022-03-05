@@ -230,7 +230,7 @@ class Customer(models.Model):
     last_name=models.CharField(max_length=100)
     username=models.CharField(max_length=100)
     email=models.EmailField(max_length=100,unique=True)
-    phone=models.BigIntegerField()
+    phone=models.BigIntegerField(unique=True)
     profile_image=models.ImageField(upload_to='images/profile',null=True,blank=True)
     registered_date=models.DateTimeField(auto_now_add=True,null=True)
     password=models.CharField(max_length=200)

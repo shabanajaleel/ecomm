@@ -1,0 +1,104 @@
+{% extends 'usermain.html' %}
+{% load static %}
+{% block content %}
+
+
+<section id="form"><!--form-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <div class="login-form"><!--login form-->
+                    <h2>Login to your account</h2>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="username" placeholder="Username" />
+                        <input type="email" name="email" placeholder="Email Address" />
+                        <input type="password" name="password" placeholder="Password"/>
+
+                        <span>
+                            <input type="checkbox" class="checkbox"> 
+                            Keep me signed in
+                        </span>
+                        <div class="row">
+                            <div class="col-sm-4"><button type="submit" class="btn btn-default">Login</button></div>
+                            <!-- <div class="col-sm-4"><a type="submit" class="btn btn-default">Login with OTP</a></div> -->
+                            <div class="col-sm-6 "><a href="{% url 'login_otp' %}" style="background: #FE980F;
+                                border: medium none;
+                                border-radius: 0;
+                                color: #FFFFFF;
+                                display: block;
+                                font-family: 'Roboto', sans-serif;
+                                padding: 6px 25px;
+                                margin-top:23px;
+                                margin-left: 10px;"
+                                class="btn btn-default">Login with OTP</a></div>
+                        </div>
+                        
+                        
+                    </form>
+                </div><!--/login form-->
+            </div>
+            <div class="col-sm-1">
+                <h2 class="or">OR</h2>
+            </div>
+            <div class="col-sm-4">
+                <div class="signup-form"><!--sign up form-->
+                    <h2>New User Signup!</h2>
+<!-- messages -->
+                    {% if messages %}
+                    <div class="row" >
+                      <div class="col-lg-1"></div>
+                      <div class="col-lg-10">
+                          {% for message in messages %} 
+                                  <div class="col-lg-12 " style="opacity:4">
+                                      <div class="alert alert-dark alert-dismissible fade show" role="alert">
+                                         {{message}} 
+                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                  </div>
+                      {% endfor %}
+                      </div>
+                      <div class="col-lg-1"></div>
+                      </div>
+                      {% endif %}
+
+                      {% if form.errors %}
+                      <div class="col-lg-12 ">
+                          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                              {% for field in form %}
+                              <!-- For each error in field -->
+                                  {% for error  in field.errors %}
+                                      <!-- Output error text message only -->
+                                          <div>{{error}}</div>
+                                      {% endfor %}
+                                {% endfor %}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                  <span aria-hidden="true">&times;</span>
+                                </button>
+                              </div>
+                      </div>
+                    {% endif %}
+    <!-- end of messages -->
+
+
+                    <form action="/register/" method="POST">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <!-- <input type="text" placeholder="FirstName"/>
+                        <input type="text" placeholder="LastName"/>
+                        <input type="text" placeholder="Username"/>
+                        <input type="text" placeholder="Mobile"/>
+                        <input type="email" placeholder="Email Address"/>
+                        <input type="password" placeholder="Password"/>
+                        <input type="password" placeholder="Confirm Password"/> -->
+                        <button type="submit" class="btn btn-default">Signup</button>
+                    </form>
+                </div><!--/sign up form-->
+            </div>
+        </div>
+    </div>
+</section><!--/form-->
+
+{% endblock %}

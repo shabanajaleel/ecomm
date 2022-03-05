@@ -1,0 +1,234 @@
+{% extends 'user_main.html' %}
+{% block content %}
+<style type="text/css">
+
+	.registration {
+
+	text-align:center;
+
+}
+
+.registration_left {
+
+	float:none; display: inline-block;
+
+/*	width: 45.33333%;
+
+	margin-left: 9.333%;
+
+*/}
+
+
+
+
+
+.button{
+
+	 font-size: 0.75em;
+
+    display: inline-block;
+
+    background: #fff;
+
+    border:1px solid #444;
+
+    padding: 0.8em 2em;
+
+    color: #fff;
+
+    text-decoration: none;
+
+
+
+    font-weight: 500;
+
+    transition: 0.5s ease;
+
+    -moz-transition: 0.5s ease;
+
+    -o-transition: 0.5s ease;
+
+    -webkit-transition: 0.5s ease;
+
+}.button:hover {
+
+	background:#444; color:#fff;
+
+	text-decoration: none;
+
+}
+
+.button a:hover {
+
+	color:#fff !important;
+
+	text-decoration: none;
+
+}
+
+   
+
+</style>
+
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="https://wazaitoon.com/index">Home</a></li>
+        <li class="active">Account</li>
+    </ol>
+    <div class="registration">
+        <div class="registration_left">
+            <h2>New user? <span> Create an account </span></h2>
+            <script>
+    
+                    (function() {
+    
+                
+    
+                    // Create input element for testing
+    
+                    var inputs = document.createElement('input');
+    
+                    
+    
+                    // Create the supports object
+    
+                    var supports = {};
+    
+                    
+    
+                    supports.autofocus   = 'autofocus' in inputs;
+    
+                    supports.required    = 'required' in inputs;
+    
+                    supports.placeholder = 'placeholder' in inputs;
+    
+                
+    
+                    // Fallback for autofocus attribute
+    
+                    if(!supports.autofocus) {
+    
+                        
+    
+                    }
+    
+                    
+    
+                    // Fallback for required attribute
+    
+                    if(!supports.required) {
+    
+                        
+    
+                    }
+    
+                
+    
+                    // Fallback for placeholder attribute
+    
+                    if(!supports.placeholder) {
+    
+                        
+    
+                    }
+    
+                    
+    
+                    // Change text inside send button on submit
+    
+                    var send = document.getElementById('register-submit');
+    
+                    if(send) {
+    
+                        send.onclick = function () {
+    
+                            this.innerHTML = '...Sending';
+    
+                        }
+    
+                    }
+    
+                
+    
+                 })();
+    
+                 </script>
+
+<div class="registration_form">
+
+    <form id="registration_form" name="add" action="" method="POST" >
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <div class="col-lg-12 ">
+            <div class="alert alert-warning alert-dismissible " role="alert">
+                {% for field in form %}
+                <!-- For each error in field -->
+                    {% for error  in field.errors %}
+                        <!-- Output error text message only -->
+                            <div ">{{error}}</div>
+                        {% endfor %}
+                  {% endfor %}
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+        </div>
+      {% endif %}
+    <center><span id="phone_status" style="color: red;"></span></center>
+    <center><span id="id_email" style="color: red;"></span></center>
+    <div>
+        <label>
+        {{form.first_name}}
+        </label>
+    </div>
+    <div>
+        <label>
+            {{form.last_name}}
+        </label>
+    </div>
+    <div>
+        <label>
+            {{form.username}}
+        </label>
+    </div>
+    <div>
+        <label>
+            {{form.email}}
+        </label>
+    </div>
+    <div>
+        <label>
+            {{form.phone}}
+        </label>
+    </div>
+    <div>
+        <label>
+            {{form.password}}
+        </label>
+    </div>
+    <div>
+        <label>
+            {{form.conf_password}}
+        </label>
+    </div>
+    <div style="color:red;" id="password-strength-status"></div>
+    <div>
+    <input type="submit" value="create an account" id="register-submit">
+    </div>
+    <div>
+    <button id="" class="button okay-btn" style="margin-bottom: 10px; font-size: 12px;"><a href="{% url 'login_user' %}" style="color: #008f4c "> Already have an account? Login</a></button>
+    </div>
+    </form>
+    
+    </div>
+    </div>
+
+    <div class="clearfix"></div>
+</div>
+</div>
+
+{% endblock %}
+    
+    
+    

@@ -81,11 +81,13 @@
 $(document).ready(function(){
   $('#id_display_order').on('change',function(){
     order=$('#id_display_order').val()
+    varient_type=$('#id_varient_type').val()
     $.ajax({
       type:'GET',
       url:"{% url 'varientvalues_display_order' %}",
       data:{
-        order:order
+        order:order,
+        varient_type:varient_type
       },
       success:function(response){
         console.log(response.data)

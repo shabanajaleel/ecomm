@@ -1,9 +1,10 @@
 from random import randint
+from django.http import JsonResponse
 from django.shortcuts import render,redirect
 from . forms import *
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import messages
-from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer
+from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients
 from EcomAdmin.forms import CustomerForm
 from django.contrib.auth.decorators import user_passes_test
 
@@ -12,7 +13,7 @@ import os
 from twilio.rest import Client
 
 account_sid = 'AC8016c06bf0b958a0c7f9a16b98e5ed97'
-auth_token = 'd125a7e2d8023f81ba66faeff926ee03'
+auth_token = '668f700d07851e03ded3080e68509adc'
 client = Client(account_sid, auth_token)
 
 def fnindex(request):
@@ -34,10 +35,13 @@ def fnhome(request):
         currentUser=request.session['customer']
         context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products,'currentUser':currentUser}
         return render(request,'newindex.html',context)
+
     context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products}
     return render(request,'newindex.html',context)
 
 def fnregister(request):
+    form=CustomerForm()
+    context={'form':form}
     if request.method=="POST":
         form=CustomerForm(request.POST or None)
         if form.is_valid():
@@ -52,7 +56,8 @@ def fnregister(request):
             messages.success(request,'Successfully signed in..')
             return redirect(fnlogin)
         else:
-            return render(request,'user_login.html',{'form':form})
+            return render(request,'user_register.html',{'form':form})
+    return render(request,'user_register.html',context)
 
 def fnchangeuserpassword(request):
     currentUser=request.session['customer']
@@ -75,6 +80,44 @@ def fnchangeuserpassword(request):
             return render(request,'changeUserPassword.html',{'currentUser':currentUser})
 
     return render(request,'changeUserPassword.html',{'currentUser':currentUser})
+
+def fnlogin(request):
+    if request.method=="POST":
+        mobile=request.POST['mobile']
+        password=request.POST['password']
+        customer=Customer.objects.get(phone=mobile)
+        enc_password=check_password(password,customer.password)
+        if enc_password==True:
+            mobile=customer.phone
+            print(mobile)
+            otp=str(randint(1000,9999))
+            customer.otp=otp
+            customer.save()
+            request.session['customer']=customer.id
+            message = client.messages \
+                    .create(
+                        body="Your OTP for login is " + otp,
+                        from_='+19107765960',
+                        to='+91' + str(mobile)
+                    )
+            if message:
+                return render(request,'enter_otp.html')
+            else:
+                return render(request,'userlogin.html')
+
+
+        else:
+            messages.error(request,'Wrong Password...')
+            return redirect(fnlogin)
+
+    catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+    allcatogory=Catogory.objects.filter(status="Active")
+    form=CustomerForm()
+    context={'form':form,'catogory': catogory,'allcat':allcatogory}
+    return render(request,'user_login.html',context)
+    
+
+
 
 def fnotplogin(request):
     if request.method=="POST":
@@ -120,20 +163,25 @@ def fnenterotp(request):
 
     return render(request,'enter_otp.html')
 
-def fnlogin(request):
-    if request.method=='POST':
-        username=request.POST['username']
-        email=request.POST['email']
-        password=request.POST['password']
-        customer=Customer.objects.get(username=username,email=email)
-        enc_password=check_password(password,customer.password)
-        if enc_password==True:
-            request.session['customer']=customer.id
-            print(request.session['customer'])
-            return redirect(fnhome)
-    form=CustomerForm()
-    context={'form':form}
-    return render(request,'user_login.html',context)
+# login using password
+
+
+# def fnlogin(request):
+#     if request.method=='POST':
+#         username=request.POST['username']
+#         email=request.POST['email']
+#         password=request.POST['password']
+#         customer=Customer.objects.get(username=username,email=email)
+#         enc_password=check_password(password,customer.password)
+#         if enc_password==True:
+#             request.session['customer']=customer.id
+#             print(request.session['customer'])
+#             return redirect(fnhome)
+#     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+#     allcatogory=Catogory.objects.filter(status="Active")
+#     form=CustomerForm()
+#     context={'form':form,'catogory': catogory,'allcat':allcatogory}
+#     return render(request,'user_login.html',context)
 
 def fnlogout(request):
     print(request.session['customer'])
@@ -163,3 +211,50 @@ def fnfeedback(request):
     form=FeedbackForm()
     context={'form':form}
     return render(request,'feedback/contact.html',context)
+
+def fnproductlist(request,cat_id):
+    if cat_id == '0':
+        products=Product.objects.all()
+        catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+        allcatogory=Catogory.objects.filter(status="Active")
+        banners=Banners.objects.all()
+
+        if 'customer' in request.session:
+            currentUser=request.session['customer']
+            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser}
+            return render(request,'product_list.html',context)
+        context={'catogory': catogory,'allcat':allcatogory,'products':products}
+        return render(request,'product_list.html',context)
+    else:
+        products=Product.objects.filter(Product_Category=cat_id)
+        catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+        allcatogory=Catogory.objects.filter(status="Active")
+        banners=Banners.objects.all()
+
+        if 'customer' in request.session:
+            currentUser=request.session['customer']
+            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser}
+            return render(request,'product_list.html',context)
+        context={'catogory': catogory,'allcat':allcatogory,'products':products}
+        return render(request,'product_list.html',context)
+
+
+def fnproductitem(request,prod_id):
+    product=Product_Varients.objects.get(id=prod_id)
+    context={'product':product}
+    return render(request,'product.html',context)
+
+def fnnewproduct(request):
+    if request.method=="POST":
+        id=request.POST['prod_id']
+        varient=request.POST['varient_id']
+        product=Product_Varients.objects.get(Varient_Values=varient)
+        print(product.Varient_Values)
+        data = {
+            'Varient_Values':product.Varient_Values.varient_values,
+            'id':product.id,
+            'Selling_Prize':product.Selling_Prize,
+            }
+        
+        print(data)
+        return JsonResponse(data)

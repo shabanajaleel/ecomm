@@ -588,7 +588,8 @@ def fnvarientdisplay(request):
 
 def fnvarientvaluesdisplay(request):
     data = request.GET.get('order')
-    if int(data) in [i.display_order for i in VarientValues.objects.all()]:
+    varient=request.GET.get('varient_type')
+    if int(data) in [i.display_order for i in VarientValues.objects.filter(varient_type=varient)]:
         data = True
     else:
         data = False
@@ -1133,10 +1134,11 @@ def fneditproducts(request,editprod_id):
                 varient=form.save()
 
         if image is not None:
+            oldimage=ProductImage.objects.filter(product=editprod_id).delete()
             for img in image:
                     print(img)
-                    oldimage=ProductImage.objects.filter(product=editprod_id).delete()
                     ProductImage(product_id=editprod_id,Thumbnail_image=img).save()
+
         messages.success(request,'product changed successfully')
         return redirect(fnlistproducts)
 
