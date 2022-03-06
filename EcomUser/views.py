@@ -7,13 +7,15 @@ from django.contrib import messages
 from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients
 from EcomAdmin.forms import CustomerForm
 from django.contrib.auth.decorators import user_passes_test
+from . decorator import login_cart
+from django.db.models import Sum
 
 # twilio
 import os
 from twilio.rest import Client
 
-account_sid = 'AC8016c06bf0b958a0c7f9a16b98e5ed97'
-auth_token = '668f700d07851e03ded3080e68509adc'
+account_sid = os.environ['TWILIO_ACCOUNT_SID']
+auth_token = os.environ['TWILIO_AUTH_TOKEN']
 client = Client(account_sid, auth_token)
 
 def fnindex(request):
@@ -30,13 +32,16 @@ def fnhome(request):
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
     allcatogory=Catogory.objects.filter(status="Active")
     banners=Banners.objects.all()
+    cart_count=0
+    
 
     if 'customer' in request.session:
         currentUser=request.session['customer']
-        context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products,'currentUser':currentUser}
+        cart_count=Cart.objects.filter(customer=currentUser).count()
+        context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products,'currentUser':currentUser,'cart_count':cart_count}
         return render(request,'newindex.html',context)
 
-    context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products}
+    context={'banner':banners,'catogory': catogory,'brand':brands,'allcat':allcatogory,'products':products,'cart_count':cart_count}
     return render(request,'newindex.html',context)
 
 def fnregister(request):
@@ -191,9 +196,50 @@ def fnlogout(request):
 
 def fnwishlist(request):
     return render(request,'wishlists.html')
+    
 
 def fncart(request):
-    return render(request,'cart.html')
+    if request.method=="POST":
+        currentUser=request.session['customer']
+
+        qty=request.POST['qty']
+# quantity must be checked later
+        varient=request.POST['varient_id']
+        product=Product_Varients.objects.get(id=varient)
+        check_cart=Cart.objects.filter(customer=currentUser,product=varient).exists()
+        if check_cart== True:
+            message="Product is already in cart"
+            return JsonResponse({'message':message})
+        else:
+            cart=Cart(customer_id=currentUser,product_id=varient,quantity=qty,selling_price=product.Selling_Prize,display_price=product.Display_Prize)
+            cart.save()
+            count=Cart.objects.filter(customer_id=currentUser).count()
+            print(count)
+            return JsonResponse({'count':count})
+
+def fnviewcart(request):
+    currentUser=request.session['customer']
+    user_cart=Cart.objects.filter(customer=currentUser)
+    # user_cart_total=Cart.objects.filter(customer_id=currentUser).aggregate(Sum('get_total'))
+    user_cart_total_qty=Cart.objects.filter(customer_id=currentUser).aggregate(Sum('quantity'))
+    # print(user_cart_total)
+    print(user_cart_total_qty)
+    context={'cart': user_cart }
+    
+    return render(request,'user_cart.html',context)
+
+def fnremovecartitem(request,cart_item_id):
+    print(cart_item_id)
+    cart_item=Cart.objects.get(product=cart_item_id)
+    print(cart_item)
+
+    if cart_item:
+        new_cart=cart_item.delete()
+        return redirect(fnviewcart)
+    
+
+        
+    
 
 
 def fnfeedback(request):
@@ -248,7 +294,7 @@ def fnnewproduct(request):
     if request.method=="POST":
         id=request.POST['prod_id']
         varient=request.POST['varient_id']
-        product=Product_Varients.objects.get(Varient_Values=varient)
+        product=Product_Varients.objects.get(product=id,Varient_Values_id=varient)
         print(product.Varient_Values)
         data = {
             'Varient_Values':product.Varient_Values.varient_values,

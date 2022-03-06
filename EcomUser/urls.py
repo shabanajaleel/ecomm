@@ -17,7 +17,9 @@ urlpatterns=[
     path('new_product',views.fnnewproduct,name="new_product"),
 
     path('wishlist/',views.fnwishlist,name="wishlist"),
-    path('addtocart/',views.fncart,name="addtocart"),
+    path('add_to_cart/',views.fncart,name="add_to_cart"),
+    path('view_cart/',views.fnviewcart,name="view_cart"),
+    path('remove_cart_item/<cart_item_id>',views.fnremovecartitem,name="remove_cart_item"),
 
 
     path('contact_us/',views.fnfeedback,name="contact_us")

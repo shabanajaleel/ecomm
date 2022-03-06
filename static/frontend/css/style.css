@@ -7628,9 +7628,9 @@ border:none; outline:none; border-radius: 40px;
     color: #fff;
 
 
+    margin-left: 10px;
 
-
-    padding: 10px;
+    padding: 6px;
 
     font-size: 14px;
 
@@ -8138,5 +8138,36 @@ border:none; outline:none; border-radius: 40px;
 
     font-size: 15px;
 
+}
+
+
+.text-danger{
+  color: #f31410 !important;
+}
+a.disabled:hover {
+cursor: not-allowed;
+}
+.divLoad
+{
+  
+    display : block;
+    position : fixed;
+   
+    background-image : url('https://wazaitoon.com/assets/images/pre-loader.gif');
+    
+    opacity : 0.4;
+    background-repeat : no-repeat;
+    background-position : center;
+    left : 0;
+    bottom : 0;
+    right : 0;
+    top : 0;
+}
+
+.primal-ftr{
+
+  width: 14px;
+  display: inline-block;
+    margin: -3px 2px 0 0;
 }
 

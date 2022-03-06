@@ -2,110 +2,7 @@
 {% load static %}
 {% block content %}
 <style>
-    	#content-wrapper{
-			display: flex;
-			flex-wrap: wrap;
-			justify-content: center;
-			align-items: center;
-            margin-right: 50px;
-		}
-
-		.column{
-			width: 600px;
-			padding: 10px;
-
-		}
-
-		#featured{
-			max-width: 500px;
-			max-height: 600px;
-			object-fit: cover;
-			cursor: pointer;
-			border: 2px solid #dfd9d9;
-           
-
-		}
-
-
-
-		.thumbnail{
-			object-fit: cover;
-			max-width: 180px;
-			max-height: 100px;
-			cursor: pointer;
-			opacity: 0.5;
-			margin: 5px;
-			border: 2px solid black;
-
-		}
-
-		.thumbnail:hover{
-			opacity:1;
-		}
-
-		.active{
-			opacity: 1;
-		}
-
-		#slide-wrapper{
-			max-width: 500px;
-			display: flex;
-			min-height: 100px;
-			align-items: center;
-		}
-
-		#slider{
-			width: 440px;
-			display: flex;
-			flex-wrap: nowrap;
-			overflow-x: hidden;
-
-		}
-
-		#slider{
-			width: 440px;
-			display: flex;
-			flex-wrap: nowrap;
-			overflow-x: auto;
-
-
-		}
-
-		#slider::-webkit-scrollbar {
-		    width: 8px;
-
-		}
-
-		#slider::-webkit-scrollbar-track {
-		    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-
-		}
-		 
-		#slider::-webkit-scrollbar-thumb {
-		  background-color: #dede2e;
-		  outline: 1px solid slategrey;
-		   border-radius: 100px;
-
-		}
-
-		#slider::-webkit-scrollbar-thumb:hover{
-		    background-color: #18b5ce;
-		}
-
-		
-
-		.arrow{
-			width: 30px;
-			height: 30px;
-			cursor: pointer;
-			transition: .3s;
-		}
-
-		.arrow:hover{
-			opacity: .5;
-			width: 35px;
-			height: 35px;
-		}
+    
 .varients_list {
     width: 68%;
     max-width: 270px;
@@ -131,117 +28,40 @@
 <div class="col-md-12 det">
 
 <div class="single_left" >
-
-    <!-- <div id="content-wrapper" >
-		<div class="column">
+    <div class="flexslider">
+        <ul class="slides">
             {% for img in product.product.productimage_set.all %}
-            {% if forloop.first %}
-			<img id="featured" src="/media/{{img.Thumbnail_image}}" class="img-responsive">
-           {% endif %}
-            {% endfor %}
+        <li data-thumb="/media/{{img.Thumbnail_image}}"><img id="{{img.id}}" title="Normal Zoom" src='/media/{{img.Thumbnail_image}}' data-zoom-image="/media/{{img.Thumbnail_image}}" /></li>
+        <script>
+                                           
+        
+        
+                                            $('#{{img.id}}').elevateZoom({
+                                                zoomType: "lens",
+                                                // lensShape : "round",
+                                                lensSize: 200,
+                                                cursor: "crosshair",
+                                                zoomWindowFadeIn: 500,
+                                                zoomWindowFadeOut: 750,
+                                                //              zoomWindowWidth:400,
+                                                //              zoomWindowWidth:400,
+                                                zoomLevel: 1,
+                                                //              // zoomWindowWidth:"400",
+        
+                                                scrollZoom: false
+        
+                                            });
+        </script>
+                                        
+        {% endfor %}
+        
+        </ul>
+        </div>
 
-			<div id="slide-wrapper">
-				
-
-				<div id="slider">
-                    
-
-                    {% for img in product.product.productimage_set.all %}
-					<img class="thumbnail" src="/media/{{img.Thumbnail_image}}">
-
-                    {% endfor %}
-			
-				</div>
-
-				
-			</div>
-           
-		</div>
-        </div> -->
-
- <div class="flexslider border" >
-    
-<ul class="slides">
-    {% for img in product.product.productimage_set.all %}
-    <center><li data-thumb="/media/{{img.Thumbnail_image}}"><img id="{{img.id}}" title="Normal Zoom" src='/media/{{img.Thumbnail_image}}' data-zoom-image="/media/{{img.Thumbnail_image}}" class="p-4" /></li></center>
-    <script>
-
-        $('#{{img.id}}').elevateZoom({
-            zoomType: "lens",
-            // lensShape : "round",
-            lensSize: 200,
-            cursor: "crosshair",
-            zoomWindowFadeIn: 500,
-            zoomWindowFadeOut: 750,
-            //              zoomWindowWidth:400,
-            //              zoomWindowWidth:400,
-            zoomLevel: 1,
-            //              // zoomWindowWidth:"400",
-
-            scrollZoom: false
-
-        });
-    </script>
-    
-    {% endfor%}
-  
    
 
-
-</ul>
-
-</div> 
 </div>
-<!-- <div class="flexslider">
 
-    <div class="flex-viewport" style="overflow: hidden; position: relative;"><ul class="slides" style="width: 800%; transition-duration: 0s; transform: translate3d(-255px, 0px, 0px);"><li data-thumb="https://wazaitoon.com/uploads/product/pro50400771.jpg" class="clone" aria-hidden="true" style="width: 255px; float: left; display: block;"><img id="zoom_1_clone" title="Normal Zoom" src="https://wazaitoon.com/uploads/product/pro50400771.jpg" data-zoom-image="https://wazaitoon.com/uploads/product/pro50400771.jpg" draggable="false"></li>
-    
-    <li data-thumb="https://wazaitoon.com/uploads/product/pro50400212.jpg" style="width: 255px; float: left; display: block;" class="flex-active-slide"><img id="zoom_0" title="Normal Zoom" src="https://wazaitoon.com/uploads/product/pro50400212.jpg" data-zoom-image="https://wazaitoon.com/uploads/product/pro50400212.jpg" draggable="false"></li>
-    <script>
-                                        var key = '0';
-    
-    
-                                        $('#zoom_' + key).elevateZoom({
-                                            zoomType: "lens",
-                                            // lensShape : "round",
-                                            lensSize: 200,
-                                            cursor: "crosshair",
-                                            zoomWindowFadeIn: 500,
-                                            zoomWindowFadeOut: 750,
-                                            //              zoomWindowWidth:400,
-                                            //              zoomWindowWidth:400,
-                                            zoomLevel: 1,
-                                            //              // zoomWindowWidth:"400",
-    
-                                            scrollZoom: false
-    
-                                        });
-                                    </script>
-    
-    <li data-thumb="https://wazaitoon.com/uploads/product/pro50400771.jpg" style="width: 255px; float: left; display: block;" class=""><img id="zoom_1" title="Normal Zoom" src="https://wazaitoon.com/uploads/product/pro50400771.jpg" data-zoom-image="https://wazaitoon.com/uploads/product/pro50400771.jpg" draggable="false"></li>
-    <script>
-                                        var key = '1';
-    
-    
-                                        $('#zoom_' + key).elevateZoom({
-                                            zoomType: "lens",
-                                            // lensShape : "round",
-                                            lensSize: 200,
-                                            cursor: "crosshair",
-                                            zoomWindowFadeIn: 500,
-                                            zoomWindowFadeOut: 750,
-                                            //              zoomWindowWidth:400,
-                                            //              zoomWindowWidth:400,
-                                            zoomLevel: 1,
-                                            //              // zoomWindowWidth:"400",
-    
-                                            scrollZoom: false
-    
-                                        });
-                                    </script>
-    <li data-thumb="https://wazaitoon.com/uploads/product/pro50400212.jpg" style="width: 255px; float: left; display: block;" class="clone" aria-hidden="true"><img id="zoom_0_clone" title="Normal Zoom" src="https://wazaitoon.com/uploads/product/pro50400212.jpg" data-zoom-image="https://wazaitoon.com/uploads/product/pro50400212.jpg" draggable="false"></li></ul></div><ol class="flex-control-nav flex-control-thumbs"><li><img src="https://wazaitoon.com/uploads/product/pro50400212.jpg" class="flex-active" draggable="false"></li><li><img src="https://wazaitoon.com/uploads/product/pro50400771.jpg" draggable="false" class=""></li></ol><ul class="flex-direction-nav"><li class="flex-nav-prev"><a class="flex-prev" href="#">Previous</a></li><li class="flex-nav-next"><a class="flex-next" href="#">Next</a></li></ul></div>
-
-</div> -->
 
 
 <div class="single-right">
@@ -306,12 +126,12 @@
 <div class="row mt-10">
 <div class="col-md-12">
 <a href="#" class="nos-minus-new-btn" style="">
-<span class="fas fa-minus nos-minus-btn sh-stle-minus" style=" ">
+<span class="fas fa-minus nos-minus-btn sh-stle-minus" >
 </span>
 </a>
-<input class="nos_1" type="text" placeholder="1" id="qty" maxlength="4" readonly="readonly" value="1" style="">
-<a href="#" class="nos-plus-new-btn" style="">
-<span class="fas fa-plus nos-plus-btn sh-plus-btn-icn93" style=" "></span>
+<input class="nos_1" type="text" placeholder="1" id="qty" maxlength="4" readonly="readonly" value="1" >
+<a href="#" class="nos-plus-new-btn" >
+<span class="fas fa-plus nos-plus-btn sh-plus-btn-icn93" ></span>
 </a>
 </div>
 <div class="clearfix"></div>
@@ -320,7 +140,7 @@
 <div class="row " style="margin-top:30px">
 
 <div class="col-xs-6 col-sm-6 col-md-4">
-<a href="#" data-id="1356" data-price="125" data-oprice="125" data-offer="" class="add-cart cart-check add-to-cart-btn" title="Add to Cart" style="margin-top: -1.7em;      border: 1px solid #008f4c;     background: #008f4c;     "><i class="fas fa-shopping-cart">&nbsp;</i>Add to Cart</a>
+<a href="" data-id="1356" data-price="125" data-oprice="125" data-offer="" class="add-cart cart-check add-to-cart-btn" title="Add to Cart" style="margin-top: -1.7em;      border: 1px solid #008f4c;     background: #008f4c;     "><i class="fas fa-shopping-cart">&nbsp;</i>Add to Cart</a>
 
 </div>
 <div class="col-xs-6 col-sm-6 col-md-4">
@@ -366,7 +186,7 @@
                     padding: 10px;
                     margin: 10px;
                 }
-            </style>
+</style>
 </div>
 
 </div>
@@ -1332,119 +1152,11 @@
 
     })
 </script>
-<script type="text/javascript">
-    $(document).on('click', '.add-to-cart-btn', function(e) {
-        $(".add-to-cart-btn").prop('disabled', true);
 
-
-        e.preventDefault();
-
-        var elem = $(this);
-
-        var htm = elem.html();
-
-        var product = $(this).attr('data-id');
-
-        var price = $(this).attr('data-price');
-
-        var offer = $(this).attr('data-offer');
-
-        var offer_price = $(this).attr('data-oprice');
-
-        var is_cart = 1;
-
-        var nos = $("#qty").val();
-
-        // alert(nos);
-
-
-
-
-        if (offer_price) offer_price = offer_price;
-
-        else offer_price = price;
-        $('.divLoad').show();
-
-        $.ajax({
-
-            type: 'post',
-
-            url: 'https://wazaitoon.com/Cart/add_to_cart',
-
-            data: {
-                product: product,
-                price: price,
-                offer_price: offer_price,
-                offer: offer,
-                nos: nos
-            },
-
-            success: function(out) {
-                $('.divLoad').hide();
-
-                var out = JSON.parse(out);
-
-                if (out.status == 1) {
-
-                    var cart = '<i class="fas fa-shopping-cart"></i> My Cart ( <span>' + out.cart.cart_nos + '</span> )<i class="fas fa-rupee-sign"></i> <span>' + out.cart.cart_total + '</span>';
-
-                    $('.vendor-cart .checkout-btn').html(cart);
-
-                    elem.html('<i class="fa fa-check"></i>');
-
-                    elem.addClass('add_to_cart_suc');
-
-                    elem.parent().find('.add-to-cart-btn').after('<p class="e-msg" style="display: inline-block;">' + out.data + '</p>');
-
-                    setTimeout(function() {
-
-                        elem.html(htm);
-
-                        elem.removeClass('add_to_cart_suc');
-
-                        elem.parent().find('.e-msg').remove();
-                        location.reload();
-
-                    }, 2000);
-
-
-
-                } else if (out.status == 2) {
-
-                    // window.location.href="https://wazaitoon.com/Account";
-                    window.location.href = base_url + 'Account?add_to_cart=' + is_cart + '&product=' + product;
-
-
-                } else {
-
-                    elem.parent().find('.add-to-cart-btn').after('<p class="e-msg" >' + out.data + '</p>');
-
-                    elem.html('<i class="fa fa-times"></i>');
-
-                    elem.addClass('add_to_cart_err');
-
-                    setTimeout(function() {
-
-                        elem.html(htm);
-
-                        elem.removeClass('add_to_cart_err');
-
-                        elem.parent().find('.e-msg').remove();
-
-                    }, 2000);
-
-                }
-
-            }
-
-        })
-
-    })
-</script>
 <script type="text/javascript">
 
 
-
+// change the item details based on quantity
 $('.customize_item').change(function(){
         var varient_type=$(this).val();
         id="{{product.product_id}}" 
@@ -1480,45 +1192,6 @@ $('.customize_item').change(function(){
     })
 
 
-
-
-
-
-    // $(".customize_item").change(function() {
-       
-    //     var p_id = 1100;
-    //     var varient=
-    //     var size = $('.v').find(':selected').data('id');
-    //     var weight = $('.v2').find(':selected').data('id');
-    //     var color = $('.v3').find(':selected').data('id');
-    //     var nos = $('.v4').find(':selected').data('id');
-
-
-
-    //     $.ajax({
-    //         type: 'post',
-    //         url: 'https://wazaitoon.com/product/customize_product',
-    //         // url:base_url+'customize_product_details',
-    //         data: {
-    //             p_id: p_id,
-    //             size: size,
-    //             weight: weight,
-    //             color: color,
-    //             nos: nos
-    //         },
-    //         success: function(out) {
-    //             var out = JSON.parse(out);
-    //             if (out.status == 1) {
-
-
-
-    //                 window.location.href = base_url + 'product/productdetails/' + out.data.product_variant_id;
-    //             } else {
-    //                 alert(out.data);
-    //             }
-    //         }
-    //     })
-    // })
 </script>
 
 <script type="text/javascript">
@@ -1611,7 +1284,8 @@ $('.customize_item').change(function(){
         var nos = parseInt($.trim($(elem).val()));
         $(elem).val(nos + 1);
     })
-</script><style type="text/css">
+</script>
+<style type="text/css">
 	.primal-ftr{
 
 	    width: 14px;
@@ -1740,6 +1414,7 @@ $('.customize_item').change(function(){
 });
 
 </script>
+<!-- cart list count -->
 <script type="text/javascript">
 
 	
@@ -1857,6 +1532,7 @@ $('.customize_item').change(function(){
 }
 
 </script>
+<!--end -->
 <script type="text/javascript">
 
 $(document).on('click','#track',function(e){
@@ -1872,8 +1548,6 @@ $(document).on('click','#track',function(e){
 	$('#myModal_track').modal('show');
 
 })
-
-
 
 $(document).on('click','#track-btn',function(e){
 
@@ -2023,5 +1697,51 @@ else{
       document.getElementById('slider').scrollLeft -= 180;
     })
 
+</script>
+
+
+<script>
+     $('.add-to-cart-btn').click(function(){
+        var varient_type='{{product.id}}';
+        var qty=$('#qty').val()
+         
+        
+        console.log(varient_type)
+        console.log(qty)
+        if (varient_type) {
+            $.ajaxSetup({
+            headers:{"X-CSRFToken":'{{csrf_token}}'}
+        })
+            $.ajax({
+                type:'POST',
+                url:'{% url "add_to_cart" %}',
+                data:{
+                    'varient_id':varient_type,
+                    'qty':qty,
+                },
+                success: (data) => {
+                    if (data.message){
+                        
+                        alert(data.message)
+
+                    }
+                    else{
+                        count_html="("+ data.count+ ")"
+
+                        $('.cart_total').html(count_html)
+
+                    }
+                    
+             
+                    }
+            })
+        }
+    })
+
+
+
+
+
+    
 </script>
 {% endblock %}
