@@ -137,18 +137,7 @@ class VarientValues(models.Model):
     def __str__(self):
         return self.varient_values
 
-class Offers(models.Model):
-    offer_name=models.CharField(max_length=100)
-    offer_image=models.ImageField(upload_to='images/offers')
-    offer_app_image=models.ImageField(upload_to='images/offers/app_image')
-    status=models.CharField(max_length=30,choices=(
-        ('Active','Active'),
-        ('Inactive','Inactive')
-    ))
-    Created_at = models.DateTimeField(auto_now_add=True)
-    class Meta:
-        db_table='Offers'
-        ordering = ['-Created_at']
+
 
 class Area(models.Model):
     area_name=models.CharField(max_length=100)
@@ -181,6 +170,9 @@ class Pincode(models.Model):
     def __str__(self):
         return self.area_name
 
+
+
+
 class Product(models.Model):
     Name = models.CharField(max_length=250)
     Description = RichTextField(null=True)
@@ -204,7 +196,7 @@ class Product_Varients(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     Sku_Code=models.CharField(max_length=100)
     Varient_Values = models.ForeignKey(VarientValues,on_delete=models.CASCADE)
-    Product_Offers = models.ManyToManyField(Offers,blank=True)
+    
     Selling_Prize = models.DecimalField(max_digits=12,decimal_places=2)
     Display_Prize = models.DecimalField(max_digits=12,decimal_places=2)
     Product_stock = models.PositiveIntegerField(blank=True,null=True)
@@ -223,6 +215,21 @@ class ProductImage(models.Model):
     product=models.ForeignKey(Product,on_delete=models.CASCADE)
     Thumbnail_image = models.ImageField(upload_to='Products',null=True)
     
+class Offers(models.Model):
+    offer_name=models.CharField(max_length=100)
+    offer_image=models.ImageField(upload_to='images/offers')
+    offer_app_image=models.ImageField(upload_to='images/offers/app_image')
+    Product_Offers = models.ManyToManyField(Product_Varients,blank=True)
+    start_date=models.DateField()
+    end_date=models.DateField()
+    status=models.CharField(max_length=30,choices=(
+        ('Active','Active'),
+        ('Inactive','Inactive')
+    ))
+    Created_at = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        db_table='Offers'
+        ordering = ['-Created_at']
 
 
 class Customer(models.Model):
@@ -247,16 +254,16 @@ class Customer(models.Model):
         return self.username
 
 class Address(models.Model):
-    username = models.ForeignKey(Customer,on_delete=models.CASCADE)
-    pin = models.ForeignKey(Pincode,on_delete=models.CASCADE)
+    username = models.ForeignKey(Customer,on_delete=models.CASCADE,blank=True,null=True)
+    pin = models.CharField(max_length=100)
     locality = models.CharField(max_length=100)
     address = models.TextField(max_length=200)
     state = models.CharField(max_length=20,choices=(('kerala','kerala'),))
     district = models.CharField(max_length=20,choices=(('kozhikode','kozhikode'),))
-    landmark = models.TextField(max_length=200,null=True,blank=True)
+    landmark = models.CharField(max_length=200,null=True,blank=True)
     country = models.CharField(max_length=20,choices=(('india','india'),))
     default = models.BooleanField(default=False)
-    address_type = models.CharField(max_length=20,choices=(('home','home'),('work','work'),))
+    address_type = models.CharField(max_length=20,null=True,blank=True)
 
     class Meta:
         db_table = 'address'

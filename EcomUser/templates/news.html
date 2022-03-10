@@ -1,4 +1,17 @@
-body {
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Wazaitoon Online Store</title>
+<link href="https://wazaitoon.com/assets/front/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="https://wazaitoon.com/assets/front/css/custom-layout.css?version=5" rel="stylesheet" type="text/css" media="all" />
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<style>
+  body {
 
     background: #fff;
 
@@ -3325,7 +3338,7 @@ body {
 
     display: inline-block;
 
-    width: 19%;
+    width: 20%;
 
     float: left;
 
@@ -3454,13 +3467,13 @@ body {
 
   }
 
-  button.add-cart:hover {
+  a.add-cart:hover {
 
     background: #575757;
 
   }
 
-  button.add-cart {
+  a.add-cart {
 
     text-decoration: none;
 
@@ -4496,7 +4509,7 @@ body {
 
     }
 
-    button.add-cart {
+    a.add-cart {
 
       font-size: .85em;
 
@@ -4887,7 +4900,7 @@ body {
 
       display: inline-block;
 
-      width: 20%;
+      width: 25%;
 
       float: left;
 
@@ -4902,7 +4915,7 @@ body {
 
     }
 
-    button.add-cart {
+    a.add-cart {
 
       font-size: .6em;
 
@@ -5198,7 +5211,7 @@ body {
 
     }
 
-    button.add-cart {
+    a.add-cart {
 
       font-size: .6em;
 
@@ -6375,7 +6388,7 @@ border-bottom-right-radius: 3px;
 
   .dropdown:hover .dropdown-menu {
     display: block;
-    margin-top: 0; 
+    margin-top: 0; // remove the gap so it doesn't close
   }
 
 
@@ -6628,7 +6641,17 @@ border-bottom-right-radius: 3px;
 
   /* alert*/
 
- 
+  .alert {
+
+    padding: 15px;
+
+    margin-bottom: 20px;
+
+    border: 1px solid transparent;
+
+    border-radius: 4px;
+
+  }
 
   .alert h4 {
 
@@ -6720,7 +6743,18 @@ border-bottom-right-radius: 3px;
 
   }
 
- 
+  .alert-warning {
+
+    color: red;
+
+    /*    background-color: #00a0dc45;
+
+*/
+    background-color: #00a0dc1f;
+
+    border-color: #00a0dc38;
+
+  }
 
   .alert-warning hr {
 
@@ -7161,7 +7195,7 @@ border:none; outline:none; border-radius: 40px;
 
   .top_link_margi {
     margin-left: 50px;
-    margin-bottom: -25px;
+    margin-bottom: :-25px;
     margin-top: 0px;
   }
 
@@ -7621,16 +7655,16 @@ border:none; outline:none; border-radius: 40px;
     line-height: 2.4em !important;
   }
 
-  button.add-cart {
+  a.add-cart {
 
     text-decoration: none;
 
     color: #fff;
 
 
-    margin-left: 10px;
 
-    padding: 6px;
+
+    padding: 10px;
 
     font-size: 14px;
 
@@ -7659,9 +7693,24 @@ border:none; outline:none; border-radius: 40px;
     padding: 10px 10px;
     font-size: 14px;
   }
+</style> <link rel="stylesheet" href="https://wazaitoon.com/assets/front/css/flexslider.css" type="text/css" media="screen" />
 
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
 
-
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="" />
+<meta property="og:description" content="" />
+<meta property="og:url" content="https://wazaitoon.com/all_products" />
+<meta property="og:site_name" content="Beru" />
+<meta property="og:image" itemprop="image" content="https://wazaitoon.com/assets/images/logo-og.pnghttps://wazaitoon.com/" />
+<meta property="og:image:width" content="100" />
+<meta property="og:image:height" content="100" />
+<meta property="og:type" content="website" />
+<link rel="icon" type="image/png" sizes="16x16" href="https://wazaitoon.com/assets/images/favicon.png">
+<style>
 .memenu
 {margin:0;padding:0;width:100%;list-style:none;display:inline-block;position:relative;font-family:Calibri,Arial;font-size:15px}
 .memenu li{display:inline-block;text-align:left;}
@@ -7826,7 +7875,8 @@ ul.memenu.skyblue {text-align: center;}
 	.flexslider .slides > li { height: 252px!important; }
 }
 
-
+</style>
+<style>
 .row1{
 	outline: none;
 	margin: 0px 0 0px 0px;
@@ -8059,94 +8109,573 @@ border:none; outline:none; border-radius: 40px;
     margin-bottom: 0;
 }*/
 
-.owl-carousel .owl-nav {
-    position: absolute;
-    top: 0px;
-    right: 0;
-    z-index: 2001;
-}
-
-.owl-carousel .owl-nav div {
-    width: 50px;
-    height: 30px;
-    line-height: 30px;
-    margin: 0;
-    padding: 0;
-    color: #fff;
-    text-align: center;
-    font-size: 1.4em;
-    background: #f00;
-    border: 1px solid #fff;
-}
-
-.owl-carousel img {
-    width: auto !important;
-    min-height: auto;
-}
-
-.owl-carousel .owl-dots {
-    margin: 10px 0 0;
-    text-align: center;
-}
-
-.owl-carousel .owl-dots .owl-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    margin: 0 2px;
-    padding: 0;
-    background: #898989;
-    border-radius: 10px;
-    -webkit-border-radius: 10px;
-    -moz-border-radius: 10px;
-}
-
-.owl-carousel .owl-dots .owl-dot.active {
-    background: #3a502c;
-}
-
-.divLoad {
-
-    display: block;
-    position: fixed;
-
-    background-image: url('https://wazaitoon.com/assets/images/pre-loader.gif');
-
-    opacity: 0.4;
-    background-repeat: no-repeat;
-    background-position: center;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    top: 0;
-}
-
-.head {
-    font-size: 2.6em;
-    color: #008f4c;
-    font-family: 'JosefinSans-Bold';
-}
-.pid {
-
-    margin-top: 10px;
-
-    font-size: 15px;
-
-}
-
-.prdt-cost ul li {
-
-    font-size: 15px;
-
-}
 
 
-.text-danger{
-  color: #f31410 !important;
-}
-a.disabled:hover {
-cursor: not-allowed;
-}
+</style>
+<link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/jquery-ui.css">
+
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+<link href="https://wazaitoon.com/assets/css/jquery-confirm.min.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owl.carousel.min.css">
+<link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owl.theme.default.min.css">
+<link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owlcarousel/animate.css">
+
+<script src="https://wazaitoon.com/assets/front/js/jquery.min.js"></script>
+
+<script type="text/javascript" src="https://wazaitoon.com/assets/front/js/jquery-ui.min.js"></script>
+
+<script type="text/javascript" src="https://wazaitoon.com/assets/vendor/bootstrap/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://wazaitoon.com/assets/front/js/jquery.flexisel.js"></script>
+
+<script defer src="https://wazaitoon.com/assets/front/js/jquery.flexslider.js"></script>
+<script src="https://wazaitoon.com/assets/front/js/owl.carousel.min.js"></script>
+<script>
+		// Can also be used with $(document).ready()
+
+		var base_url = 'https://wazaitoon.com/';
+		var alldatetimeslot;
+		$(window).load(function() {
+
+			$('.flexslider').flexslider({
+				animation: "slide",
+				controlNav: "thumbnails"
+			});
+		});
+	</script>
+<script type="text/javascript">
+		$(document).on('click', '#date_link_click', function(e) {
+			e.preventDefault();
+
+
+			$('#datetimetable').html('');
+
+			console.log(alldatetimeslot);
+
+			// $.each(alldatetimeslot, function(index, data) {
+
+			// 			$.each(data, function(ins, data1) {
+			//                  $('#datetimetable').append('<li>'+data1+'---- </li>');
+			//                  			if(ins=='time'){
+			// 				$.each(data, function(ins2, data2) {
+
+
+			//                   		});
+			// 			}
+			//              });
+			//  });
+			$('#datetimetable').append('<table style="border:1px solid;">');
+			$.each(alldatetimeslot, function(index, data) {
+				$('#datetimetable').append('<tr>');
+				$.each(data, function(ins, data1) {
+
+
+					if (ins == 'next_delivery_date') {
+
+						var date = data1;
+						data1 = date.split("-").reverse().join("-");
+					}
+
+					$('#datetimetable').append('<td> ' + data1 + '&nbsp;&nbsp;</td>');
+
+				});
+				$('#datetimetable').append('</tr>');
+			});
+			$('#datetimetable').append('</table>');
+			$('#myModal_date').modal('show');
+
+
+
+
+		});
+	</script>
+<script>
+		$(window).load(function() {
+
+
+			$.ajax({
+
+				type: 'post',
+
+				// 			data:{pincode:pincode},
+
+				url: 'https://wazaitoon.com/Checkout/get_avaiable_timeslot_show',
+
+				success: function(out) {
+
+					var out = JSON.parse(out);
+
+					var msg;
+
+					var count = out.msg;
+
+					alldatetimeslot = out.date;
+
+					//console.log(alldatetimeslot);
+
+					// if(out.status == 1){
+
+
+					$('#show_date_time_slot').html('DELIVERY : ' + count);
+
+					// }
+
+
+
+
+
+
+
+				}
+
+			});
+
+
+
+
+
+		});
+	</script>
+<script type="text/javascript">
+		$(window).load(function() {
+			$("#flexiselDemo1").flexisel({
+				visibleItems: 3,
+				animationSpeed: 1000,
+				autoPlay: true,
+				autoPlaySpeed: 4000,
+				pauseOnHover: true,
+				enableResponsiveBreakpoints: true,
+				responsiveBreakpoints: {
+					portrait: {
+						changePoint: 480,
+						visibleItems: 1
+					},
+					landscape: {
+						changePoint: 640,
+						visibleItems: 2
+					},
+					tablet: {
+						changePoint: 768,
+						visibleItems: 3
+					}
+				}
+			});
+		});
+	</script>
+<script src="https://wazaitoon.com/assets/mngr/script/jquery-confirm.min.js" type="text/javascript"></script>
+<script type="application/x-javascript">
+		addEventListener("load", function() {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+
+<script src="https://wazaitoon.com/assets/front/js/simpleCart.min.js"> </script>
+<script src="https://wazaitoon.com/assets/front/js/rating.js"> </script>
+
+<script type="text/javascript" src="https://wazaitoon.com/assets/front/js/memenu.js"></script>
+<script>
+		$(document).ready(function() {
+			$(".memenu").memenu();
+		});
+	</script>
+
+<script type='text/javascript'>
+		//<![CDATA[ 
+		$(window).load(function() {
+			$("#slider-range").slider({
+				range: true,
+				min: 0,
+				max: 400000,
+				values: [8500, 350000],
+				slide: function(event, ui) {
+					$("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
+				}
+			});
+			$("#amount").val("$" + $("#slider-range").slider("values", 0) + " - $" + $("#slider-range").slider("values", 1));
+
+		}); //]]> 
+
+
+
+
+
+		// $(function() {
+		// 	var current = location.pathname;
+		// 	$('.memenu li a').each(function() {
+		// 		var $this = $(this);
+		// 		// if the current path is like this link, make it active
+		// 		if ($this.attr('href').indexOf(current) !== -1) {
+		// 			$this.parents("li").addClass('active');
+		// 		}
+		// 	})
+		// })
+	</script>
+<style type="text/css">
+		.owl-carousel .owl-nav {
+			position: absolute;
+			top: 0px;
+			right: 0;
+			z-index: 2001;
+		}
+
+		.owl-carousel .owl-nav div {
+			width: 50px;
+			height: 30px;
+			line-height: 30px;
+			margin: 0;
+			padding: 0;
+			color: #fff;
+			text-align: center;
+			font-size: 1.4em;
+			background: #f00;
+			border: 1px solid #fff;
+		}
+
+		.owl-carousel img {
+			width: auto !important;
+			min-height: auto;
+		}
+
+		.owl-carousel .owl-dots {
+			margin: 10px 0 0;
+			text-align: center;
+		}
+
+		.owl-carousel .owl-dots .owl-dot {
+			display: inline-block;
+			width: 8px;
+			height: 8px;
+			margin: 0 2px;
+			padding: 0;
+			background: #898989;
+			border-radius: 10px;
+			-webkit-border-radius: 10px;
+			-moz-border-radius: 10px;
+		}
+
+		.owl-carousel .owl-dots .owl-dot.active {
+			background: #3a502c;
+		}
+	</style>
+</head>
+<body>
+
+<div class="top_bg">
+
+<div class="logo" style="margin-top: 5px;">
+<a href="https://wazaitoon.com/">
+<h1 style="font-family: 'Caudex', serif;"><img src="https://wazaitoon.com/assets/images/logo.png" style="width: 160px; margin-top:5px">&nbsp;</h1>
+</a>
+</div>
+<div class="header_top-sec">
+<div class="top_right top_right_marg">
+<ul>
+<li>
+<div class="top-search-desktop">
+<div class="top-green-search">
+<form action="https://wazaitoon.com/product/search_products" method="get">
+<input type="text" name="search_word" id="search_word" placeholder="Search products" value="">
+<button onclick="return checkField()"><i class="fas fa-search"></i></button>
+
+</form>
+</div>
+</div>
+</li>
+</ul>
+</div>
+<div class="top_left top_left_marg">
+<ul>
+<li><a href="#" id="track"><i class="fas fa-truck-moving"></i>&nbsp;&nbsp;Track Order</a></li>
+<li class="top_link"><i class="fas fa-sign-in-alt" style="color:#fff;"></i><a href="https://wazaitoon.com/account">Sign in</a></li>
+</ul>
+</div>
+<div class="clearfix"> </div>
+</div>
+
+</div>
+
+<div id="myModal_track" class="modal fade" role="dialog">
+<div class="modal-dialog">
+
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close">
+</i> </button>
+<H4 style="color:#008f4c; font-weight:600; margin: 16px;" class="txt-center">Track your order</H4>
+</div>
+<div class="modal-body">
+<div class="container">
+<div class="row">
+<div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+<div>
+<input type="text" id="order_id" class="order-input" placeholder="Enter Order Id">
+<input type="text" id="mobile_no" class="order-input numberonly" placeholder="Enter Registered Mobile no" required maxlength="10" minlength="10">
+<button id="track-btn" class="track-btn">Track</button>
+<p class="check_order_msg txt-center" style="display: none;color: red"></p>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="myModal_date" class="modal fade" role="dialog">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close">
+</i> </button>
+<H4 style="color:#008f4c; font-weight:600; margin: 16px;" class="txt-center">Next available delivery date</H4>
+</div>
+<div class="modal-body">
+<div class="container">
+<div class="row">
+<div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+<div id='datetimetable'>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="header-top ">
+<div class="header-bottom ">
+<div class="row" style="margin-left: 0px;
+    margin-right: 0px;  ">
+
+<div class="col-12 col-sm-2 col-md-2 sh-mobile-off">
+
+
+<nav class="categoriesbar">
+<ul>
+<li>
+<a href="javascript:;" class="categoriesbar-title"><i class="fas fa-caret-down"></i>
+&nbsp;&nbsp;&nbsp;Categories</a>
+<div class="categories-drop">
+<div class="categories first-active">
+<ul>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/192">
+Nuts & Seeds </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/192">All Nuts & Seeds</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/193">
+Dry Fruits </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/193">All Dry Fruits</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/195">
+Dates </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/195">All Dates</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/197">
+Chocolates & Wafers </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/197">All Chocolates & Wafers</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/206">
+Snacks & Sweets </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/206">All Snacks & Sweets</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/207">
+Fragrance & Hygiene </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/207">All Fragrance & Hygiene</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/208">
+ Teas & Coffees </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/208">All Teas & Coffees</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/209">
+Cooldrinks & Beverages </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/209">All Cooldrinks & Beverages</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/215">
+Exotic Spices </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/215">All Exotic Spices</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/211">
+Ready to cook </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/211">All Ready To Cook</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/213">
+Gift </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/213">All Gift</a>
+</li>
+</ul>
+</li>
+<li class="has-submenu" style="display: block">
+<a href="https://wazaitoon.com/product/217">
+Staples </a>
+<ul>
+<li><a href="https://wazaitoon.com/product/217">All Staples</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+</li>
+</ul>
+</nav>
+
+
+</div>
+<div class="col-12 col-sm-10 col-md-10 " style="padding-top: 8px;">
+
+<div class="top-nav">
+<ul class="memenu skyblue ">
+<li class="grid active"><a href="https://wazaitoon.com/">HOME</a></li>
+<li class="grid active"><a href="https://wazaitoon.com/all_products/0">PRODUCTS</a></li>
+<li class="grid active"><a href="https://wazaitoon.com/offers">OFFERS</a></li>
+<li class="grid active"><a href="https://wazaitoon.com/about">ABOUT US</a></li>
+<li class="grid active"><a href="https://wazaitoon.com/contact">CONTACT</a></li>
+<li class="grid active">
+<a class="sh-mobile-on">
+<b>CATEGORIES</b>
+</a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/192">
+&nbsp;&nbsp;Nuts & Seeds </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/193">
+&nbsp;&nbsp;Dry Fruits </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/195">
+&nbsp;&nbsp;Dates </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/197">
+&nbsp;&nbsp;Chocolates & Wafers </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/206">
+ &nbsp;&nbsp;Snacks & Sweets </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/207">
+&nbsp;&nbsp;Fragrance & Hygiene </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/208">
+&nbsp;&nbsp;Teas & Coffees </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/209">
+&nbsp;&nbsp;Cooldrinks & Beverages </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/215">
+&nbsp;&nbsp;Exotic Spices </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/211">
+&nbsp;&nbsp;Ready to cook </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/213">
+&nbsp;&nbsp;Gift </a>
+</li>
+<li class="grid active">
+<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/217">
+&nbsp;&nbsp;Staples </a>
+</li>
+</ul>
+
+</div>
+
+<div class="cart box_1 boxmob1">
+<a href="https://wazaitoon.com/Account" style="    color: #fff;">
+<h3><span class="fas fa-heart" aria-hidden="true" style="color: #dce8df;"></span>
+<div class="total" style="margin-left: 0px;">(0)</div>
+</h3>
+</a>
+<div class="clearfix"> </div>
+</div>
+<div class="cart box_1 boxmob1">
+<a href="https://wazaitoon.com/Account">
+<h3><span class="fas fa-shopping-bag" aria-hidden="true" style="    color: #dce8df;"></span>
+<div class="total">(0)</div>
+</h3>
+</a>
+<div class="clearfix"> </div>
+</div>
+<div class="cart box_1 boxmob2">
+<div class="clearfix"> </div>
+<h3>
+<div class="call" style=""><span class="fas fa-phone-volume" aria-hidden="true" style="color: #dce8df;"></span><a style="color: #fff;" href="tel:8075532238">&nbsp;8075532238</a>&nbsp;</div>
+</h3>
+</div>
+<div class="clearfix"> </div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</div>
+<script>
+			$(document).ready(function() {
+
+				var dropDownChooser = $('.categories-drop > .categories > ul >li');
+
+				dropDownChooser.hover(function(e) {
+					e.preventDefault();
+					$('.categories-drop > .categories').toggleClass('first-active');
+				})
+
+			})
+		</script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+<style type="text/css">
 .divLoad
 {
   
@@ -8163,11 +8692,1640 @@ cursor: not-allowed;
     right : 0;
     top : 0;
 }
+@media (max-width: 1280px){
+#xc{
+	float: left;
+}
+}
+</style>
+<style type="text/css">
+	.add-to-cart{
+		position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+	}
 
-.primal-ftr{
+	.get-quotation{
+		position: absolute;
+    bottom: 10px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+	}
 
-  width: 14px;
-  display: inline-block;
-    margin: -3px 2px 0 0;
+	.shrt{
+
+
+	position: absolute;
+    background: #eee;
+    padding: unset;
+    font-size: .9em;
+    font-weight: 500;
+    top: -1%;
+    right: 1%;
+    display: block !important;
+}
+</style>
+
+
+<div class="product-model">
+<div class="container">
+<ol class="breadcrumb">
+<li><a href="https://wazaitoon.com/index">Home</a></li>
+<li class="active">All Products</li>
+</ol>
+<div class="dropdown" style="float:right;    margin-bottom: 10px;">
+<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" mouse-hover="dropdown" style="font-size: 11px;">
+Sort by : <b>Recommended</b>&nbsp; <span class="caret"></span>
+</button>
+<ul class="dropdown-menu" style="float:left; padding: 5px 22px;">
+<li><a href="https://wazaitoon.com/all_products/0">What's New</a></li>
+<li><a href="https://wazaitoon.com/all_products/0?sort=low">Price: Low to High</a></li>
+<li><a href="https://wazaitoon.com/all_products/0?sort=high">Price: High to Low</a></li>
+
+</ul>
+</div>
+
+<h2> <span style="text-align:center;">Our Products</span>
+</h2>
+<div class="rsidebar span_1_of_left sh-mobile-off">
+<section class="sky-form">
+<div class="product_right">
+<h4 class="m_2"><span class="glyphicon glyphicon-minus" aria-hidden="true"></span>Categories</h4>
+<div class="mytab" id="tab2">
+<ul class="place">
+<li class="sort">
+Nuts & Seeds
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/192/0"><p>All Nuts & Seeds</p></a>
+</div>
+</div>
+<div class="mytab" id="tab3">
+<ul class="place">
+<li class="sort">
+Dry Fruits
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/193/0"><p>All Dry Fruits</p></a>
+</div>
+</div>
+<div class="mytab" id="tab4">
+<ul class="place">
+<li class="sort">
+Dates
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/195/0"><p>All Dates</p></a>
+</div>
+</div>
+<div class="mytab" id="tab5">
+<ul class="place">
+<li class="sort">
+Chocolates & Wafers
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/197/0"><p>All Chocolates & Wafers</p></a>
+</div>
+</div>
+<div class="mytab" id="tab6">
+<ul class="place">
+<li class="sort">
+Snacks & Sweets
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/206/0"><p>All Snacks & Sweets</p></a>
+</div>
+</div>
+<div class="mytab" id="tab7">
+<ul class="place">
+<li class="sort">
+Fragrance & Hygiene
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/207/0"><p>All Fragrance & Hygiene</p></a>
+</div>
+</div>
+<div class="mytab" id="tab8">
+<ul class="place">
+<li class="sort">
+Teas & Coffees
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/208/0"><p>All Teas & Coffees</p></a>
+</div>
+</div>
+<div class="mytab" id="tab9">
+<ul class="place">
+<li class="sort">
+Cooldrinks & Beverages
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/209/0"><p>All Cooldrinks & Beverages</p></a>
+</div>
+</div>
+<div class="mytab" id="tab10">
+<ul class="place">
+<li class="sort">
+Exotic Spices
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/215/0"><p>All Exotic Spices</p></a>
+</div>
+</div>
+<div class="mytab" id="tab11">
+<ul class="place">
+<li class="sort">
+Ready to cook
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/211/0"><p>All Ready to cook</p></a>
+</div>
+</div>
+<div class="mytab" id="tab12">
+<ul class="place">
+<li class="sort">
+Gift
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/213/0"><p>All Gift</p></a>
+</div>
+</div>
+<div class="mytab" id="tab13">
+<ul class="place">
+<li class="sort">
+Staples
+</li>
+<li class="by"><img src="https://wazaitoon.com/assets/front/images/arrow-down12.png" alt=""></li>
+<div class="clearfix"> </div>
+</ul>
+<div class="single-bottom">
+<a href="https://wazaitoon.com/product/217/0"><p>All Staples</p></a>
+</div>
+</div>
+</div>
+</section>
+</div>
+<div class="col-md-9 product-model-sec">
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1100" data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1356">
+<img src="https://wazaitoon.com/uploads/product/pro60120368.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1356">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Vapouriser Oil Lemon Grass</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 125</strike>
+&#8377 <span>125/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1356" data-price="125" data-oprice="125" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1099" data-price="600" data-oprice="600" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1355">
+<img src="https://wazaitoon.com/uploads/product/pro59760208.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1355">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Celeste Body Yogurt- Cherry Blossom</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 600</strike>
+&#8377 <span>600/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1355" data-price="600" data-oprice="600" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1098" data-price="600" data-oprice="600" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1354">
+<img src="https://wazaitoon.com/uploads/product/pro57960427.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1354">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Celeste- Body Yogurt Lavender</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 600</strike>
+&#8377 <span>600/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1354" data-price="600" data-oprice="600" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1097" data-price="450" data-oprice="450" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1353">
+<img src="https://wazaitoon.com/uploads/product/pro57420376.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1353">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Celeste- Hand Cream Cherry Blossom</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 450</strike>
+&#8377 <span>450/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1353" data-price="450" data-oprice="450" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1096" data-price="450" data-oprice="450" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1352">
+<img src="https://wazaitoon.com/uploads/product/pro57060633.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1352">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Celeste- Matcha Green Tea Face Cleaner</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 450</strike>
+&#8377 <span>450/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1352" data-price="450" data-oprice="450" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1095" data-price="450" data-oprice="450" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1351">
+<img src="https://wazaitoon.com/uploads/product/pro56760180.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1351">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Celeste- Hand Cream Lavender</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 450</strike>
+&#8377 <span>450/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1351" data-price="450" data-oprice="450" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1094" data-price="450" data-oprice="450" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1350">
+<img src="https://wazaitoon.com/uploads/product/pro56340995.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1350">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Celeste- Satsuma Face Cleaner</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 450</strike>
+&#8377 <span>450/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1350" data-price="450" data-oprice="450" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1093" data-price="150" data-oprice="150" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1349">
+<img src="https://wazaitoon.com/uploads/product/pro55800124.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1349">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Potporri- Lavender</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 150</strike>
+&#8377 <span>150/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1349" data-price="150" data-oprice="150" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1092" data-price="150" data-oprice="150" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1348">
+<img src="https://wazaitoon.com/uploads/product/pro55620658.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1348">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Potpourri- Fresh Linen</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 150</strike>
+&#8377 <span>150/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1348" data-price="150" data-oprice="150" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1091" data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1347">
+<img src="https://wazaitoon.com/uploads/product/pro55440430.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1347">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Potpourri- Apple Cinnamon</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 125</strike>
+&#8377 <span>125/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1347" data-price="125" data-oprice="125" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1090" data-price="25" data-oprice="125" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1346">
+<img src="https://wazaitoon.com/uploads/product/pro55080890.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1346">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Iris Acrylic Tea Lights - Pina Colada (Pack of 6)</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 25</strike>
+&#8377 <span>125/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1346" data-price="25" data-oprice="125" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+
+
+<div class="product-grid love-grid">
+<div class="more-product"><span> </span></div>
+<div class="product-img b-link-stripe b-animate-go  thickbox">
+<div class="shrt">
+<a href="javascript:void(0)" data-id="1089" data-price="95" data-oprice="95" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+</div>
+<a href="https://wazaitoon.com/product_details/1169">
+<img src="https://wazaitoon.com/uploads/product/pro44400432.jpg" class="img-responsive" alt="" />
+
+</a>
+
+</div>
+<a href="https://wazaitoon.com/product_details/1169">
+<div class="product-info simpleCart_shelfItem" style="    text-align: center;">
+<div class="product-info-cust">
+<h4>Pappad Triangle Loose</h4>
+
+
+<div class="" style="font-family: Roboto, Arial, sans-serif">
+<strike style="display: none;">&#8377 95</strike>
+&#8377 <span>95/-</span>
+</div>
+<br>
+<div class="add-to-cart">
+<a href="#" data-id="1169" data-price="95" data-oprice="95" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+</div>
+<div class="divLoad" style="display: none;"></div>
+
+</div>
+<div class="clearfix"> </div>
+</div>
+</a>
+</div>
+</div>
+<div class="row">
+<div class="col-sm-6">
+
+</div>
+<div class="col-sm-6">
+<div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate" style="float: right;">
+<ul class="pagination"><li class="active"><a href="">1</a></li><li class="page"><a href="https://wazaitoon.com/all_products/12" data-ci-pagination-page="2">2</a></li><li class="page"><a href="https://wazaitoon.com/all_products/24" data-ci-pagination-page="3">3</a></li><li class="next page"><a href="https://wazaitoon.com/all_products/12" data-ci-pagination-page="2" rel="next">Next →</a></li><li class="next page"><a href="https://wazaitoon.com/all_products/312" data-ci-pagination-page="27">Last »</a></li></ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="get_quotation" class="modal fade" role="dialog">
+<div class="modal-dialog">
+
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal" style="color:red;"><i class="fa fa-window-close">
+
+</i> </button>
+<h3 style="color:#008f4c; font-weight:600; margin: 16px;text-align:center;">GET A QUOTATION</h3>
+</div>
+<div class="modal-body">
+<div class="container">
+<div class="row">
+<div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
+<div>
+<img src="" class="p_image">
+<input type="hidden" name="p_id" id="p_id" class="p_id">
+<h4 style="color:#10c440; text-align:center;" class="p_name"></h4>
+<br>
+<h4 style="color:#10c440;text-align:center;" class="p_code"></h4>
+<input type="text" name="mobile_no" id="mobile_no" class="order-input mobile_no numberonly" placeholder="Enter Registered Mobile no" maxlength="10" minlength="10" required>
+<input type="text" id="user_name" name="user_name" class="order-input" placeholder="Enter Your name" required>
+<input type="email" id="user_email" name="user_email" class="order-input" placeholder="Enter Your email id" required>
+<textarea name="msg" id="msg" class="msg" placeholder="Enter your message" style="margin-left: 16px;
+    padding-right: 51px;"></textarea>
+<button id="quotation-btn" class="track-btn" style="background: green;">Send</button>
+</div>
+<div class="col-12"><p class="check_order_msg txt-center" style="display: none;color: red;margin-left: 18px;"></p></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+
+							$(document).ready(function(){
+
+
+
+							$(".mytab .single-bottom").hide();
+
+
+
+								$(".mytab ").click(function(){
+
+									var sel = $(this).attr("id");
+
+									$("#"+sel+" .single-bottom").slideToggle(300);
+
+   									$(".mytab:not(#"+sel+")  .single-bottom").hide();
+
+								})
+
+
+
+								
+
+							});
+
+						</script>
+<script type='text/javascript'>//<![CDATA[ 
+
+					$(window).load(function(){
+
+					 $( "#slider-range" ).slider({
+
+								range: true,
+
+								min: 0,
+
+								max: 400000,
+
+								values: [ 8500, 350000 ],
+
+								slide: function( event, ui ) {  $( "#amount" ).val( "$" + ui.values[ 0 ] + " - $" + ui.values[ 1 ] );
+
+								}
+
+					 });
+
+					$( "#amount" ).val( "$" + $( "#slider-range" ).slider( "values", 0 ) + " - $" + $( "#slider-range" ).slider( "values", 1 ) );
+
+
+
+					});//]]> 
+
+					</script>
+<script type="text/javascript">
+
+	$(document).on('click','.quick-view-btn',function(e){
+
+	e.preventDefault();
+
+	var id = $(this).attr('data-id');
+
+	var key = $(this).attr('data-key');
+
+
+
+	$('#myModal'+key+'').modal('show');
+
+	
+
+	
+
+})
+
+</script>
+<script type="text/javascript">
+	
+/** After windod Load */
+	$(window).bind("load", function() {
+
+ 	 window.setTimeout(function() {
+
+    $(".alert").fadeTo(500, 0).slideUp(500, function(){
+        $(this).remove();
+    });
+
+}, 4000);
+
+});
+
+</script>
+<style type="text/css">
+
+	.pid
+
+	{
+
+		margin-top: 10px;
+
+		font-size: 15px;
+
+	}
+
+	.prdt-cost ul li
+
+	{
+
+		font-size: 15px;
+
+	}
+
+</style>
+<script type="text/javascript">
+
+	$(document).on('click','.add-to-cart-btn',function(e){
+
+	e.preventDefault();
+
+	var elem = $(this);
+
+	var htm = elem.html();
+
+	var product = $(this).attr('data-id');
+
+	var price = $(this).attr('data-price');
+
+	var offer = $(this).attr('data-offer');
+
+	var offer_price = $(this).attr('data-oprice');
+
+	var is_cart=1;
+
+
+	$('.divLoad').show(); 
+
+	
+
+	if(offer_price) offer_price = offer_price;
+
+	else offer_price = price;
+	$.ajax({
+
+		type:'post',
+
+		url:'https://wazaitoon.com/Cart/add_to_cart',
+
+		data:{product:product,price:price,offer_price:offer_price,offer:offer},
+
+		success: function(out){
+		    // $('.divLoad').hide();
+
+			var out = JSON.parse(out);
+ // alert(out); exit();
+			if(out.status==1){
+
+				var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
+
+				$('.vendor-cart .checkout-btn').html(cart);
+
+				elem.html('<i class="fa fa-check"></i>');
+
+				elem.addClass('add_to_cart_suc');
+
+				elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">'+out.data+'</p>');
+
+				setTimeout(function(){
+
+					elem.html(htm);
+
+					elem.removeClass('add_to_cart_suc');
+
+					elem.parent().find('.e-msg').remove();
+					location.reload();
+
+				},2000);
+
+			
+
+			}
+
+			else if(out.status == 2){
+
+				 window.location.href="https://wazaitoon.com/Account";
+
+				//window.location.href = base_url+'Account?add_to_cart='+is_cart+'&product='+product;
+
+			}
+
+			else{
+				// alert("fdsf");
+ // window.location.href="https://wazaitoon.com/Account";
+				elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">'+out.data+'</p>');
+
+				elem.html('<i class="fa fa-times"></i>');
+
+				elem.addClass('add_to_cart_err');
+
+				setTimeout(function(){
+
+					elem.html(htm);
+
+					elem.removeClass('add_to_cart_err');
+
+					elem.parent().find('.e-msg').remove();
+
+				},2000);
+
+			}
+
+		}
+
+	})
+
+})
+
+</script>
+<script type="text/javascript">
+	$(document).on('click','.add-to-wish-btn',function(e){
+		
+		e.preventDefault();
+		var elem = $(this);
+		var htm = elem.html();
+		var product = $(this).attr('data-id');
+		var price = $(this).attr('data-price');
+		var offer = $(this).attr('data-offer');
+		var offer_price = $(this).attr('data-oprice');
+		var note = '';
+		
+		if(offer_price) offer_price = offer_price;
+		else offer_price = price;
+		$('.divLoad').show();
+		$.ajax({
+			type:'post',
+			url:'https://wazaitoon.com/Wishlist/add_wish_list',
+			data:{product:product,price:offer_price},
+			success: function(out){
+			    $('.divLoad').hide();
+				var out = JSON.parse(out);
+				if(out.status==1){
+					// var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
+					// $('.vendor-cart .checkout-btn').html(cart);
+					elem.html('<i class="fa fa-check"></i>');
+					elem.addClass('add_to_cart_suc');
+					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg" style="color: green;float: right;margin-right: 20px; font-size:14px;">'+out.data+'</p>');
+					setTimeout(function(){
+						elem.html(htm);
+						elem.removeClass('add_to_cart_suc');
+						elem.parent().find('.e-msg').remove();
+						location.reload();
+					},2500);
+					
+
+					
+				}
+				else if(out.status == 2){
+					window.location.href="https://wazaitoon.com/Account";
+				}
+				else{
+					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg">'+out.data+'</p>');
+					elem.html('<i class="fa fa-times"></i>');
+					elem.addClass('add_to_cart_err');
+					setTimeout(function(){
+						elem.html(htm);
+						elem.removeClass('add_to_cart_err');
+						elem.parent().find('.e-msg').remove();
+					},1400);
+				}
+			}
+		})
+	})
+</script>
+<script type="text/javascript">
+
+	$(document).on('click','.remove-wish-product-guest-btn',function(e){
+	e.preventDefault();
+	var prdt = $(this).attr('data-prdt');
+ 	// alert(id);
+	var vendor = $(this).attr('data-vendor');
+
+	var msg ='Confirm remove your wishlist!';
+    $.confirm({
+
+      title: msg,
+
+      // content: 'Cant be reversed!',
+
+      buttons: {
+
+          confirm: function () {
+
+	$.ajax({
+			type:'post',
+			url:'https://wazaitoon.com/Wishlist/remove_wish_product',
+			data:{prdt:prdt,vendor:vendor},
+			success: function(out){
+				var out = JSON.parse(out);
+				if(out.status==1){
+					window.location.reload();
+				}
+				else{
+					alert(out.data);
+				}
+			}
+		})
+	},
+
+          cancel: function () {
+
+              console.log('Cancelled!');
+
+          }
+
+      }
+
+  })
+})
+
+	$(document).on('click','.remove-wish-btn',function(e){
+
+		
+		e.preventDefault();
+		var elem = $(this);
+		var htm = elem.html();
+		var id = $(this).attr('data-id');
+		// var price = $(this).attr('data-price');
+		// var offer = $(this).attr('data-offer');
+		// var offer_price = $(this).attr('data-oprice');
+		var note = '';
+		
+		// if(offer_price) offer_price = offer_price;
+		// else offer_price = price;
+		 $('.divLoad').show();
+		// alert("xsfvgb");
+		$.ajax({
+			type:'post',
+			url:'https://wazaitoon.com/Wishlist/remove_wish_productlist',
+			data:{id:id},
+			success: function(out){
+			     $('.divLoad').hide();
+				var out = JSON.parse(out);
+				if(out.status==1){
+					// var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
+					// $('.vendor-cart .checkout-btn').html(cart);
+					elem.html('<i class="fa fa-check"></i>');
+					elem.addClass('add_to_cart_suc');
+					elem.parent().find('.remove-wish-btn').after('<p class="e-msg" style="color: red;float: right;margin-right: 20px; font-size:14px;">'+out.data+'</p>');
+					setTimeout(function(){
+						elem.html(htm);
+						elem.removeClass('add_to_cart_suc');
+						elem.parent().find('.e-msg').remove();
+						location.reload();
+					},2500);
+					
+
+					
+				}
+				else if(out.status == 2){
+					window.location.href="https://wazaitoon.com/Account";
+				}
+				else{
+					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg">'+out.data+'</p>');
+					elem.html('<i class="fa fa-times"></i>');
+					elem.addClass('add_to_cart_err');
+					setTimeout(function(){
+						elem.html(htm);
+						elem.removeClass('add_to_cart_err');
+						elem.parent().find('.e-msg').remove();
+					},1400);
+				}
+			}
+		})
+	})
+</script>
+<script type="text/javascript">
+
+$(document).on('click','#quotation',function(e){
+
+	e.preventDefault();
+
+	
+	var product = $(this).attr('data-id');
+
+	var product_name = $(this).attr('data-name');
+
+	var product_code = $(this).attr('data-code');
+
+	var image = $(this).attr('data-image');
+
+	$('.p_id').val(product);
+
+	$('.p_code').html('Code:'+product_code);
+
+	$('.p_name').html(product_name);
+
+	// $('.p_image').html(image);
+
+    $('.p_image').attr("src",image);
+	
+
+	$('#get_quotation').modal('show');
+
+})
+
+
+
+$(document).on('click','#quotation-btn',function(e){
+
+	var product_id = $.trim($('.p_id').val());
+	var mobile_no = $.trim($('.mobile_no').val());
+	var user_name = $.trim($('#user_name').val());
+	var user_email = $.trim($('#user_email').val());
+	var message = $.trim($('#msg').val());
+
+	   // alert(mobile_no); 
+	 $("#quotation-btn").attr("disabled", true); 
+    	 $("#quotation-btn").css('cursor', 'not-allowed');
+
+
+		$.ajax({
+
+			type:'post',
+
+			data:{product_id:product_id,mobile_no:mobile_no,user_name:user_name,user_email:user_email,message:message},
+
+			url:base_url+'Product/get_quotation',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				if(out.status == 1){
+
+							 location.reload();
+
+
+				}
+
+				else{
+
+					//  msg = 'Order id does not exist';
+
+					//  $('.check_order_msg').attr('style', 'color: red !important');
+
+					//   $('.check_order_msg').show();
+
+				 // $('.check_order_msg').html(msg);
+
+
+
+				}
+
+				//console.log(msg);
+
+				
+
+
+
+
+
+			}
+
+		})
+
+	
+
+})
+
+</script>
+<script type="text/javascript">
+
+  $(document).ready(function(){
+    
+
+    $(document).on('keyup',".numberonly",function (e) {
+      // alert("zv"); 
+      
+// alert("dfgfrg");
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+
+            // let it happen, don't do anything
+            return;
+
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+
+        }
+
+    });
+
+});
+
+</script><style type="text/css">
+	.primal-ftr{
+
+	    width: 14px;
+	    display: inline-block;
+        margin: -3px 2px 0 0;
+	}
+   
+</style>
+<div class="footer" style="margin-top:30px; border-top: 1px solid #eee; background-color:#efefef">
+<div class="container">
+<div class="ftr-grids">
+<div class="col-md-4 ftr-grid">
+<h4>About Us</h4>
+<ul>
+<li><a href="https://wazaitoon.com/about">Who We Are</a></li>
+<li><a href="https://wazaitoon.com/contact">Contact Us</a></li>
+</ul>
+</div>
+<div class="col-md-4 ftr-grid">
+<h4>Customer Services</h4>
+<ul>
+<li><a href="https://wazaitoon.com/cancellation">Cancellation</a></li>
+<li><a href="https://wazaitoon.com/terms">Terms & Conditions</a></li>
+</ul>
+</div>
+<div class="col-md-4 ftr-grid">
+<h4>Your Account</h4>
+<ul>
+<li><a href="https://wazaitoon.com/Profile">Personal Information</a></li>
+<li><a href="https://wazaitoon.com/Orders">Your order</a></li>
+</ul>
+</div>
+
+<ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="clearfix"></div>
+</div>
+</div>
+</div>
+
+<div class="copywrite" style="border-top: 1px solid #eee; background-color:#ddd; padding-bottom: 15px; margin-bottom: 0;">
+<div class="container">
+<p>Copyright © 2021 Wazaitoon. All Rights Reserved | Powered by <a target="_blank" href="http://primeecart.com/"><span><img src="https://wazaitoon.com/assets/images/prime-ecart-icon.svg" class="primal-ftr" alt=""></span>Prime <span style="color:#f6921e;">eCart</span></a></p>
+</div>
+</div>
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://wazaitoon.com/Wishlist/get_wish_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+</script>
+<script type="text/javascript">
+	
+	$(".numberonly").keydown(function (e) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+         // Allow: Ctrl+A, Command+A
+        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+         // Allow: home, end, left, right, down, up
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+             // let it happen, don't do anything
+             return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+});
+</script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	// alert("dfgfrg");
+
+    $(document).on('keydown',".numberonly",function (e) {
+    	
+
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+
+            // let it happen, don't do anything
+            return;
+
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+
+        }
+
+    });
+
+});
+
+</script>
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://wazaitoon.com/Cart/get_cart_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+
+
+
+
+
+
+	function selectDistrict(event){
+
+	var id = $(event).val();
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'addresses/get_districts',
+
+		data:{id:id},
+
+		success: function(out){
+
+			if(out.status == 404){
+
+				window.location.href = base_url;
+
+			}
+
+			else{
+
+				var out = JSON.parse(out);
+
+				var htm = '<option selected="selected" disabled value="">Select</option>';
+
+				for(var i=0;i<out.length;i++){
+
+					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
+
+				}
+
+				$('.districts').html(htm);
+
+			}
+
+		}
+
+	})
+
 }
 
+</script>
+<script type="text/javascript">
+
+$(document).on('click','#track',function(e){
+
+	e.preventDefault();
+
+	
+
+
+
+	
+
+	$('#myModal_track').modal('show');
+
+})
+
+
+
+$(document).on('click','#track-btn',function(e){
+
+	var order_id = $.trim($('#order_id').val());
+	var mobile_no = $.trim($('#mobile_no').val());
+
+	//var id = $(this).attr('data-id');
+
+	// alert(order_id); 
+
+	if(order_id){
+		if(mobile_no){
+
+		//$('#delivery_pincode').parent().css('border-bottom','2px solid #2874f0');
+
+		$.ajax({
+
+			type:'post',
+
+			data:{order_id:order_id,mobile_no:mobile_no},
+
+			url:base_url+'Orders/track_order_by_id',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				if(out.status == 1){
+
+							window.location.href = base_url+'Orders/my_order_track?order_id='+order_id
+
+
+
+				}
+
+				else{
+
+					 msg = 'Order id does not exist';
+
+					 $('.check_order_msg').attr('style', 'color: red !important');
+
+					  $('.check_order_msg').show();
+
+				 $('.check_order_msg').html(msg);
+
+
+
+				}
+
+				//console.log(msg);
+
+				
+
+
+
+
+
+			}
+
+		})
+		}
+else{
+
+		$('#mobile_no').focus();
+
+		msg = 'Please enter your Mobile number';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+	}
+
+	else{
+
+		$('#order_id').focus();
+
+		msg = 'Please enter your Order id';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+
+})
+
+</script>
+<script>
+	$('.banner .owl-carousel').owlCarousel({
+	autoplay:true,
+	autoplayTimeout:5000,
+	autoplayHoverPause:false,
+	smartSpeed:1000,
+
+	animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
+
+	loop:true,
+	margin:0,
+
+	dots: true,
+	nav: true,
+	navText : ['<i class="fas fa-chevron-left"></i>','<i class="fas fa-chevron-right"></i>'],
+
+	responsive:{
+
+	  0:{ items:1 },
+	  600:{ items:1 },
+	  1000:{ items:1 }
+	}
+});
+</script>
+</body>
+</html>

@@ -1,5 +1,6 @@
 from django import forms
 from . models import *
+from EcomAdmin .models import Address
 from django.core.exceptions import ValidationError
 import re
 
@@ -51,3 +52,15 @@ class FeedbackForm(forms.ModelForm):
     # #      self._errors['password'] = self.error_class(['Password length should not be less than 8 characters'])
 
     #   return self.cleaned_data
+
+class AddressForm(forms.ModelForm):
+
+    class Meta:
+        model=Address
+        fields="__all__"
+        exclude=['default']
+
+    def __init__(self,*args , **kwargs):
+        super(AddressForm,self).__init__(*args, **kwargs)
+        for name in self.fields.keys():
+            self.fields[name].widget.attrs.update({'class':'form-control'})

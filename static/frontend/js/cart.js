@@ -30,8 +30,7 @@ $(document).ready(function(c) {
 });
 
 $(document).ready(function(c) {
-
-							
+  					
 
     $('.close2').on('click', function(c){
 
@@ -44,6 +43,8 @@ $(document).ready(function(c) {
 });	  
 
 });
+
+
 
 
 

@@ -1,0 +1,680 @@
+{% extends 'user_main.html' %}
+{% block content %}
+
+
+
+<div class="container">
+
+    <ol class="breadcrumb">
+        <li><a href="{% url 'Home' %}">Home</a></li>
+        <li class="active">Profile</li>
+    </ol>
+
+    <div class="section">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="row profile-menu">
+                        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                            <div class="profile">
+                                <div class="pic"></div>
+                                <div class="disc">
+                                <h5>Hi, Eva</h5>
+
+                                </div>
+                            </div>
+                        </div>
+                    <div class="col-lg-10 col-md-9 col-sm-8 col-xs-12 ">
+                    <ul>
+                    <li><a href="">My Profile</a></li>
+                    <li><a href="" class="active">Edit Profile</a></li>
+                    <li><a href="">My Cart</a></li>
+                    <li><a href="">My Orders</a></li>
+
+
+
+                    <li><a href="">Add Addresses</a></li>
+                    </ul>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<div class="section mt-5">
+<div class="container">
+<div class="row">
+
+<div class="col-xs-12">
+<h3 class="mtb-0p">Add Address</h3>
+</div>
+<!-- <div class="col-md-6 col-sm-12 col-xs-12">
+<div class="profile-info">
+<div class="row">
+<div class="col-xs-12">
+<h4 style="color:#008f4c;">Personal Information</h4>
+<form action="https://wazaitoon.com/profile/update_profile" method="post" autocomplete="off">
+<div class="row mtp-10p">
+<div class="col-sm-6 col-xs-12">
+<label>Name</label>
+<input type="text" placeholder="First Name" name="first_name" value="eva">
+</div>
+<div class="col-sm-6 col-xs-12"><label>DOB</label>
+<input type="date" class="datepicker" name="dob" value="" placeholder="dd/mm/yyyy" max="2022-03-08" id="age"></div>
+</div>
+<div class="row mtb-10p">
+<div class="col-xs-12">
+<label>Gender </label>
+<div class="block">
+<span>
+<input type="radio" name="gender" value="Male"> Male
+</span>
+<span>
+<input type="radio" name="gender" value="Female"> Female
+</span>
+</div>
+</div>
+</div>
+<div class="row mtb-10p">
+<div class="col-sm-6 col-xs-12">
+<label for="">Email Address</label>
+<input type="email" name="email" placeholder="Email Address" value="shabanac71@gmail.com">
+</div>
+<div class="col-sm-6 col-xs-12">
+<label for="">Phone Number</label>
+<input type="tel" name="phone" disabled placeholder="Your Phone Number" value="9744797541">
+</div>
+</div>
+<div class="row mtb-10p">
+<div class="col-xs-12"><input type="submit" value="Update" onclick="return getAge()"></div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<div class="profile-info">
+<form action="https://wazaitoon.com/profile/change_password" onsubmit="return checkpass()" method="post">
+<div class="row">
+<div class="col-xs-12"><h4>Change Password</h4></div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+<label for="">Type Current Password</label>
+<input type="password" name="current_password" id="current_password">
+<label for="">Type New password</label>
+<input type="password" name="new_password" id="new_password" minlength="6">
+<span id="passwd" style="display: none;">Please enter atleast 6 characters</span>
+<label for="">Retype password</label>
+<input type="password" name="confirm_password" id="confirm_password" minlength="6">
+<input type="submit" value="Update" style="    margin-top: 8%;">
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+<h6>Your new password must:</h6>
+<ul class="listing">
+<li>Be at least 6 characters in length</li>
+<li>Not same as your current password.</li>
+<li>Not contain common passwords.</li>
+</ul>
+</div>
+</div>
+</form>
+</div>
+</div> -->
+<div class="col-md-12 col-sm-12 col-xs-12">
+<div class="profile-info">
+<div class="row">
+<div class="col-xs-12">
+<h4>Address Details</h4>
+
+{% if form.errors %}
+                            <div class="col-lg-12 ">
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                    {% for field in form %}
+                                    <!-- For each error in field -->
+                                        <!-- {% for error  in field.errors %} -->
+                                            <!-- Output error text message only -->
+                                                <div>{{field.errors}}</div>
+                                            <!-- {% endfor %} -->
+                                      {% endfor %}
+                                      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                            </div>
+                            {% endif %}
+
+
+
+    <form action="" method="post" autocomplete="off">
+        {% csrf_token %}
+        <input autocomplete="false" name="hidden" type="text" style="display:none;">
+        <div class="row mtb-10p">
+            <div class="col-xs-12">
+                {{form.address}}
+            </div>
+        </div>
+        <div class="row mtb-10p">
+        <div class="col-sm-6 col-xs-12">
+        <label for="">State</label>
+        {{form.state}}
+        </div>
+        <div class="col-sm-6 col-xs-12">
+        <label for="">District</label>
+        {{form.district}}
+        </div>
+        </div>
+    <div class="row mtb-10p">
+    <div class="col-sm-6 col-xs-12">
+    <label for="">Locality</label>
+     {{form.locality}}
+    </div>
+    <div class="col-sm-6 col-xs-12">
+    <label for="">Pincode</label>
+    {{form.pin}}
+    </div>
+    </div>
+
+    <div class="row mtb-10p">
+        <div class="col-sm-6 col-xs-12">
+        <label for="">Landmark</label>
+         {{form.landmark}}
+        </div>
+        <div class="col-sm-6 col-xs-12">
+        <label for="">Country</label>
+        {{form.country}}
+        </div>
+    </div>
+
+    <div class="row">
+    <div class="col-xs-12">
+        Home:<input type="radio" name="address_type" value="home"  class="ml-3 mr-3" >
+        Work:<input type="radio" name="address_type" value="work" class="ml-3 mr-3" >
+        Others:<input type="radio" name="address_type" value="others" class="ml-3 mr-3" >
+    </div>
+   
+       
+   
+  
+    </div>
+
+    </div>
+    <div class="row mtb-10p">
+    <div class="col-xs-12"><input type="submit" value="Add"></div>
+    </div>
+    </form>
+
+</div>
+</div>
+</div>
+</div>
+<div class="mb-30p">&nbsp;</div>
+</div>
+
+</div>
+</div>
+</div>
+
+
+<script type="text/javascript">
+
+	function selectDistrict(event){
+
+	var id = $(event).val();
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'addresses/get_districts',
+
+		data:{id:id},
+
+		success: function(out){
+
+			if(out.status == 404){
+
+				window.location.href = base_url;
+
+			}
+
+			else{
+
+				var out = JSON.parse(out);
+
+				var htm = '<option selected="selected" disabled value="">Select</option>';
+
+				for(var i=0;i<out.length;i++){
+
+					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
+
+				}
+
+				$('.districts').html(htm);
+
+			}
+
+		}
+
+	})
+
+}
+
+</script>
+
+<script language="javascript" type="text/javascript">
+function removeSpaces(string) {
+ return string.split(' ').join('');
+}
+
+function getAge() 
+{
+    var dateString = document.getElementById("age").value;
+    if(dateString !="")
+    {
+        var today = new Date();
+        var birthDate = new Date(dateString); //format is mm.dd.yyyy
+        var age = today.getFullYear() - birthDate.getFullYear();
+
+        if(age < 18 || age > 100)
+        {
+            alert("Age "+age+" is restrict");
+            return false;
+        } 
+        // else 
+        // {
+        //     alert("Age "+age+" is allowed");
+        // }
+    } 
+    
+}
+
+</script>
+<!-- <style type="text/css">
+	.primal-ftr{
+
+	    width: 14px;
+	    display: inline-block;
+        margin: -3px 2px 0 0;
+	}
+   
+</style> -->
+
+
+
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://wazaitoon.com/Wishlist/get_wish_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+</script>
+
+<script type="text/javascript">
+	
+	$(".numberonly").keydown(function (e) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+         // Allow: Ctrl+A, Command+A
+        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+         // Allow: home, end, left, right, down, up
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+             // let it happen, don't do anything
+             return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+});
+</script>
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	// alert("dfgfrg");
+
+    $(document).on('keydown',".numberonly",function (e) {
+    	
+
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+
+            // let it happen, don't do anything
+            return;
+
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+
+        }
+
+    });
+
+});
+
+</script>
+
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://wazaitoon.com/Cart/get_cart_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+
+
+
+
+
+
+	function selectDistrict(event){
+
+	var id = $(event).val();
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'addresses/get_districts',
+
+		data:{id:id},
+
+		success: function(out){
+
+			if(out.status == 404){
+
+				window.location.href = base_url;
+
+			}
+
+			else{
+
+				var out = JSON.parse(out);
+
+				var htm = '<option selected="selected" disabled value="">Select</option>';
+
+				for(var i=0;i<out.length;i++){
+
+					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
+
+				}
+
+				$('.districts').html(htm);
+
+			}
+
+		}
+
+	})
+
+}
+
+</script>
+
+<script type="text/javascript">
+
+$(document).on('click','#track',function(e){
+
+	e.preventDefault();
+
+	
+
+
+
+	
+
+	$('#myModal_track').modal('show');
+
+})
+
+
+
+$(document).on('click','#track-btn',function(e){
+
+	var order_id = $.trim($('#order_id').val());
+	var mobile_no = $.trim($('#mobile_no').val());
+
+	//var id = $(this).attr('data-id');
+
+	// alert(order_id); 
+
+	if(order_id){
+		if(mobile_no){
+
+		//$('#delivery_pincode').parent().css('border-bottom','2px solid #2874f0');
+
+		$.ajax({
+
+			type:'post',
+
+			data:{order_id:order_id,mobile_no:mobile_no},
+
+			url:base_url+'Orders/track_order_by_id',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				if(out.status == 1){
+
+							window.location.href = base_url+'Orders/my_order_track?order_id='+order_id
+
+
+
+				}
+
+				else{
+
+					 msg = 'Order id does not exist';
+
+					 $('.check_order_msg').attr('style', 'color: red !important');
+
+					  $('.check_order_msg').show();
+
+				 $('.check_order_msg').html(msg);
+
+
+
+				}
+
+				//console.log(msg);
+
+				
+
+
+
+
+
+			}
+
+		})
+		}
+else{
+
+		$('#mobile_no').focus();
+
+		msg = 'Please enter your Mobile number';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+	}
+
+	else{
+
+		$('#order_id').focus();
+
+		msg = 'Please enter your Order id';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+
+})
+
+</script>
+
+<script>
+	$('.banner .owl-carousel').owlCarousel({
+	autoplay:true,
+	autoplayTimeout:5000,
+	autoplayHoverPause:false,
+	smartSpeed:1000,
+
+	animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
+
+	loop:true,
+	margin:0,
+
+	dots: true,
+	nav: true,
+	navText : ['<i class="fas fa-chevron-left"></i>','<i class="fas fa-chevron-right"></i>'],
+
+	responsive:{
+
+	  0:{ items:1 },
+	  600:{ items:1 },
+	  1000:{ items:1 }
+	}
+});
+</script>
+
+{% endblock %}
