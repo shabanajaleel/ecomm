@@ -234,6 +234,10 @@ class OffersForm(forms.ModelForm):
     class Meta:
         model=Offers
         fields="__all__"
+        widgets={
+            'start_date':DateInput(),
+            'end_date':DateInput(),
+        }
 
 
     def __init__(self,*args , **kwargs):
@@ -241,17 +245,17 @@ class OffersForm(forms.ModelForm):
         for name in self.fields.keys():
             self.fields[name].widget.attrs.update({'class':'form-control'})
 
-    def clean_offer_image(self):
-       offer_image = self.cleaned_data.get("offer_image")
-       if not offer_image:
-           raise forms.ValidationError("No image!")
-       else:
-           w, h = get_image_dimensions(offer_image)
-           if w > 235:
-               raise forms.ValidationError("The offer image is %i pixel wide. It's supposed to be 235px" % w)
-           if h > 145:
-               raise forms.ValidationError("The offer Imageis %i pixel high. It's supposed to be 145px" % h)
-       return offer_image
+    # def clean_offer_image(self):
+    #    offer_image = self.cleaned_data.get("offer_image")
+    #    if not offer_image:
+    #        raise forms.ValidationError("No image!")
+    #    else:
+    #        w, h = get_image_dimensions(offer_image)
+    #        if w > 235:
+    #            raise forms.ValidationError("The offer image is %i pixel wide. It's supposed to be 235px" % w)
+    #        if h > 145:
+    #            raise forms.ValidationError("The offer Imageis %i pixel high. It's supposed to be 145px" % h)
+    #    return offer_image
 
     def clean_offer_app_image(self):
        offer_app_image = self.cleaned_data.get("offer_app_image")

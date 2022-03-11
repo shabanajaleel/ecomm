@@ -27,7 +27,7 @@
 			{% for cat in catogory%}
 				<div class="col-6 col-sm-6 col-md-2 bride-grid ">
 					<div class="content-grid l-grids">
-						<a href="{% url 'products' cat_id=cat.id %}">
+						<a href="/products/?cat_id={{cat.id}}">
 							<figure class="effect-bubba">
 								<img src="/media/{{cat.catogory_image}}" alt="" />
 								<figcaption>
@@ -56,7 +56,7 @@
 				{% for pro in prod.product_varients_set.all%}
 				{% if forloop.first %}
 					<div class="col-md-3 feature-grid jewel">
-						<a href="">
+						<a href="{% url 'product_item' prod_id=pro.id %}">
 						{% for  img in prod.productimage_set.all%}
 						{% if forloop.first %}
 							<img src="/media/{{img.Thumbnail_image}}" class="img-responsive" alt="" />
@@ -65,17 +65,18 @@
 							<div class="arrival-info">
 							<h4>{{prod.Name}}({{pro.Varient_Values}}) </h4>
 							
-								
+								<input type="text" name="" value="{{pro.id}}"  hidden>
+								<input type="text" name="" value="1" class="qty" hidden>
 								<div class="" style="font-family: Roboto, Arial, sans-serif">
 								<strike ">{{pro.Display_Prize}}/-</strike>
 								</div>
 
 								<div class="" style="font-family: Roboto, Arial, sans-serif">
 								<span class="item_price">{{pro.Selling_Prize}}/-</span></div>
-							
-							
+								</a>
 								<div class="add-to-cart">
-								<a href="#" data-id="934" data-price="550" data-oprice="550" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+								
+								<button   id="{{pro.id}}" class="add-cart cart-check add-to-cart-btn"  title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</button>
 								</div>
 								<div class="divLoad" style="display: none;"></div>
 							</div>
@@ -84,10 +85,10 @@
 								
 								</div>
 								<div class="shrt">
-								<a href="javascript:void(0)" data-id="931" data-price="550" data-oprice="550" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+								<a href="javascript:void(0)" data-id="{{pro.id}}" data-price="550" data-oprice="550" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
 								
 								</div>
-						</a>
+						
 					</div>
 				{% endif %}
 				{% endfor %}
@@ -98,6 +99,100 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- add to cart -->
+	<script>
+		$('.add-to-cart-btn').click(function(){
+		   var varient_type=$(this).attr('id')
+		   var qty=$('.qty').val()
+			
+		   
+		   console.log(varient_type)
+		   console.log(qty)
+		   if (varient_type) {
+			   $.ajaxSetup({
+			   headers:{"X-CSRFToken":'{{csrf_token}}'}
+		   })
+			   $.ajax({
+				   type:'POST',
+				   url:'{% url "add_to_cart" %}',
+				   data:{
+					   'varient_id':varient_type,
+					   'qty':qty,
+				   },
+				   success: (data) => {
+					   if (data.message){
+						   
+						   alert(data.message)
+   
+					   }
+					   else{
+						   count_html="("+ data.count+ ")"
+   
+						   $('.cart_total').html(count_html)
+   
+					   }
+					   
+				
+					   }
+			   })
+		   }
+	   })
+   
+   
+   
+
+   
+   
+	   
+   </script>
+   <!-- end -->
+
+
+   <!-- add to wishlist -->
+   <script>
+	   		$('.add-to-wish-btn').click(function(){
+		   var varient_type=$(this).attr('data-id')
+		   
+			
+		   $('.divLoad').show();
+		   console.log(varient_type)
+
+		   if (varient_type) {
+			   $.ajaxSetup({
+			   headers:{"X-CSRFToken":'{{csrf_token}}'}
+		   })
+			   $.ajax({
+				   type:'POST',
+				   url:'{% url "wishlist" %}',
+				   data:{
+					   'varient_id':varient_type,
+					  
+				   },
+				   success: (data) => {
+					$('.divLoad').hide();
+					
+					   if (data.message){
+						   
+						   alert(data.message)
+   
+					   }
+					   else{
+						   count_html="("+ data.count+ ")"
+   
+						   $('.wishlist-total').html(count_html)
+   
+					   }
+					   
+				
+					   }
+			   })
+		   }
+	   })
+   
+   </script>
+
+   <!-- end wishlist -->
 
 	{% endblock %}
 	

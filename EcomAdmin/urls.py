@@ -87,6 +87,7 @@ urlpatterns=[
     path('add_offers/',views.fnaddoffers,name="add_offers"),
     path('edit_offers/<off_id>',views.fneditoffers,name="edit_offers"),
     path('disable_offers/<offdis_id>',views.fndisableoffers,name="disable_offers"),
+    path('add_offer_products/<offer_prod>',views.fnofferproducts,name="add_offer_products"),
 
 
     path('areas/',views.fnareas,name="areas"),

@@ -7,25 +7,30 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<meta property="og:type" content="article" />
+<!-- <meta property="og:type" content="article" />
 <meta property="og:title" content="" />
-<meta property="og:description" content="" />
-<meta property="og:url" content="https://wazaitoon.com/all_products" />
-<meta property="og:site_name" content="Beru" />
+<meta property="og:description" content="" /> -->
+<!-- <meta property="og:url" content="https://wazaitoon.com/all_products" /> -->
+<!-- <meta property="og:site_name" content="Beru" />
 <meta property="og:image" itemprop="image" content="https://wazaitoon.com/assets/images/logo-og.pnghttps://wazaitoon.com/" />
 <meta property="og:image:width" content="100" />
 <meta property="og:image:height" content="100" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content="website" /> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-<link href="https://wazaitoon.com/assets/front/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-<link href="https://wazaitoon.com/assets/front/css/custom-layout.css?version=5" rel="stylesheet" type="text/css" media="all" />
+
+<link href="{% static 'frontend/css/bootstrap.css'%}" rel="stylesheet" type="text/css" media="all" />
+<link href="{% static 'frontend/css/custom-layout.css'%}" rel="stylesheet" type="text/css" media="all" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="{% static 'frontend/css/style.css' %}">
+
 <link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/jquery-ui.css">
+
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
 <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700&display=swap" rel="stylesheet">
+
 <link href="https://wazaitoon.com/assets/css/jquery-confirm.min.css" rel="stylesheet">
 <link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owl.carousel.min.css">
 <link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owl.theme.default.min.css">
@@ -326,105 +331,18 @@
 <ul>
   {% for cat in catogory%}
 <li class="has-submenu" style="display: block">
-<a href="">
+<a href="/products/?cat_id={{cat.id}}">
 {{cat.catogory_name}} </a>
 <ul>
   {% for all in allcat %}
   {% if cat.id == all.parent_id %}
-  <li><a href="">{{all.catogory_name}}</a></li>
+  <li><a href="/products/?cat_id={{all.id}}">{{all.catogory_name}}</a></li>
 {% endif %}
 {% endfor %}
 </ul>
 </li>
 {% endfor %}
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/193">
-Dry Fruits </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/193">All Dry Fruits</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/195">
-Dates </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/195">All Dates</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/197">
-Chocolates & Wafers </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/197">All Chocolates & Wafers</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/206">
-Snacks & Sweets </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/206">All Snacks & Sweets</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/207">
-Fragrance & Hygiene </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/207">All Fragrance & Hygiene</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/208">
-Teas & Coffees </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/208">All Teas & Coffees</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/209">
-Cooldrinks & Beverages </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/209">All Cooldrinks & Beverages</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/215">
-Exotic Spices </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/215">All Exotic Spices</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/211">
-Ready to cook </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/211">All Ready To Cook</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/213">
-Gift </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/213">All Gift</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/217">
-Staples </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/217">All Staples</a>
-</li>
-</ul>
-</li> -->
+
 </ul>
 </div>
 </div>
@@ -439,16 +357,16 @@ Staples </a>
 <div class="top-nav">
 <ul class="memenu skyblue ">
 <li class="grid active"><a href="{% url 'Home' %}">HOME</a></li>
-<li class="grid active"><a href="{% url 'products' cat_id=0 %}">PRODUCTS</a></li>
-<li class="grid active"><a href="https://wazaitoon.com/offers">OFFERS</a></li>
-<li class="grid active"><a href="https://wazaitoon.com/about">ABOUT US</a></li>
-<li class="grid active"><a href="https://wazaitoon.com/contact">CONTACT</a></li>
+<li class="grid active"><a href="/products/?cat_id=0">PRODUCTS</a></li>
+<li class="grid active"><a href="">OFFERS</a></li>
+<li class="grid active"><a href="">ABOUT US</a></li>
+<li class="grid active"><a href="">CONTACT</a></li>
 <li class="grid active">
 <a class="sh-mobile-on">
 <b>CATEGORIES</b>
 </a>
 </li>
-<li class="grid active">
+<!-- <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/192">
 &nbsp;&nbsp;Nuts & Seeds </a>
 </li>
@@ -495,15 +413,15 @@ Staples </a>
 <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/217">
 &nbsp;&nbsp;Staples </a>
-</li>
+</li> -->
 </ul>
 
 </div>
 
 <div class="cart box_1 boxmob1">
-<a href="" style="    color: #fff;">
+<a href="{% url 'view_wishlist' %}" style="    color: #fff;">
 <h3><span class="fas fa-heart" aria-hidden="true" style="color: #dce8df;"></span>
-<div class="total" style="margin-left: 0px;">(0)</div>
+<div class="total wishlist-total" style="margin-left: 0px;">({{wish_count}})</div>
 </h3>
 </a>
 <div class="clearfix"> </div>
@@ -766,102 +684,7 @@ Staples </a>
 
 	})
 </script>
-<script type="text/javascript">
-	$(document).on('click', '.add-to-cart-btn', function(e) {
-
-		e.preventDefault();
-
-		var elem = $(this);
-
-		var htm = elem.html();
-
-		var product = $(this).attr('data-id');
-
-		var price = $(this).attr('data-price');
-
-		var offer = $(this).attr('data-offer');
-
-		var offer_price = $(this).attr('data-oprice');
-
-
-
-
-
-		if (offer_price) offer_price = offer_price;
-
-		else offer_price = price;
-
-		$.ajax({
-
-			type: 'post',
-
-			url: 'https://wazaitoon.com/Cart/add_to_cart',
-
-			data: {
-				product: product,
-				price: price,
-				offer_price: offer_price,
-				offer: offer
-			},
-
-			success: function(out) {
-
-				var out = JSON.parse(out);
-
-				if (out.status == 1) {
-
-					var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>' + out.cart.cart_nos + '</span> )<i class="fas fa-rupee-sign"></i> <span>' + out.cart.cart_total + '</span>';
-
-					$('.vendor-cart .checkout-btn').html(cart);
-
-					elem.html('<i class="fa fa-check"></i>');
-
-					elem.addClass('add_to_cart_suc');
-
-					elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">' + out.data + '</p>');
-
-					setTimeout(function() {
-
-						elem.html(htm);
-
-						elem.removeClass('add_to_cart_suc');
-
-						elem.parent().find('.e-msg').remove();
-
-					}, 1400);
-
-					location.reload();
-
-				} else if (out.status == 2) {
-
-					window.location.href = "https://wazaitoon.com/Account";
-
-				} else {
-
-					elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">' + out.data + '</p>');
-
-					elem.html('<i class="fa fa-times"></i>');
-
-					elem.addClass('add_to_cart_err');
-
-					setTimeout(function() {
-
-						elem.html(htm);
-
-						elem.removeClass('add_to_cart_err');
-
-						elem.parent().find('.e-msg').remove();
-
-					}, 1400);
-
-				}
-
-			}
-
-		})
-
-	})
-</script><style type="text/css">
+<style type="text/css">
 	.primal-ftr{
 
 	    width: 14px;

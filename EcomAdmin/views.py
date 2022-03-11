@@ -623,6 +623,7 @@ def fnaddoffers(request):
 def fnoffers(request):
     if request.user.is_superuser:
         offers=Offers.objects.all()
+        print(offers)
         context={'offers':offers,'offerpermission':1}
         if request.method=="POST":
             offer=request.POST['offer']
@@ -656,7 +657,7 @@ def fnoffers(request):
    
     return render(request,'offers/offers.html',context)
 
-@login_required(login_url="/admin/login/")
+
 
 
 @login_required(login_url="/admin/login/")
@@ -672,6 +673,23 @@ def fneditoffers(request,off_id):
         messages.success(request,'Offers edited successfully')
         return redirect(fnoffers)
     return render(request,'offers/addoffers.html',{'form':form})
+
+
+@login_required(login_url="/admin/login/")
+def fnofferproducts(request,offer_prod):
+    if request.method=="POST":
+        products=request.POST.getlist('products')
+        offers=Offers.objects.get(id=offer_prod)
+        print( offers)
+    
+        for all in products:
+            offers.Product_Offers.add(Product_Varients.objects.get(id=all))
+        messages.success(request,'offer products added successfully')
+        return redirect(fnoffers)
+
+    products=Product_Varients.objects.all()
+    return render(request,'offers/offer_products.html',{'products':products})
+
 
 @login_required(login_url="/admin/login/")
 def fndisableoffers(request,offdis_id):

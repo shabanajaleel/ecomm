@@ -37,6 +37,15 @@ class Cart_total(models.Model):
     total_quantity=models.PositiveIntegerField()
     created=models.DateTimeField(auto_now_add=True)
     updated=models.DateTimeField(auto_now_add=True)
+
+class Wishlist(models.Model):
+    customer=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product_Varients,on_delete=models.CASCADE)
+    unit_price=models.DecimalField(max_digits=12,decimal_places=2)
+    created=models.DateTimeField(auto_now_add=True)
+    updated=models.DateTimeField(auto_now_add=True)
+
+
     
 
 

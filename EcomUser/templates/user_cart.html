@@ -62,6 +62,7 @@
 						</ul><div class="clearfix"> </div>
 					<input type="hidden" name="" id="buy_now_stat" value="0">
 
+				{% if cart %}
 				{% for products in cart %}
 					<ul class="cart-header">
 						{% for img in products.product.product.productimage_set.all %}
@@ -79,10 +80,10 @@
 
 					<li class="cartproduct-quantity">
 						<div class="quantity" style="margin: 2.2em 0 0;">
-						<a href="#" class="nos-minus-btn" data-id="125" data-price="450" data-oprice="450"> <i class="fas fa-minus"></i> </a>
+						<a href="#" class="nos-minus-btn" data-id="{{ products.id }}" > <i class="fas fa-minus"></i> </a>
 						<input class="nos" type="text" value="{{products.quantity}}" maxlength="2" readonly>
-						<a href="#" class="nos-plus-btn" data-id="125" data-price="450" data-oprice="450"> <i class="fas fa-plus"></i></a>
-
+						<a href="#" class="nos-plus-btn" data-id="{{ products.id }}" data-price="450" data-oprice="450"> <i class="fas fa-plus"></i></a>
+						</div>
 					</li>
 					
 					<li class="cartremove-button"><a href="{% url 'remove_cart_item' cart_item_id=products.product_id %}" class=" btn btn-secondary add-cart cart-check remove-cart-product-btn">REMOVE</a></li>
@@ -90,6 +91,9 @@
 					<div class="clearfix"> </div>
 					</ul>
 					{% endfor %}
+					{% else %}
+					<label for="" class="text-success font-weight-bold p-5">Your Cart is Empty</label>
+					{% endif%}
 
 
 					</div>
@@ -109,22 +113,22 @@
 <div class="col-md-4 col-12" id="cart_total-pricetable" >
 	<div class="cart-total bg-light border">
 
-		<div class="full-block fl-left">
+		<!-- <div class="full-block fl-left">
 			<div class="row">
 				<div class="col-sm-12"><h5 style="border-bottom: none !important;">Coupons</h5></div>
 				<div class="col-lg-8 col-md-12 col-sm-7 col-12"><input type="text" name="promo" id="promo" class="promo" placeholder="Enter coupon code"></div>
 				<div class="col-lg-4 col-md-12 col-sm-5 col-12"><button id="promo-btn" class="promo-btn promocode-button" style="float:left;">Apply</button></div>
 			</div>
-		</div>
+		</div> -->
 
 		<div class="full-block fl-left">
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="price-details">
 						<h5>PRICE DETAILS</h5>
-						<span style="margin-top:2%">Cart Total(1items)</span>
-						<span class="total" style="margin-top:2%">
-						&#8377 450 </span>
+						<span style="margin-top:2%" class="total-qty">Cart Total({{total_qty}})</span>
+						<span class="total-price" style="margin-top:2%">
+						&#8377 {{total_price}} </span>
 
 						<span>Order total</span>
 						<span class="total">&#8377 450</span>
@@ -133,7 +137,7 @@
 				<h4 class="last-price">TOTAL</h4>
 				<span class="total final">&#8377 450</span>
 				<div class="clearfix"></div>
-				<a class="placeorder-button" href="https://wazaitoon.com//Checkout?buy=0" style="margin-bottom: 14px;">Place Order</a>
+				<a class="placeorder-button" href="{% url 'checkout'%}" style="margin-bottom: 14px;">Place Order</a>
 				</div>
 			</div>
 		</div>
@@ -397,59 +401,58 @@
 
 
 
-
-		$(document).on('click','.nos-minus-btn',function(e){
+// change cart quantity using minus button
+	$(document).on('click','.nos-minus-btn',function(e){
 
 			e.preventDefault();
 
 			var elem = $(this).parent().find('.nos');
 
 			var nos = parseInt($.trim($(elem).val()));
+			console.log(nos)
 
 			var id = $(this).attr('data-id');
+			console.log(id)
 
-			var price = $(this).attr('data-price');
-
-			var offer_price = $(this).attr('data-oprice');
-			$('.divLoad').show();
 
 			if(nos>1) 
 				{
 					$(elem).val(nos-1);
+					var newnos=$(elem).val()
+					console.log(newnos)
+					
+					
 
+            $.ajaxSetup({
+            headers:{"X-CSRFToken":'{{csrf_token}}'}
+        		})
+            $.ajax({
+                type:'POST',
+                url:'{% url "change_qty" %}',
+                data:{
+                    'qty':newnos,
+                    'prod_id':id,
+                },
+                success: (data) => {
+                    
+                        console.log(data.new_item_total)
+							var htm=data.new_item_total
+						var parent = $(this).parent().parent().siblings('.cartproduct-amount').children().html(htm)
+						 
+						  var htm2='Cart Total('+ data.total_qty +')'
+						  var htm3=data.total_price
 
-
-				$.ajax({
-
-		type:'post',
-
-		url:'https://wazaitoon.com/Cart/update_cart_details',
-
-		data:{id:id,nos:nos-1,price:price,offer_price:offer_price},
-
-		success: function(out){
-		    $('.divLoad').hide();
-
-			var out = JSON.parse(out);
-
-			if(out.status==1){
-
-				window.location.reload();
-
-			}
-
-			else{
-
-				alert(out.data);
-
-			}
-
-		}
-
-	})
+						  $('.total-qty').html(htm2)
+						  $('.total-price').html(htm3)
+                    
+                    }
+            })
+        
 			}
 
 		})
+
+// end
 
 
 
@@ -457,68 +460,47 @@
 
 			e.preventDefault();
 
-			var elem = $(this).parent().find('.nos');
+		var elem = $(this).parent().find('.nos');
 
-			var nos = parseInt($.trim($(elem).val()));
+		var nos = parseInt($.trim($(elem).val()));
+		console.log(nos)
 
-			var id = $(this).attr('data-id');
-
-			var price = $(this).attr('data-price');
-
-			var offer_price = $(this).attr('data-oprice');
-			$('.divLoad').show();
-
-			// alert(nos);
-
-			if(nos > 9)
-
-			{
-
-			alert("Product count cannot be more than 10!");
-
-			$(elem).val('10');
-
-			}
-
-			else
-
-			{
-
-			$(elem).val(nos+1);
+		var id = $(this).attr('data-id');
+		console.log(id)
 
 
-				$.ajax({
+		
+				$(elem).val(nos+1);
+				var newnos=$(elem).val()
+				console.log(newnos)
+				
+				
 
-		type:'post',
+		$.ajaxSetup({
+		headers:{"X-CSRFToken":'{{csrf_token}}'}
+			})
+		$.ajax({
+			type:'POST',
+			url:'{% url "change_qty" %}',
+			data:{
+				'qty':newnos,
+				'prod_id':id,
+			},
+			success: (data) => {
+				
+					console.log(data.new_item_total)
+						var htm=data.new_item_total
+					var parent = $(this).parent().parent().siblings('.cartproduct-amount').children().html(htm)
+					var htm2='Cart Total('+ data.total_qty +')'
+						  var htm3=data.total_price
 
-		url:'https://wazaitoon.com/Cart/update_cart_details',
-
-		data:{id:id,nos:nos+1,price:price,offer_price:offer_price},
-
-		success: function(out){
-		    
-		    $('.divLoad').hide();
-
-			var out = JSON.parse(out);
-
-			if(out.status==1){
-
-				window.location.reload();
-
-			}
-
-			else{
-
-				alert(out.data);
-
-			}
-
-		}
-
-	})
+						  $('.total-qty').html(htm2)
+						  $('.total-price').html(htm3)
+				
+				}
+		})
 
 
-			}
 
 		})
 
@@ -1004,5 +986,41 @@ else{
 	  1000:{ items:1 }
 	}
 });
+</script>
+
+<script>
+	$('.nos').change(function(){
+        var qty=$(this).val();
+        
+        console.log(qty)
+      
+        if (varient_type) {
+            $.ajaxSetup({
+            headers:{"X-CSRFToken":'{{csrf_token}}'}
+        })
+            $.ajax({
+                type:'POST',
+                url:'{% url "new_product" %}',
+                data:{
+                    'varient_id':varient_type,
+                    'prod_id':id,
+                },
+                success: (data) => {
+                    
+                        console.log(data.id)
+                        let html_data_prod_name = '<h3>\
+                                {{product.product}}-'+ data.Varient_Values+'\
+                                </h3>'
+                        let html_data_prod_price='<label> &#8377 '+data.Selling_Prize+'</label>'
+                        let html_data_prod_varient='<p><span>Unit </span>:'+data.Varient_Values+'</p>'
+                        
+                        $(".prod_new").html(html_data_prod_name);
+                        $(".new_sp").html(html_data_prod_price);
+                        $(".new_varient").html(html_data_prod_varient);
+                        // $('.varient_Values1').html('<p>' + data.Type + '</p>')
+                    }
+            })
+        }
+    })
 </script>
 {% endblock %}

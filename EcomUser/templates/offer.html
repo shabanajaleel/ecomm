@@ -1,6 +1,6 @@
 {% extends 'user_main.html' %}
 {% block content %}
-{% load customFilter %}
+
 
 <style>
 	.pagination>li>a, .pagination>li>span {
@@ -30,14 +30,14 @@
     <ul class="dropdown-menu" style="float:left; padding: 5px 22px;">
 	
         <li><a href="/products/?cat_id={{cat_id}}&sort=0">What's New</a></li>
-        <li><a href="/products/?cat_id={{cat_id}}&sort=1">Price: Low to High</a></li>
-        <li><a href="/products/?cat_id={{cat_id}}&sort=2">Price: High to Low</a></li>
+        <li><a href="">Price: Low to High</a></li>
+        <li><a href="">Price: High to Low</a></li>
 		
 
     </ul>
     </div>
 
-	<h2> <span style="text-align:center;">Our Products  </span></h2>
+	<h2> <span style="text-align:center;">Our Products</span></h2>
 
 <div class="rsidebar span_1_of_left sh-mobile-off">
 <section class="sky-form">
@@ -73,7 +73,7 @@
 
 <div class="col-md-9 product-model-sec">
     {% for product in products %}
-    {% for pro in product.product_varients_set.all %}
+    {% for pro in product.product_varients_set.all | order_by:orderby %}
     {% if forloop.first %}
 
 <div class="product-grid love-grid">
@@ -98,7 +98,7 @@
 <a href="">
 <div class="product-info simpleCart_shelfItem" style="text-align: center;">
 <div class="product-info-cust">
-<h4>{{pro.product}}-{{pro.Varient_Values.varient_values}}</h4>
+<h4>{{pro.product}}</h4>
 
 
 <div class="" style="font-family: Roboto, Arial, sans-serif">
