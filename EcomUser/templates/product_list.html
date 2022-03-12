@@ -79,8 +79,9 @@
 <div class="product-grid love-grid">
 <div class="more-product"><span> </span></div>
 <div class="product-img b-link-stripe b-animate-go  thickbox">
+	
 <div class="shrt">
-<a href="javascript:void(0)" data-id="947" data-price="700" data-oprice="700" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+	<a href="javascript:void(0)" data-id="{{pro.id}}"  class="button add-Cart add-to-wish-btn" title="Add to Wishlist"></span>Wishlist</a>
 </div>
 
     {% for  img in product.productimage_set.all%}
@@ -112,7 +113,7 @@
 <br>
 <input type="text" value="1" class="qty" hidden>
 <div class="add-to-cart">
-<button  class="add-cart cart-check add-to-cart-btn" id="{{pro.id}}" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</button>
+<a  class="add-cart cart-check add-to-cart-btn" id="{{pro.id}}" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
 </div>
 <div class="divLoad" style="display: none;"></div>
 
@@ -131,27 +132,31 @@
 </div>
 
 
-<div class="row">
-	<div class="col-sm-6">
-	
+
+
 	</div>
-<div class="col-sm-6">
-<div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate" style="float: right;">
-	<ul class="pagination">
-		{% if products.has_previous %}
-		<li class="page"><a href="?page={{products.previous_page_number}}" data-ci-pagination-page="2">Previous</a></li>
-		{% endif %}
-		<li class="active">
-			<a href="">{{products.number}}</a></li>
-		{% if products.has_next %}	
-		<li class="page"><a href="?page={{products.next_page_number}}" data-ci-pagination-page="3">Next</a></li>
-		{% endif %}
+	<div class="row">
+		<div class="col-sm-3"></div>
+	
+		<div class="col-sm-6">
+		<div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate" style="float: right;">
+			<ul class="pagination">
+				{% if products.has_previous %}
+				<li class="page"><a href="?page={{products.previous_page_number}}" data-ci-pagination-page="2">Previous</a></li>
+				{% endif %}
+				<li class="active">
+					<a href="">{{products.number}}</a></li>
+				{% if products.has_next %}	
+				<li class="page"><a href="?page={{products.next_page_number}}" data-ci-pagination-page="3">Next</a></li>
+				{% endif %}
+					
 			
+			</ul>
+			</div>
+			</div>
+			<div class="col-sm-3"></div>
+		</div>
 	
-	</ul>
-	</div>
-	</div>
-	</div>
 
 
 
@@ -271,110 +276,7 @@
 	}
 
 </style>
-<script type="text/javascript">
 
-	$(document).on('click','.add-to-cart-btn',function(e){
-
-	e.preventDefault();
-
-	var elem = $(this);
-
-	var htm = elem.html();
-
-	var product = $(this).attr('data-id');
-
-	var price = $(this).attr('data-price');
-
-	var offer = $(this).attr('data-offer');
-
-	var offer_price = $(this).attr('data-oprice');
-
-	var is_cart=1;
-
-
-	$('.divLoad').show(); 
-
-	
-
-	if(offer_price) offer_price = offer_price;
-
-	else offer_price = price;
-	$.ajax({
-
-		type:'post',
-
-		url:'https://wazaitoon.com/Cart/add_to_cart',
-
-		data:{product:product,price:price,offer_price:offer_price,offer:offer},
-
-		success: function(out){
-		    // $('.divLoad').hide();
-
-			var out = JSON.parse(out);
- // alert(out); exit();
-			if(out.status==1){
-
-				var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
-
-				$('.vendor-cart .checkout-btn').html(cart);
-
-				elem.html('<i class="fa fa-check"></i>');
-
-				elem.addClass('add_to_cart_suc');
-
-				elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">'+out.data+'</p>');
-
-				setTimeout(function(){
-
-					elem.html(htm);
-
-					elem.removeClass('add_to_cart_suc');
-
-					elem.parent().find('.e-msg').remove();
-					location.reload();
-
-				},2000);
-
-			
-
-			}
-
-			else if(out.status == 2){
-
-				 window.location.href="https://wazaitoon.com/Account";
-
-				//window.location.href = base_url+'Account?add_to_cart='+is_cart+'&product='+product;
-
-			}
-
-			else{
-				// alert("fdsf");
- // window.location.href="https://wazaitoon.com/Account";
-				elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">'+out.data+'</p>');
-
-				elem.html('<i class="fa fa-times"></i>');
-
-				elem.addClass('add_to_cart_err');
-
-				setTimeout(function(){
-
-					elem.html(htm);
-
-					elem.removeClass('add_to_cart_err');
-
-					elem.parent().find('.e-msg').remove();
-
-				},2000);
-
-			}
-
-		}
-
-	})
-
-})
-
-</script>
 <script type="text/javascript">
 	$(document).on('click','.add-to-wish-btn',function(e){
 		
@@ -661,7 +563,8 @@ $(document).on('click','#quotation-btn',function(e){
 
 });
 
-</script><style type="text/css">
+</script>
+<style type="text/css">
 	.primal-ftr{
 
 	    width: 14px;
@@ -1067,12 +970,16 @@ else{
 				   'qty':qty,
 			   },
 			   success: (data) => {
-				   if (data.message){
-					   
-					   alert(data.message)
+				if (data.login){
+						   
+						   alert(data.login)
+						   document.location.href="/login_user/"
+   
+					   }
 
-				   }
-				   else{
+				else{
+						alert(data.message)
+
 					   count_html="("+ data.count+ ")"
 
 					   $('.cart_total').html(count_html)
@@ -1090,5 +997,50 @@ else{
 
 
    
+</script>
+
+<script>
+	$('.add-to-wish-btn').click(function(){
+var varient_type=$(this).attr('data-id')
+
+ 
+$('.divLoad').show();
+console.log(varient_type)
+
+if (varient_type) {
+	$.ajaxSetup({
+	headers:{"X-CSRFToken":'{{csrf_token}}'}
+})
+	$.ajax({
+		type:'POST',
+		url:'{% url "wishlist" %}',
+		data:{
+			'varient_id':varient_type,
+		   
+		},
+		success: (data) => {
+		 $('.divLoad').hide();
+		 if (data.login){
+						   
+						   alert(data.login)
+						   document.location.href="/login_user/"
+   
+					   }
+				else{
+						alert(data.message)
+
+
+				count_html="("+ data.count+ ")"
+
+				$('.wishlist-total').html(count_html)
+
+			}
+			
+	 
+			}
+	})
+}
+})
+
 </script>
 {% endblock %}

@@ -1188,6 +1188,7 @@ def fnaddproditems(request,prodvar_id):
 def fnedititems(request,edititem_id):
     items=Product_Varients.objects.get(id=edititem_id)
     product=items.product.Varient_Type
+    product_id=items.product.id
     varients=VarientValues.objects.filter(varient_type=product)
     print(varients)
     if request.method=="POST":
@@ -1199,7 +1200,7 @@ def fnedititems(request,edititem_id):
         var=Product_Varients.objects.filter(id=edititem_id).update(Sku_Code=code,Varient_Values_id=varient_val,Selling_Prize=selling_price,Display_Prize=display_price,Product_stock=stock,status="Active")
         if var:
             messages.success(request,'Product updated successfully')
-            return redirect('view_product',productview_id=edititem_id)
+            return redirect('view_product',productview_id=product_id)
 
 
     context={'items':items,'varients':varients}
@@ -1393,6 +1394,16 @@ def fneditcoupon(request,editcoup_id):
         return redirect(fncoupon)
     return render(request,'coupon/addcoupons.html',{'form':form})
     
+def fndelete_item(request,prod_id):
+    order=Order.objects.filter(id=prod_id).delete()
+    return redirect(fnorders)
+
+def fndelete_order(request,prod_id):
+    order=OrderDetails.objects.filter(id=prod_id).delete()
+    return redirect(fnorders)
+
+ 
+
 
 
 

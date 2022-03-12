@@ -197,7 +197,8 @@
 </div>
 
 <script>
-    $('#id_Varient_Type').click(function(){
+    $(document).ready(function(){
+        $('#id_Varient_Type').click(function(){
         var varient_type=$('#id_Varient_Type').val()
         console.log(varient_type)
         if (varient_type) {
@@ -223,7 +224,10 @@
         }
     })
 
-// </script>
+    })
+    
+
+</script>
 
 
 {% endblock %}

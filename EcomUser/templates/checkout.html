@@ -103,7 +103,13 @@
     </div>
 	{% for add in address %}
 	{% if forloop.first %}
-    <p class="new_address"><span class="font-weight-bold">{{add.username.first_name}} {{add.username.last_name}}</span></br>{{add.address}}, {{add.locality}} </br> {{add.state}}, {{add.country}} </br> {{add.pin}}</p>
+    <p class="new_address" >
+		<input type="text" value="{{add.id}}" id="add_id" hidden>
+		<span class="font-weight-bold">
+		{{add.username.first_name}} {{add.username.last_name}}</span>
+		</br>{{add.address}}, {{add.locality}} 
+		</br> {{add.state}}, {{add.country}} 
+		</br> {{add.pin}}</p>
 	{% endif%}
 	{% endfor %}
     </div>
@@ -117,9 +123,9 @@
     </div>
     <div class="col-12" style="font-size: 16px;">
 
-    <input type="radio" name="payment_cod" value="cod" id="payment_cod" checked="checked"> <strong> CASH ON DELIVERY</strong>
+    <input type="radio" name="payment_cod" value="cod" class="payment_cod" checked <strong> CASH ON DELIVERY</strong>
     <br />
-    <input type="radio" name="payment_cod" value="online" id="payment_cod"> <strong> ONLINE</strong>
+    <input type="radio" name="payment_cod" value="online" class="payment_cod"> <strong> ONLINE</strong>
     </div>
     </div>
 
@@ -216,6 +222,7 @@
     <div class="col-md-4" style="margin-top: 10px; text-align: right">
     <h6 style="font-family: Roboto, Arial, sans-serif"><strong>
     <div >&#8377 <span class="tot_price" >{{total_price}}</span>  </div>
+	<input type="text" value="{{total_qty}}" id="total_qty" hidden>
     </strong></h6>
     </div>
     </div>
@@ -228,12 +235,12 @@
 
     <div class="shopping-button" style="">
 
-	<div id="paypal-button-container"></div> 
+	<div id="paypal-button-container" style="display:none"></div> 
 	
-    <a href="javascript:void(0)" class="button buy" onclick="checkAddress()" style="margin-right: 40px;margin-top:10px;">Place Order</a>
+    <a href="javascript:void(0)" class="button buy"  style="margin-right: 40px;margin-top:10px; display:block">Place Order</a>
 
 
-    <a href="https://wazaitoon.com/" class="button continue" style="width: 195px;margin-left: 15px; margin-top:10px;">Continue to Shopping</a>
+    <a href="{% url 'Home' %}" class="button continue" style="width: 195px;margin-left: 15px; margin-top:10px;">Continue to Shopping</a>
 	 
 
 </div>
@@ -674,8 +681,10 @@
 				var distr=data.district
 				var state=data.state
 				var country=data.country 
-
-				$('.new_address').html(address+"</br>"+locality+"</br>"+distr,state,country)
+				var  htm='<input type="text" value="{{add.id}}" id="add_id" hidden>\
+				'+address+"</br>"+locality+"</br>"+distr+','+state+','+country
+				
+				$('.new_address').html(htm)
 		
 
 			}
@@ -1576,6 +1585,71 @@ else{
 
 	}).render('#paypal-button-container');
 </script>
+
+<script>
+	$(document).ready(function(){
+		$('.payment_cod').click(function(){
+			var p_method = $('input[name=payment_cod]:checked').val();
+
+			if( p_method == 'cod'){
+				$('.buy').show()
+				$('#paypal-button-container').hide()
+
+			}
+			else{
+				$('.buy').hide()
+				$('#paypal-button-container').show()
+
+			}
+
+		})
+		
+	})
+</script>
+
+<!-- place order  -->
+<script>
+	$('.buy').click(function(){
+		if($("p").hasClass("new_address")) {
+			var address=$('#add_id').val()
+			var order_price=$('.tot_price').html()
+			var total_qty=$('#total_qty').val()
+			console.log(order_price)
+
+			
+			$.ajaxSetup({
+      		headers:{"X-CSRFToken":'{{csrf_token}}'}
+    		})
+
+			$.ajax({
+			type:'POST',
+			url:'{% url "place_order"%}',
+			data:{
+				'address':address,
+				'order_price':order_price,
+				'total_qty':total_qty
+			},
+			success: (data) => {
+                   
+                    document.location.href="/confirm-order/"
+					alert(data.message)
+             
+                    }
+    })
+
+
+
+		}
+		else{
+			alert("select delivery address")
+		}
+	})
+
+</script>
+
+
+
+
 <!-- end -->
 
 {% endblock %}

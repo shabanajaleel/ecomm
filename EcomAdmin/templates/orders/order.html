@@ -142,7 +142,8 @@
             <td>{{ order.order_total }}</td>
             <td><label >{{order.order_status}}</label></td>
             <td><label >{{order.payment_status}}</label></td>
-           
+            <td><a href="{% url 'delete_order' prod_id=order.id%}">Delete</a></td>
+             
             <td> 
                   
              <a href="{% url 'view_orders' order_id=order.id %}" class="btn btn-secondary">Orders</a>       

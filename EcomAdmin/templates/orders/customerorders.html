@@ -48,6 +48,8 @@
               <td>{{ order.count }}</td>
               <td>{{ order.order_date }}</td>
               <td>{{ order.order_total }}</td>
+
+              <td><a href="{% url 'delete_item' prod_id=order.id%}">Delete</a></td>
              
               <!-- <td> <td><a href="" class="btn btn-secondary">Payment Status</a></td></td> -->
               

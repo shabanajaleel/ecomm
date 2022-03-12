@@ -231,6 +231,12 @@ class Offers(models.Model):
         db_table='Offers'
         ordering = ['-Created_at']
 
+    @property
+    def is_expired(self):
+        if datetime.now().date() > self.end_date or datetime.now().date() < self.start_date :
+            return False
+        return True
+
 
 class Customer(models.Model):
     first_name=models.CharField(max_length=100)
@@ -292,7 +298,7 @@ class OrderDetails(models.Model):
 
 class Order(models.Model):
     order_id=models.ForeignKey(OrderDetails,on_delete=models.CASCADE)
-    product=models.ForeignKey(Product,on_delete=models.CASCADE)
+    product=models.ForeignKey(Product_Varients,on_delete=models.CASCADE)
     count=models.CharField(max_length=50)
     order_total = models.DecimalField(max_digits=20,decimal_places=2)
     order_date=models.DateField(auto_now_add=True)

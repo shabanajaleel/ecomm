@@ -49,7 +49,7 @@
                        
                         <div class="form-group">
                             <label class="form-label">Offer products<span class="danger" style="color: red;"> *</span></label>
-                          <select name="products" id=""  class="form-control  chosen-select" multiple>
+                          <select name="products" id="select_multiple"  class="form-control " multiple>
                               {% for pro in products %}
                               <option value="{{pro.id}}">{{pro.product}} {{pro.Varient_Values.varient_values}}</option>
                               {% endfor %}
@@ -68,5 +68,11 @@
         <div class="col-lg-1"></div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        console.log('hai')
+        $('#select_multiple').select2();
+    })
+</script>
 
 {% endblock %}

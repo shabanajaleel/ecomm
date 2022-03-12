@@ -1,0 +1,78 @@
+{% extends 'user_main.html' %}
+{% load static %}
+{% block content %}
+<div class="section checkout">
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<ol class="breadcrumb">
+					<li><a href="{% url 'Home' %}">Home</a></li>
+
+					<li class="active">My orders</li>
+				</ol>
+			</div>
+		</div>
+<div class="row">
+	<div class="col-sm-12 mb-5"><h3>My Orders</h3></div>
+	<div class="col-md-8 col-sm-12 col-12">
+		<div class="product-price1">
+			<div class="check-out">
+				<div class="cart-items">
+					<div class="in-check" id="product_cart-table">
+						<ul class="unit">
+							<li><span>Item</span></li>
+							<li class="cartproductdetails-head"><span>Product Detail</span></li>
+							<li class="cartmobile-hide"><span>Total Price</span></li>
+							<li class="cartmobile-hide"><span>Quantity</span></li>
+							<li class="cartmobile-hide"> </li>
+						</ul><div class="clearfix"> </div>
+					<input type="hidden" name="" id="buy_now_stat" value="0">
+
+				{% if orders %}
+				{% for order in orders %}
+				{% for products in order.order_set.all%}
+					<ul class="cart-header">
+						{% for img in products.product.product.productimage_set.all %}
+						{% if forloop.first %}
+						<li class="ring-in cartproduct-image">
+							<a href="">
+								<img src="/media/{{img.Thumbnail_image}}" class="img-responsive" alt="">
+							</a>
+						</li>
+						{% endif %}
+						{% endfor %}
+
+					<li class="cartproduct-name"><span>{{products.product.product}}-{{products.product.Varient_Values.varient_values}}</span></li>
+					<li class="cartproduct-amount"><span class="cartprice">&#8377 {{products.product.Selling_Prize}}</span></li>
+
+					<li class="cartproduct-quantity">
+						<span>{{products.count}}</span>
+					</li>
+					
+					
+					
+					<div class="clearfix"> </div>
+					</ul>
+					{% endfor %}
+					{% endfor %}
+					{% else %}
+					<label for="" class="text-success font-weight-bold p-5">Your Cart is Empty</label>
+					{% endif%}
+
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="full-block">
+		<a class="continueshopping-button" href="{% url 'Home' %}">Continue Shopping</a>
+		</div>
+
+	</div>
+</div>
+</div>
+</div>
+
+{% endblock %}

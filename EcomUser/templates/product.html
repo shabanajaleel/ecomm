@@ -57,6 +57,7 @@
             {{product.product}}-{{product.Varient_Values.varient_values}}
         </h3>
     </div>
+    <input type="text" id="prodvarient_id" value="{{product.id}}" hidden>
 
 <div class="shrt">
 
@@ -127,11 +128,11 @@
 <div class="row " style="margin-top:30px">
 
 <div class="col-xs-6 col-sm-6 col-md-4">
-<button  class="add-cart cart-check add-to-cart-btn" title="Add to Cart" style="margin-top: -1.7em;      border: 1px solid #008f4c;     background: #008f4c;     "><i class="fas fa-shopping-cart">&nbsp;</i>Add to Cart</a>
+<a  class="add-cart cart-check add-to-cart-btn" title="Add to Cart" style="margin-top: -1.7em;      border: 1px solid #008f4c;     background: #008f4c;     "><i class="fas fa-shopping-cart">&nbsp;</i>Add to Cart</a>
 
 </div>
 <div class="col-xs-6 col-sm-6 col-md-4">
-<a href="javascript:void(0)" data-id="1100" data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-wishlist add-to-wish-btn" title="Add to Wishlist" style="    "><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>WISHLIST</a>
+<a href="javascript:void(0)" data-id={{product.id}} data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-wishlist add-to-wish-btn" title="Add to Wishlist" style="    "><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>WISHLIST</a>
 </div>
 </div>
 <div class="row">
@@ -1168,10 +1169,12 @@ $('.customize_item').change(function(){
                                 </h3>'
                         let html_data_prod_price='<label> &#8377 '+data.Selling_Prize+'</label>'
                         let html_data_prod_varient='<p><span>Unit </span>:'+data.Varient_Values+'</p>'
-                        
+                        var newid=data.id
+                       
                         $(".prod_new").html(html_data_prod_name);
                         $(".new_sp").html(html_data_prod_price);
                         $(".new_varient").html(html_data_prod_varient);
+                        console.log($("#prodvarient_id").val(data.id))
                         // $('.varient_Values1').html('<p>' + data.Type + '</p>')
                     }
             })
@@ -1381,8 +1384,7 @@ $('.customize_item').change(function(){
         if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
 
             // Allow: Ctrl+A, Command+A
-            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
-
+            (e.kde === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
             // Allow: home, end, left, right, down, up
             (e.keyCode >= 35 && e.keyCode <= 40)) {
 
@@ -1688,8 +1690,9 @@ else{
 
 
 <script>
+
      $('.add-to-cart-btn').click(function(){
-        var varient_type='{{product.id}}';
+        var varient_type=$('#prodvarient_id').val();
         var qty=$('#qty').val()
          
         
@@ -1707,12 +1710,14 @@ else{
                     'qty':qty,
                 },
                 success: (data) => {
-                    if (data.message){
-                        
-                        alert(data.message)
-
-                    }
-                    else{
+                    if (data.login){
+						   
+						   alert(data.login)
+						   document.location.href="/login_user/"
+   
+					   }
+				else{
+						alert(data.message)
                         count_html="("+ data.count+ ")"
 
                         $('.cart_total').html(count_html)
@@ -1730,5 +1735,55 @@ else{
 
 
     
+</script>
+<script>
+$('.add-to-wish-btn').click(function(){
+var varient_type=$(this).attr('data-id')
+
+ 
+$('.divLoad').show();
+console.log(varient_type)
+
+if (varient_type) {
+    $.ajaxSetup({
+    headers:{"X-CSRFToken":'{{csrf_token}}'}
+})
+    $.ajax({
+        type:'POST',
+        url:'{% url "wishlist" %}',
+        data:{
+            'varient_id':varient_type,
+           
+        },
+        success: (data) => {
+         $('.divLoad').hide();
+         
+         if (data.login){
+						   
+						   alert(data.login)
+						   document.location.href="/login_user/"
+   
+					   }
+				else{
+						alert(data.message)
+
+                if(data.count)
+                {
+                    count_html="("+ data.count+ ")"
+
+                    $('.wishlist-total').html(count_html)
+
+                }
+
+                
+
+            }
+            
+     
+            }
+    })
+}
+})
+
 </script>
 {% endblock %}

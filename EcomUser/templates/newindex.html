@@ -76,7 +76,7 @@
 								</a>
 								<div class="add-to-cart">
 								
-								<button   id="{{pro.id}}" class="add-cart cart-check add-to-cart-btn"  title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</button>
+								<a href=""  id="{{pro.id}}" class="add-cart cart-check add-to-cart-btn"  title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
 								</div>
 								<div class="divLoad" style="display: none;"></div>
 							</div>
@@ -85,7 +85,7 @@
 								
 								</div>
 								<div class="shrt">
-								<a href="javascript:void(0)" data-id="{{pro.id}}" data-price="550" data-oprice="550" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+									<a href="javascript:void(0)" data-id="{{pro.id}}"  class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
 								
 								</div>
 						
@@ -121,12 +121,16 @@
 					   'qty':qty,
 				   },
 				   success: (data) => {
-					   if (data.message){
+					   if (data.login){
+						
 						   
-						   alert(data.message)
+						   document.location.href="/login_user/"
    
 					   }
+					  
 					   else{
+						   alert(data.message)
+						  
 						   count_html="("+ data.count+ ")"
    
 						   $('.cart_total').html(count_html)
@@ -172,12 +176,15 @@
 				   success: (data) => {
 					$('.divLoad').hide();
 					
-					   if (data.message){
+					   if (data.login){
 						   
-						   alert(data.message)
+						   alert(data.login)
+						   document.location.href="/login_user/"
    
 					   }
 					   else{
+						alert(data.message)
+
 						   count_html="("+ data.count+ ")"
    
 						   $('.wishlist-total').html(count_html)

@@ -3454,13 +3454,13 @@ body {
 
   }
 
-  button.add-cart:hover {
+  a.add-cart:hover {
 
     background: #575757;
 
   }
 
-  button.add-cart {
+  a.add-cart {
 
     text-decoration: none;
 
@@ -4496,7 +4496,7 @@ body {
 
     }
 
-    button.add-cart {
+    a.add-cart {
 
       font-size: .85em;
 
@@ -4902,7 +4902,7 @@ body {
 
     }
 
-    button.add-cart {
+    a.add-cart {
 
       font-size: .6em;
 
@@ -5198,7 +5198,7 @@ body {
 
     }
 
-    button.add-cart {
+    a.add-cart {
 
       font-size: .6em;
 
@@ -7621,16 +7621,16 @@ border:none; outline:none; border-radius: 40px;
     line-height: 2.4em !important;
   }
 
-  button.add-cart {
+  a.add-cart {
 
     text-decoration: none;
 
     color: #fff;
 
 
-    margin-left: 10px;
+    /* margin-left: 10px; */
 
-    padding: 6px;
+    padding: 10px;
 
     font-size: 14px;
 

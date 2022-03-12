@@ -326,105 +326,18 @@
 <ul>
   {% for cat in catogory%}
 <li class="has-submenu" style="display: block">
-<a href="">
+<a href="/products/?cat_id={{cat.id}}">
 {{cat.catogory_name}} </a>
 <ul>
   {% for all in allcat %}
   {% if cat.id == all.parent_id %}
-  <li><a href="">{{all.catogory_name}}</a></li>
+  <li><a href="/products/?cat_id={{all.id}}">{{all.catogory_name}}</a></li>
 {% endif %}
 {% endfor %}
 </ul>
 </li>
 {% endfor %}
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/193">
-Dry Fruits </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/193">All Dry Fruits</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/195">
-Dates </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/195">All Dates</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/197">
-Chocolates & Wafers </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/197">All Chocolates & Wafers</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/206">
-Snacks & Sweets </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/206">All Snacks & Sweets</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/207">
-Fragrance & Hygiene </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/207">All Fragrance & Hygiene</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/208">
-Teas & Coffees </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/208">All Teas & Coffees</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/209">
-Cooldrinks & Beverages </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/209">All Cooldrinks & Beverages</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/215">
-Exotic Spices </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/215">All Exotic Spices</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/211">
-Ready to cook </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/211">All Ready To Cook</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/213">
-Gift </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/213">All Gift</a>
-</li>
-</ul>
-</li> -->
-<!-- <li class="has-submenu" style="display: block">
-<a href="https://wazaitoon.com/product/217">
-Staples </a>
-<ul>
-<li><a href="https://wazaitoon.com/product/217">All Staples</a>
-</li>
-</ul>
-</li> -->
+
 </ul>
 </div>
 </div>
@@ -439,16 +352,16 @@ Staples </a>
 <div class="top-nav">
 <ul class="memenu skyblue ">
 <li class="grid active"><a href="{% url 'Home' %}">HOME</a></li>
-<li class="grid active"><a href="{% url 'products' cat_id=0 %}">PRODUCTS</a></li>
-<li class="grid active"><a href="https://wazaitoon.com/offers">OFFERS</a></li>
+<li class="grid active"><a href="{% url 'products' %}">PRODUCTS</a></li>
+<li class="grid active"><a href="{% url 'product-offers' %}">OFFERS</a></li>
 <li class="grid active"><a href="https://wazaitoon.com/about">ABOUT US</a></li>
 <li class="grid active"><a href="https://wazaitoon.com/contact">CONTACT</a></li>
-<li class="grid active">
+<!-- <li class="grid active">
 <a class="sh-mobile-on">
 <b>CATEGORIES</b>
 </a>
-</li>
-<li class="grid active">
+</li> -->
+<!-- <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/192">
 &nbsp;&nbsp;Nuts & Seeds </a>
 </li>
@@ -495,15 +408,15 @@ Staples </a>
 <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/217">
 &nbsp;&nbsp;Staples </a>
-</li>
+</li> -->
 </ul>
 
 </div>
 
 <div class="cart box_1 boxmob1">
-<a href="" style="    color: #fff;">
+<a href="{% url 'view_wishlist' %}" style="    color: #fff;">
 <h3><span class="fas fa-heart" aria-hidden="true" style="color: #dce8df;"></span>
-<div class="total" style="margin-left: 0px;">(0)</div>
+<div class="total wishlist-total" style="margin-left: 0px;">({{wish_count}})</div>
 </h3>
 </a>
 <div class="clearfix"> </div>
@@ -518,9 +431,9 @@ Staples </a>
 </div>
 <div class="cart box_1 boxmob2">
 <div class="clearfix"> </div>
-<h3>
+<!-- <h3>
 <div class="call" style=""><span class="fas fa-phone-volume" aria-hidden="true" style="color: #dce8df;"></span><a style="color: #fff;" href="tel:8075532238">&nbsp;8075532238</a>&nbsp;</div>
-</h3>
+</h3> -->
 </div>
 <div class="clearfix"> </div>
 
@@ -876,44 +789,26 @@ Staples </a>
 <div class="col-md-4 ftr-grid">
 <h4>About Us</h4>
 <ul>
-<li><a href="https://wazaitoon.com/about">Who We Are</a></li>
-<li><a href="https://wazaitoon.com/contact">Contact Us</a></li>
+<li><a href="">Who We Are</a></li>
+<li><a href="">Contact Us</a></li>
 </ul>
 </div>
 <div class="col-md-4 ftr-grid">
 <h4>Customer Services</h4>
 <ul>
-<li><a href="https://wazaitoon.com/cancellation">Cancellation</a></li>
-<li><a href="https://wazaitoon.com/terms">Terms & Conditions</a></li>
+<li><a href="">Cancellation</a></li>
+<li><a href="">Terms & Conditions</a></li>
 </ul>
 </div>
 <div class="col-md-4 ftr-grid">
 <h4>Your Account</h4>
 <ul>
-<li><a href="https://wazaitoon.com/Profile">Personal Information</a></li>
-<li><a href="https://wazaitoon.com/Orders">Your order</a></li>
+<li><a href="">Personal Information</a></li>
+<li><a href="">Your order</a></li>
 </ul>
 </div>
 
 <ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

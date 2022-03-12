@@ -103,6 +103,9 @@ urlpatterns=[
     path('orders/',views.fnorders,name="orders"),
     path('change_status/',views.fnchangestatus,name="change_status"),
     path('view_orders/<order_id>',views.fnvieworders,name="view_orders"),
+    path('delete_item/<prod_id>',views.fndelete_item,name="delete_item"),
+    path('delete_order/<prod_id>',views.fndelete_order,name="delete_order"),
+    
 
     path('salesreport',views.fnsalesreport,name="salesreport"),
     path('sales_csv',views.fnsalescsv,name="sales_csv"),

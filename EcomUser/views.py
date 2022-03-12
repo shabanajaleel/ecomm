@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from . forms import *
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import messages
-from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients,CoupenCode
+from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients,CoupenCode,Offers,OrderDetails,Order
 from EcomAdmin.forms import CustomerForm
 from django.contrib.auth.decorators import user_passes_test
 from . decorator import login_cart
@@ -213,21 +213,30 @@ def fnlogout(request):
 
 
 def fnwishlist(request):
-    if request.method=="POST":
-        currentUser=request.session['customer']
-        varient=request.POST['varient_id']
-        product=Product_Varients.objects.get(id=varient)
-        check_wishlist=Wishlist.objects.filter(customer=currentUser,product=varient).exists()
-        
-        if check_wishlist== True:
-            message="Product is already in Wishlist"
-            return JsonResponse({'message':message})
-        else:
+    if request.session.has_key('customer'):
 
-            wishlist=Wishlist(customer_id=currentUser,product_id=varient,unit_price=product.Selling_Prize)
-            wishlist.save()
-            count=Wishlist.objects.filter(customer_id=currentUser).count()
-            return JsonResponse({'count':count})
+        if request.method=="POST":
+            currentUser=request.session['customer']
+            varient=request.POST['varient_id']
+            product=Product_Varients.objects.get(id=varient)
+            check_wishlist=Wishlist.objects.filter(customer=currentUser,product=varient).exists()
+            
+            if check_wishlist== True:
+                message="Product is already in Wishlist"
+                return JsonResponse({'message':message})
+                
+            else:
+
+                wishlist=Wishlist(customer_id=currentUser,product_id=varient,unit_price=product.Selling_Prize)
+                wishlist.save()
+                count=Wishlist.objects.filter(customer_id=currentUser).count()
+                message="Product added to  Wishlist"
+                return JsonResponse({'count':count,'message':message})
+
+    else:
+        message="Login to add items to wishlist"
+        return JsonResponse({'login':message})
+
 
 def fnviewwishlist(request):
     currentUser=request.session['customer']
@@ -274,25 +283,37 @@ def fnaddtocartwish(request):
 
 
 def fncart(request):
-    if request.method=="POST":
-        currentUser=request.session['customer']
-
-        qty=request.POST['qty']
-# quantity must be checked later
-        varient=request.POST['varient_id']
-        product=Product_Varients.objects.get(id=varient)
-        check_cart=Cart.objects.filter(customer=currentUser,product=varient).exists()
+    if request.session.has_key('customer'):
+        if request.method=="POST":
         
-        if check_cart== True:
-            message="Product is already in cart"
-            return JsonResponse({'message':message})
-        else:
+            currentUser=request.session['customer']
+            qty=request.POST['qty']
+            
+            varient=request.POST['varient_id']
+            product=Product_Varients.objects.get(id=varient)
+            if product.Product_stock < int(qty):
+                message="Product is out of stock "
+                return JsonResponse({'message':message})
 
-            cart=Cart(customer_id=currentUser,product_id=varient,quantity=qty,selling_price=product.Selling_Prize,display_price=product.Display_Prize)
-            cart.save()
-            count=Cart.objects.filter(customer_id=currentUser).count()
-            return JsonResponse({'count':count})
+            else:
+                check_cart=Cart.objects.filter(customer=currentUser,product=varient).exists()
+                
+                if check_cart== True:
+                    message="Product is already in cart"
+                    return JsonResponse({'message':message})
+                else:
 
+                    cart=Cart(customer_id=currentUser,product_id=varient,quantity=qty,selling_price=product.Selling_Prize,display_price=product.Display_Prize)
+                    cart.save()
+                    count=Cart.objects.filter(customer_id=currentUser).count()
+                    message="Product is added to cart"
+                    return JsonResponse({'count':count,'message':message})
+    else:
+        message="login to add items to cart"
+        return JsonResponse({'login':message})
+
+
+@login_cart
 def fnviewcart(request):
     currentUser=request.session['customer']
     user_cart=Cart.objects.filter(customer_id=currentUser)
@@ -344,9 +365,39 @@ def fnfeedback(request):
 
 def fnproductlist(request):
     cat_id=request.GET.get('cat_id')
-    if cat_id == '0':
+    print(cat_id)
 
-        # filter
+    if cat_id:
+
+        products=Product.objects.filter(Product_Category=cat_id)
+
+        paginator=Paginator(products,12)
+        page_num=request.GET.get('page')
+        newproducts=paginator.get_page(page_num)
+
+        catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+        allcatogory=Catogory.objects.filter(status="Active")
+        banners=Banners.objects.all()
+
+        cart_count=0
+        wish_count=0
+
+        if 'customer' in request.session:
+            currentUser=request.session['customer']
+
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count}
+            return render(request,'product_list.html',context)
+
+        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count}
+        return render(request,'product_list.html',context)
+
+
+       
+    else:
+         # filter
         orderby="id"
         new=request.GET.get('sort')
        
@@ -409,32 +460,7 @@ def fnproductlist(request):
         
         context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
         return render(request,'product_list.html',context)
-    else:
-        products=Product.objects.filter(Product_Category=cat_id)
-
-        paginator=Paginator(products,12)
-        page_num=request.GET.get('page')
-        newproducts=paginator.get_page(page_num)
-
-        catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
-        allcatogory=Catogory.objects.filter(status="Active")
-        banners=Banners.objects.all()
-
-        cart_count=0
-        wish_count=0
-
-        if 'customer' in request.session:
-            currentUser=request.session['customer']
-
-            cart_count=Cart.objects.filter(customer=currentUser).count()
-            wish_count=Wishlist.objects.filter(customer=currentUser).count()
-
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count}
-            return render(request,'product_list.html',context)
-
-        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count}
-        return render(request,'product_list.html',context)
-
+        
 
 
 
@@ -494,7 +520,13 @@ def fnchangeqty(request):
 
 def fncheckout(request):
     currentUser=request.session['customer']
+
+    catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+    allcat=Catogory.objects.filter(status="Active")
+
     form=AddressForm()
+    cart_count=Cart.objects.filter(customer=currentUser).count()
+    wish_count=Wishlist.objects.filter(customer=currentUser).count()
     
     address=Address.objects.filter(username_id=currentUser)
     user_cart=Cart.objects.filter(customer_id=currentUser)
@@ -503,8 +535,8 @@ def fncheckout(request):
     for items in user_cart:
         total_qty += items.quantity
         total_price += items.selling_price * items.quantity
-
-    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form}
+    # Cart_total(customer_id=currentUser,order_total=total_price,total_quantity=total_qty).save()
+    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat}
 
     return render(request,'checkout.html',context)
 
@@ -592,6 +624,69 @@ def fnnew(request):
     return render(request,'news.html')
 
 def fnoffers(request):
-    pass
+    offers=Offers.objects.all()
+    cart_count=0
+    wish_count=0
+    if 'customer' in request.session:
+        currentUser=request.session['customer']
+        cart_count=Cart.objects.filter(customer=currentUser).count()
+        wish_count=Wishlist.objects.filter(customer=currentUser).count()
+    context['cart_count']=cart_count
+    context['wish_count']=wish_count
+    context['offer']=offers
+
+    return render(request,'offer.html',context)
+
+def fnplace_order(request):
+    if request.method=="POST":
+        address=request.POST['address']
+        order_price=request.POST['order_price']
+        total_qty=request.POST['total_qty']
+
+        print(total_qty)
+        print(address)
+        print(order_price)
+
+        currentUser=request.session['customer']
+        customer=Customer.objects.get(id=currentUser)
+        phone=customer.phone
+       
+        if address and order_price:
+            orderid="ORD"+str(phone)+str(randint(1000,9999))
+            print(orderid)
+            neworder=OrderDetails(orderid=orderid,customer_id=currentUser,address_id=address,order_status="Pending",order_total=order_price,totalcount=total_qty,payment_mode="COD",payment_status="Pending",platform="web").save()
+            neworder_id=OrderDetails.objects.get(customer_id=currentUser,orderid=orderid).id
+            ordered_products=Cart.objects.filter(customer_id=currentUser)
+
+            for items in ordered_products:
+                quantity=items.quantity
+                order=Order(order_id_id=neworder_id,product_id=items.product.id,count=quantity,order_total=items.selling_price).save()
+                product_varient_stock=items.product.Product_stock
+                new_stock=product_varient_stock-quantity
+                # update product quantity
+                Product_Varients.objects.filter(id=items.product.id).update(Product_stock=new_stock)
+
+            # remove products from cart after placing order
+            ordered_products=Cart.objects.filter(customer_id=currentUser).delete()
+            
+            # 
+            success="You have Successfully Placed Your Order "
+            return JsonResponse({'message':success,'id':neworder_id})
+
+        else:
+            message=" Oops.Something Went Wrong "
+            return JsonResponse({'message':message})
+    
+def fnconfirm_order(request):
+    currentUser=request.session['customer']
+    # orderdetails=OrderDetails.objects.filter(customer_id=currentUser)
+    # for ord in orderdetails.order.all:
+    #     print(ord.id)
+    
+    context['orders']=OrderDetails.objects.filter(customer_id=currentUser)
+    return render(request,'confirm_order.html',context)
+
+
+
             
         
