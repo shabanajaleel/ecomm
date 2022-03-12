@@ -8391,7 +8391,8 @@ border:none; outline:none; border-radius: 40px;
 <div class="top_left top_left_marg">
 <ul>
 <li><a href="#" id="track"><i class="fas fa-truck-moving"></i>&nbsp;&nbsp;Track Order</a></li>
-<li class="top_link"><i class="fas fa-sign-in-alt" style="color:#fff;"></i><a href="https://wazaitoon.com/account">Sign in</a></li>
+<li class="top_link"><i class="fas fa-user-alt" style="color:#fff;"></i><a href="https://wazaitoon.com/profile">My Account</a></li>
+<li class="top_link"><i class="fas fa-sign-out-alt" style="color:#fff;"></i><a href="https://wazaitoon.com/account/logout_user">Log out</a></li>
 </ul>
 </div>
 <div class="clearfix"> </div>
@@ -8414,7 +8415,7 @@ border:none; outline:none; border-radius: 40px;
 <div class="col-md-6 col-sm-12 col-xs-12 col-md-offset-3">
 <div>
 <input type="text" id="order_id" class="order-input" placeholder="Enter Order Id">
-<input type="text" id="mobile_no" class="order-input numberonly" placeholder="Enter Registered Mobile no" required maxlength="10" minlength="10">
+<input type="text" id="mobile_no" class="order-input" placeholder="Enter Registered Mobile no" value="9744797541">
 <button id="track-btn" class="track-btn">Track</button>
 <p class="check_order_msg txt-center" style="display: none;color: red"></p>
 </div>
@@ -8512,9 +8513,9 @@ Fragrance & Hygiene </a>
 </li>
 </ul>
 </li>
-<li class="has-submenu" style="display: block">
+ <li class="has-submenu" style="display: block">
 <a href="https://wazaitoon.com/product/208">
- Teas & Coffees </a>
+Teas & Coffees </a>
 <ul>
 <li><a href="https://wazaitoon.com/product/208">All Teas & Coffees</a>
 </li>
@@ -8600,8 +8601,8 @@ Staples </a>
 &nbsp;&nbsp;Chocolates & Wafers </a>
 </li>
 <li class="grid active">
-<a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/206">
- &nbsp;&nbsp;Snacks & Sweets </a>
+ <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/206">
+&nbsp;&nbsp;Snacks & Sweets </a>
 </li>
 <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/207">
@@ -8636,17 +8637,17 @@ Staples </a>
 </div>
 
 <div class="cart box_1 boxmob1">
-<a href="https://wazaitoon.com/Account" style="    color: #fff;">
-<h3><span class="fas fa-heart" aria-hidden="true" style="color: #dce8df;"></span>
-<div class="total" style="margin-left: 0px;">(0)</div>
+<a href="https://wazaitoon.com/wishlist">
+<h3><span class="fas fa-heart" aria-hidden="true" style="    color: #fff;"></span>
+<div class="total" style="margin-left: 0px;">(<span class="wishlist" style="    color: #fff;">2</span>)</div>
 </h3>
 </a>
 <div class="clearfix"> </div>
 </div>
 <div class="cart box_1 boxmob1">
-<a href="https://wazaitoon.com/Account">
-<h3><span class="fas fa-shopping-bag" aria-hidden="true" style="    color: #dce8df;"></span>
-<div class="total">(0)</div>
+<a href="https://wazaitoon.com/cart" style="    color: #fff;">
+<h3> <span class="fas fa-shopping-bag" aria-hidden="true" style="    color: #dce8df;"></span>
+<div class="total">(<span class="cartlist">2</span>)</div>
 </h3>
 </a>
 <div class="clearfix"> </div>
@@ -8804,6 +8805,7 @@ Chocolates & Wafers
 </div>
 <div class="mytab" id="tab6">
 <ul class="place">
+
 <li class="sort">
 Snacks & Sweets
 </li>
@@ -8908,7 +8910,8 @@ Staples
 <div class="more-product"><span> </span></div>
 <div class="product-img b-link-stripe b-animate-go  thickbox">
 <div class="shrt">
-<a href="javascript:void(0)" data-id="1100" data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+<a href="javascript:void(0)" data-id="1100" data-vendor="" class="button add-Cart remove-wish-btn" title="Remove  From Wishlist">
+<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></span></a>
 </div>
 <a href="https://wazaitoon.com/product_details/1356">
 <img src="https://wazaitoon.com/uploads/product/pro60120368.jpg" class="img-responsive" alt="" />
@@ -8928,7 +8931,21 @@ Staples
 </div>
 <br>
 <div class="add-to-cart">
-<a href="#" data-id="1356" data-price="125" data-oprice="125" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+<a href="https://wazaitoon.com/cart" class="add-cart cart-check " style="margin-top: -1.7em; display: inline-block;
+    text-decoration: none;
+    max-width: 100%;
+    line-height: 1.2em;
+    margin: 0 auto;
+    padding: 10px 25px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: none;
+    border: 1px solid #008f4c;
+    background: #008f4c;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;" title="Add to cart"><i class="fas fa-shopping-bag">&nbsp;</i> Go to Cart</a>
 </div>
 <div class="divLoad" style="display: none;"></div>
 
@@ -8978,7 +8995,8 @@ Staples
 <div class="more-product"><span> </span></div>
 <div class="product-img b-link-stripe b-animate-go  thickbox">
 <div class="shrt">
-<a href="javascript:void(0)" data-id="1098" data-price="600" data-oprice="600" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+<a href="javascript:void(0)" data-id="1098" data-vendor="" class="button add-Cart remove-wish-btn" title="Remove  From Wishlist">
+<span class="glyphicon glyphicon-heart" aria-hidden="true" style="color: red;"></span></a>
 </div>
 <a href="https://wazaitoon.com/product_details/1354">
 <img src="https://wazaitoon.com/uploads/product/pro57960427.jpg" class="img-responsive" alt="" />
@@ -8998,7 +9016,21 @@ Staples
 </div>
 <br>
 <div class="add-to-cart">
-<a href="#" data-id="1354" data-price="600" data-oprice="600" data-offer="" class="add-cart cart-check add-to-cart-btn" style="" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
+<a href="https://wazaitoon.com/cart" class="add-cart cart-check " style="margin-top: -1.7em; display: inline-block;
+    text-decoration: none;
+    max-width: 100%;
+    line-height: 1.2em;
+    margin: 0 auto;
+    padding: 10px 25px;
+    color: #fff;
+    font-weight: 500;
+    font-size: 14px;
+    text-transform: none;
+    border: 1px solid #008f4c;
+    background: #008f4c;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;" title="Add to cart"><i class="fas fa-shopping-bag">&nbsp;</i> Go to Cart</a>
 </div>
 <div class="divLoad" style="display: none;"></div>
 
@@ -9007,6 +9039,7 @@ Staples
 </div>
 </a>
 </div>
+
 
 
 <div class="product-grid love-grid">
@@ -9133,6 +9166,7 @@ Staples
 
 
 <div class="" style="font-family: Roboto, Arial, sans-serif">
+
 <strike style="display: none;">&#8377 450</strike>
 &#8377 <span>450/-</span>
 </div>
@@ -9342,7 +9376,6 @@ Staples
 <div class="modal-content">
 <div class="modal-header">
 <button type="button" class="close" data-dismiss="modal" style="color:red;"><i class="fa fa-window-close">
-
 </i> </button>
 <h3 style="color:#008f4c; font-weight:600; margin: 16px;text-align:center;">GET A QUOTATION</h3>
 </div>
@@ -9356,9 +9389,9 @@ Staples
 <h4 style="color:#10c440; text-align:center;" class="p_name"></h4>
 <br>
 <h4 style="color:#10c440;text-align:center;" class="p_code"></h4>
-<input type="text" name="mobile_no" id="mobile_no" class="order-input mobile_no numberonly" placeholder="Enter Registered Mobile no" maxlength="10" minlength="10" required>
-<input type="text" id="user_name" name="user_name" class="order-input" placeholder="Enter Your name" required>
-<input type="email" id="user_email" name="user_email" class="order-input" placeholder="Enter Your email id" required>
+<input type="text" name="mobile_no" id="mobile_no" class="order-input mobile_no numberonly" placeholder="Enter Registered Mobile no" value="9744797541" maxlength="10" minlength="10">
+<input type="text" id="user_name" name="user_name" class="order-input" value="eva">
+<input type="email" id="user_email" name="user_email" class="order-input" value="shabanac71@gmail.com">
 <textarea name="msg" id="msg" class="msg" placeholder="Enter your message" style="margin-left: 16px;
     padding-right: 51px;"></textarea>
 <button id="quotation-btn" class="track-btn" style="background: green;">Send</button>

@@ -79,8 +79,9 @@
 <div class="product-grid love-grid">
 <div class="more-product"><span> </span></div>
 <div class="product-img b-link-stripe b-animate-go  thickbox">
+	
 <div class="shrt">
-<a href="javascript:void(0)" data-id="947" data-price="700" data-oprice="700" data-vendor="" class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+	<a href="javascript:void(0)" data-id="{{pro.id}}"  class="button add-Cart add-to-wish-btn" title="Add to Wishlist"></span>Wishlist</a>
 </div>
 
     {% for  img in product.productimage_set.all%}
@@ -112,7 +113,7 @@
 <br>
 <input type="text" value="1" class="qty" hidden>
 <div class="add-to-cart">
-<button  class="add-cart cart-check add-to-cart-btn" id="{{pro.id}}" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</button>
+<a  class="add-cart cart-check add-to-cart-btn" id="{{pro.id}}" title="Add to Cart"><i class="fas fa-shopping-bag">&nbsp;</i> Add to Cart</a>
 </div>
 <div class="divLoad" style="display: none;"></div>
 
@@ -661,7 +662,8 @@ $(document).on('click','#quotation-btn',function(e){
 
 });
 
-</script><style type="text/css">
+</script>
+<style type="text/css">
 	.primal-ftr{
 
 	    width: 14px;
@@ -1090,5 +1092,47 @@ else{
 
 
    
+</script>
+
+<script>
+	$('.add-to-wish-btn').click(function(){
+var varient_type=$(this).attr('data-id')
+
+ 
+$('.divLoad').show();
+console.log(varient_type)
+
+if (varient_type) {
+	$.ajaxSetup({
+	headers:{"X-CSRFToken":'{{csrf_token}}'}
+})
+	$.ajax({
+		type:'POST',
+		url:'{% url "wishlist" %}',
+		data:{
+			'varient_id':varient_type,
+		   
+		},
+		success: (data) => {
+		 $('.divLoad').hide();
+		 
+			if (data.message){
+				
+				alert(data.message)
+
+			}
+			else{
+				count_html="("+ data.count+ ")"
+
+				$('.wishlist-total').html(count_html)
+
+			}
+			
+	 
+			}
+	})
+}
+})
+
 </script>
 {% endblock %}

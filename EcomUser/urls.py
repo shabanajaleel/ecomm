@@ -42,6 +42,9 @@ urlpatterns=[
 
     path('apply_coupon_code/',views.fncoupon,name="apply_coupon_code"),
 
+    path('place_order/',views.fnplace_order,name="place_order"),
+    path('confirm-order/',views.fnconfirm_order,name="confirm-order"),
+
 
     path('contact_us/',views.fnfeedback,name="contact_us")
 ]

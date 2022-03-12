@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from . forms import *
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import messages
-from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients,CoupenCode
+from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients,CoupenCode,Offers,OrderDetails,Order
 from EcomAdmin.forms import CustomerForm
 from django.contrib.auth.decorators import user_passes_test
 from . decorator import login_cart
@@ -494,7 +494,13 @@ def fnchangeqty(request):
 
 def fncheckout(request):
     currentUser=request.session['customer']
+
+    catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+    allcat=Catogory.objects.filter(status="Active")
+
     form=AddressForm()
+    cart_count=Cart.objects.filter(customer=currentUser).count()
+    wish_count=Wishlist.objects.filter(customer=currentUser).count()
     
     address=Address.objects.filter(username_id=currentUser)
     user_cart=Cart.objects.filter(customer_id=currentUser)
@@ -503,8 +509,8 @@ def fncheckout(request):
     for items in user_cart:
         total_qty += items.quantity
         total_price += items.selling_price * items.quantity
-
-    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form}
+    # Cart_total(customer_id=currentUser,order_total=total_price,total_quantity=total_qty).save()
+    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat}
 
     return render(request,'checkout.html',context)
 
@@ -592,6 +598,61 @@ def fnnew(request):
     return render(request,'news.html')
 
 def fnoffers(request):
-    pass
+    offers=Offers.objects.all()
+    cart_count=0
+    wish_count=0
+    if 'customer' in request.session:
+        currentUser=request.session['customer']
+        cart_count=Cart.objects.filter(customer=currentUser).count()
+        wish_count=Wishlist.objects.filter(customer=currentUser).count()
+    context['cart_count']=cart_count
+    context['wish_count']=wish_count
+    context['offer']=offers
+
+    return render(request,'offer.html',context)
+
+def fnplace_order(request):
+    if request.method=="POST":
+        address=request.POST['address']
+        order_price=request.POST['order_price']
+        total_qty=request.POST['total_qty']
+        print(total_qty)
+        print(address)
+        print(order_price)
+        currentUser=request.session['customer']
+        customer=Customer.objects.get(id=currentUser)
+        phone=customer.phone
+        print(phone)
+        if address and order_price:
+            orderid="ORD"+str(phone)+str(randint(1000,9999))
+            print(orderid)
+            neworder=OrderDetails(orderid=orderid,customer_id=currentUser,address_id=address,order_status="Pending",order_total=order_price,totalcount=total_qty,payment_mode="COD",payment_status="Pending",platform="web").save()
+            neworder_id=OrderDetails.objects.get(customer_id=currentUser,orderid=orderid).id
+            ordered_products=Cart.objects.filter(customer_id=currentUser)
+
+            for items in ordered_products:
+                quantity=items.quantity
+                order=Order(order_id_id=neworder_id,product_id=items.product.id,count=total_qty,order_total=order_price).save()
+                product_varient_stock=items.product.Product_stock
+                new_stock=product_varient_stock-quantity
+                # update product quantity
+                Product_Varients.objects.filter(id=items.product.id).update(Product_stock=new_stock)
+
+            # remove products from cart after placing order
+            ordered_products=Cart.objects.filter(customer_id=currentUser).delete()
+            
+            # 
+            success="You have Successfully Placed Your Order "
+            return JsonResponse({'message':success})
+
+        else:
+            message=" Oops.Something Went Wrong "
+            return JsonResponse({'message':message})
+    
+def fnconfirm_order(request):
+    return render(request,'confirm_order.html')
+
+
+
             
         

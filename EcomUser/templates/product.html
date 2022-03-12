@@ -127,11 +127,11 @@
 <div class="row " style="margin-top:30px">
 
 <div class="col-xs-6 col-sm-6 col-md-4">
-<button  class="add-cart cart-check add-to-cart-btn" title="Add to Cart" style="margin-top: -1.7em;      border: 1px solid #008f4c;     background: #008f4c;     "><i class="fas fa-shopping-cart">&nbsp;</i>Add to Cart</a>
+<a  class="add-cart cart-check add-to-cart-btn" title="Add to Cart" style="margin-top: -1.7em;      border: 1px solid #008f4c;     background: #008f4c;     "><i class="fas fa-shopping-cart">&nbsp;</i>Add to Cart</a>
 
 </div>
 <div class="col-xs-6 col-sm-6 col-md-4">
-<a href="javascript:void(0)" data-id="1100" data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-wishlist add-to-wish-btn" title="Add to Wishlist" style="    "><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>WISHLIST</a>
+<a href="javascript:void(0)" data-id={{product.id}} data-price="125" data-oprice="125" data-vendor="" class="button add-Cart add-wishlist add-to-wish-btn" title="Add to Wishlist" style="    "><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>WISHLIST</a>
 </div>
 </div>
 <div class="row">
@@ -1688,6 +1688,7 @@ else{
 
 
 <script>
+
      $('.add-to-cart-btn').click(function(){
         var varient_type='{{product.id}}';
         var qty=$('#qty').val()
@@ -1730,5 +1731,46 @@ else{
 
 
     
+</script>
+<script>
+$('.add-to-wish-btn').click(function(){
+var varient_type=$(this).attr('data-id')
+
+ 
+$('.divLoad').show();
+console.log(varient_type)
+
+if (varient_type) {
+    $.ajaxSetup({
+    headers:{"X-CSRFToken":'{{csrf_token}}'}
+})
+    $.ajax({
+        type:'POST',
+        url:'{% url "wishlist" %}',
+        data:{
+            'varient_id':varient_type,
+           
+        },
+        success: (data) => {
+         $('.divLoad').hide();
+         
+            if (data.message){
+                
+                alert(data.message)
+
+            }
+            else{
+                count_html="("+ data.count+ ")"
+
+                $('.wishlist-total').html(count_html)
+
+            }
+            
+     
+            }
+    })
+}
+})
+
 </script>
 {% endblock %}
