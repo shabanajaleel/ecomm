@@ -136,6 +136,7 @@
 
                             {% endif %}
                         </td>
+                        <td><a href="{% url 'deletecustomer' customid=customer.id %}" class="btn btn-danger">Dealete</a></td>
                         <td>
                             {% if customer.status == 1 %}
                             

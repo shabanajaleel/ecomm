@@ -290,7 +290,8 @@
 		{{add.district}} {{add.state}}<br>
 		{{add.pin}}<br />
 		<a href="" data-id="{{add.id}}" class="select-delivery-address" style="text-decoration: none;float:right;">Select</a>
-		<!-- <a href="" data-id="38" class="edit-delivery-address" style="text-decoration: none;">Edit</a> -->
+		<a href="" data-id="{{add.id}}" class="edit-delivery-address" style="text-decoration: none;">Edit</a>
+		
 		 </p>
 		</div>
 		{% endfor %}
@@ -362,37 +363,46 @@
     <div class="col-12">
     <h3 style="text-align:center;">Edit Delivery Address</h3>
     </div>
+	<form action="/edit_user_address/" method="POST">
+		{% csrf_token %}
+	
+
+	<input type="text" id="edit-delivery-id" name="add_id" class="form-control" hidden>
+
     <div class="col-12">
     <label style="margin-left: 15px;">Enter address</label>
-    <textarea id="edit-delivery-address" style="margin-left: 15px;"></textarea>
+    <textarea id="edit-delivery-address" name="address" style="margin-left: 15px;"></textarea>
     </div>
     <div class="col-md-6">
     <label>State</label>
-    <select id="edit-delivery-state" onchange="selectDistrict(this)">
-    <option value="">Select</option>
-    <option value="1">JAMMU & KASHMIR</option><option value="2">HIMACHAL PRADESH</option><option value="3">PUNJAB</option><option value="4">CHANDIGARH</option><option value="5">UTTARANCHAL</option><option value="6">HARYANA</option><option value="7">DELHI</option><option value="8">RAJASTHAN</option><option value="9">UTTAR PRADESH</option><option value="10">BIHAR</option><option value="11">SIKKIM</option><option value="12">ARUNACHAL PRADESH</option><option value="13">NAGALAND</option><option value="14">MANIPUR</option><option value="15">MIZORAM</option><option value="16">TRIPURA</option><option value="17">MEGHALAYA</option><option value="18">ASSAM</option><option value="19">WEST BENGAL</option><option value="20">JHARKHAND</option><option value="21">ORISSA</option><option value="22">CHHATTISGARH</option><option value="23">MADHYA PRADESH</option><option value="24">GUJARAT</option><option value="25">DAMAN & DIU</option><option value="26">DADRA & NAGAR HAVELI</option><option value="27">MAHARASHTRA</option><option value="28">ANDHRA PRADESH</option><option value="29" selected="selected">KARNATAKA</option><option value="30">GOA</option><option value="31">LAKSHADWEEP</option><option value="32">KERALA</option><option value="33">TAMIL NADU</option><option value="34">PONDICHERRY</option><option value="35">ANDAMAN & NICOBAR ISLANDS</option> </select>
+	
+    <input type="text" id="edit-delivery-state"  name="state"  class="form-control">
     </div>
     <div class="col-md-6">
     <label>District</label>
-    <select id="edit-delivery-district" class="districts">
-    <option value="">Select</option>
-    <option value="514">Belgaum</option><option value="515">Bagalkot</option><option value="516">Bijapur</option><option value="517">Gulbarga</option><option value="518">Bidar</option><option value="519">Raichur</option><option value="520">Koppal</option><option value="521">Gadag</option><option value="522">Dharwad</option><option value="523">Uttara Kannada</option><option value="524">Haveri</option><option value="525">Bellary</option><option value="526">Chitradurga</option><option value="527">Davangere</option><option value="528">Shimoga</option><option value="529">Udupi</option><option value="530">Chikmagalur</option><option value="531">Tumkur</option><option value="532">Kolar</option><option value="533">Bangalore</option><option value="534">Bangalore Rural</option><option value="535">Mandya</option><option value="536">Hassan</option><option value="537">Dakshina Kannada</option><option value="538">Kodagu</option><option value="539">Mysore</option><option value="540">Chamrajnagar</option><option value="541">Kozhikode</option> </select>
+    <input type="text" id="edit-delivery-district" name="district" class="form-control">
     </div>
     <div class="col-md-6">
     <label>Location</label>
-    <input id="edit_searchTextField" name="location" class="form-control" type="text" size="50" placeholder="Enter a location" autocomplete="on" runat="server" />
+    <input type="text" id="edit_searchTextField" name="location" class="form-control" type="text" size="50" placeholder="Enter a location" autocomplete="on" runat="server" />
     </div>
     <div class="col-md-6">
     <label>Pincode</label>
-    <input type="text" class="numberonly" maxlength="6" id="edit-delivery-pincode">
+    <input type="text" name="pin" class="numberonly form-control" maxlength="6" id="edit-delivery-pincode">
     </div>
-    <div class="col-md-6">
-    <label>Make this as my default address</label>
-    <input type="checkbox" id="edit-default">
-    </div>
+	<div class="col-md-6">
+		<label>Country</label>
+		<input type="text" name="country" class="form-control" id="edit-delivery-country">
+		</div>
+		<div class="col-md-6">
+			<label>Landmark</label>
+			<input type="text" class="form-control" name="landmark" id="edit-delivery-landmark">
+			</div>
+   
     <div class="col-12" style="margin-top:10px;">
-    <button data-id="" id="update-delivery-address-btn" class="button okay-btn">Save</button>
+    <button data-id=""  class="button okay-btn">Save</button>
     </div>
+	</form>
     </div>
 
     </div>
@@ -630,32 +640,33 @@
 	$(document).on('click', '.edit-delivery-address', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('data-id');
-		//	alert(id);
+		console.log(id)
+		
+		$.ajaxSetup({
+			headers:{'X-CSRFToken':'{{csrf_token}}'}
+		})
 		$.ajax({
 			type: 'post',
-			url: base_url + 'addresses/get_address',
+			url: "{% url 'edit_address' %}",
 			data: {
 				id: id
 			},
-			success: function(out) {
-				var out = JSON.parse(out);
-				if (out.status == 1) {
-					$('#update-delivery-address-btn').attr('data-id', out.data.address.address_id);
-					$('#edit-delivery-address').val(out.data.address.customer_address);
-					$('#edit-delivery-state').val(out.data.address.customer_state);
-					$('#edit-delivery-district').val(out.data.address.customer_district);
-					$('#edit_searchTextField').val(out.data.address.customer_locality);
-					$('#edit-delivery-pincode').val(out.data.address.customer_pincode);
-					$('#edit_delivery-lat').val(out.data.address.customer_latitude);
-					$('#edit_delivery-long').val(out.data.address.customer_longitude);
-					if (out.data.address.set_as_default == 1) $('#edit-default').attr('checked', true);
-					else $('#edit-default').attr('checked', false);
-					$('#select-address-block').hide();
-					$('#new-address-block').hide();
-					$('#edit-address-block').show();
-				} else {
-					alert(out.data);
-				}
+			success: (data)=> {
+				$('#select-address-block').hide();
+				$('#new-address-block').hide();
+				   $('#edit-address-block').show();
+				   $('#add-new-delivery-btn').hide()
+				
+					$('#edit-delivery-id').val(data.id)
+					$('#edit-delivery-address').val(data.address);
+					$('#edit-delivery-state').val(data.state);
+					$('#edit-delivery-district').val(data.district);
+					$('#edit_searchTextField').val(data.locality);
+					$('#edit-delivery-pincode').val(data.pin);
+					$('#edit-delivery-country').val(data.country);
+					$('#edit_delivery-landmark').val(data.landmark);
+					
+				
 			}
 		})
 	})

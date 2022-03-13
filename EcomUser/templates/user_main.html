@@ -234,8 +234,9 @@
 <li>
 <div class="top-search-desktop">
 <div class="top-green-search">
-<form action="" method="get">
-<input type="text" name="search_word" id="search_word" placeholder="Search products" value="">
+<form action="/product_search/" method="POST">
+	{% csrf_token %}
+<input type="text" name="search_word" id="search_word" placeholder="Search products" value="" required>
 <button onclick="return checkField()"><i class="fas fa-search"></i></button>
 
 </form>
@@ -455,9 +456,38 @@
 <script type="text/javascript">
 
 </script>
-<style type="text/css">
-	
-</style>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+<script>
+$( function() {
+  var availableTags = [];
+  $.ajaxSetup({
+            headers:{"X-CSRFToken":'{{csrf_token}}'}
+        })
+            $.ajax({
+                type:'GET',
+                url:'{% url "product_list_ajax" %}',
+                
+                success: (data) => {
+					console.log(data)
+					
+                    
+					startautocomplete(data) 
+					 
+                    }
+            })
+
+function startautocomplete(data)
+{
+	$( "#search_word" ).autocomplete({
+	source: data
+  });
+}
+
+ 
+} );
+</script>
+
+
 <script type="text/javascript">
 	$(document).on('click', '.add-to-wish-btn', function(e) {
 
@@ -809,23 +839,6 @@
 </div>
 
 <ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

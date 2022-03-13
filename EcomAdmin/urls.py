@@ -118,5 +118,7 @@ urlpatterns=[
     path('add_coupon/',views.fnaddcoupon,name="add_coupon"),
     path('edit_coupon/<editcoup_id>',views.fneditcoupon,name="edit_coupon"),
 
+
+    path('deletecustomer/<customid>',views.fndeletecustomer,name="deletecustomer")
    
 ]

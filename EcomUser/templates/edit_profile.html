@@ -1,0 +1,664 @@
+{% extends 'user_main.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+input[type="date"] {
+    position: relative;
+}
+
+/* create a new arrow, because we are going to mess up the native one
+see "List of symbols" below if you want another, you could also try to add a font-awesome icon.. */
+input[type="date"]:after {
+    content: "\25BC"; 
+    color: #555;
+    padding: 0 5px;
+}
+
+/*change color of symbol on hover */
+input[type="date"]:hover:after {
+    color: #bf1400;
+}
+
+/* make the native arrow invisible and stretch it over the whole field so you can click anywhere in the input field to trigger the native datepicker*/
+input[type="date"]::-webkit-calendar-picker-indicator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    height: auto;
+    color: transparent;
+    background: transparent;
+}
+
+/* adjust increase/decrease button */
+input[type="date"]::-webkit-inner-spin-button {
+    z-index: 1;
+}
+
+ /* adjust clear button */
+ input[type="date"]::-webkit-clear-button {
+     z-index: 1;
+ }
+</style>
+<div class="container">
+<ol class="breadcrumb">
+<li><a href="https://wazaitoon.com/index">Home</a></li>
+<li class="active">Profile</li>
+</ol>
+<div class="section">
+<div class="container">
+<div class="row">
+<div class="col-xs-12">
+<div class="row profile-menu">
+<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+<div class="profile">
+<div class="pic"></div>
+<div class="disc">
+
+
+</div>
+</div>
+</div>
+<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
+<ul>
+    <li><a href="{% url 'user_profile'%}" >My Profile</a></li>
+    <li><a href="{% url 'edit_profile' %}" class="active">Edit Profile</a></li>
+    <li><a href="{% url 'view_cart' %}" >My Cart</a></li>
+    <li><a href="{% url 'confirm-order' %}">My Orders</a></li>
+
+    <li><a href="{% url 'logout_user'%}">Logout</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section">
+<div class="container">
+<div class="row">
+
+<div class="col-xs-12">
+<h3 class="mtb-0p">Edit My Profile</h3>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+<div class="profile-info">
+<div class="row">
+<div class="col-xs-12">
+<h4 style="color:#008f4c;">Personal Information</h4>
+<form action="" method="POST" >
+    {% csrf_token %}
+<div class="row mtp-10p">
+
+<div class="col-sm-6 col-xs-12">
+<label>First Name</label>
+{{form.first_name}}
+</div>
+<div class="col-sm-6 col-xs-12">
+    <label>Last Name</label>
+    {{form.last_name}}
+    </div>
+
+<div class="col-sm-6 col-xs-12">
+    <label>Mobile</label>
+    {{form.phone}}
+</div>
+
+    <div class="col-sm-6 col-xs-12">
+<label>Username</label>
+{{form.username}}
+
+
+</div>
+
+
+<div class="col-sm-6 col-xs-12">
+<label for="">Email Address</label>
+{{form.email}}
+</div>
+</div>
+
+
+<div class="row mtb-10p">
+<div class="col-xs-12"><input type="submit" value="Update" ></div>
+</div>
+</form>
+</div>
+</div>
+</div>
+<div class="profile-info">
+<form action="/Change_User_Password/" o method="post">
+    {% csrf_token %}
+<div class="row">
+<div class="col-xs-12"><h4>Change Password</h4></div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+<label for="">Type Current Password</label>
+<input type="password" name="old_password" id="current_password">
+<label for="">Type New password</label>
+<input type="password" name="new_password" id="new_password" minlength="6">
+
+<label for="">Retype password</label>
+<input type="password" name="retype_password" id="confirm_password" minlength="6">
+<input type="submit" value="Update" style="    margin-top: 8%;">
+</div>
+
+</div>
+</form>
+</div>
+</div>
+<div class="col-md-6 col-sm-12 col-xs-12">
+<div class="profile-info">
+<div class="row">
+<div class="col-xs-12">
+<h4>Address Details</h4>
+<form action="https://wazaitoon.com/profile/update_profile" method="post" autocomplete="off">
+<input autocomplete="false" name="hidden" type="text" style="display:none;">
+<div class="row mtb-10p">
+<div class="col-xs-12">
+<label for="">Address (Area and Street)</label>
+<textarea name="customer_address" id="" placeholder="Address" required onblur="this.value=removeSpaces(this.value);">									
+								</textarea>
+</div>
+</div>
+<div class="row mtb-10p">
+<div class="col-sm-6 col-xs-12">
+<label for="">State</label>
+<select id="customer_state" name="customer_state" onchange="selectDistrict(this)">
+<option value="">Select</option>
+<option value="1">JAMMU & KASHMIR</option><option value="2">HIMACHAL PRADESH</option><option value="3">PUNJAB</option><option value="4">CHANDIGARH</option><option value="5">UTTARANCHAL</option><option value="6">HARYANA</option><option value="7">DELHI</option><option value="8">RAJASTHAN</option><option value="9">UTTAR PRADESH</option><option value="10">BIHAR</option><option value="11">SIKKIM</option><option value="12">ARUNACHAL PRADESH</option><option value="13">NAGALAND</option><option value="14">MANIPUR</option><option value="15">MIZORAM</option><option value="16">TRIPURA</option><option value="17">MEGHALAYA</option><option value="18">ASSAM</option><option value="19">WEST BENGAL</option><option value="20">JHARKHAND</option><option value="21">ORISSA</option><option value="22">CHHATTISGARH</option><option value="23">MADHYA PRADESH</option><option value="24">GUJARAT</option><option value="25">DAMAN & DIU</option><option value="26">DADRA & NAGAR HAVELI</option><option value="27">MAHARASHTRA</option><option value="28">ANDHRA PRADESH</option><option value="29" selected="selected">KARNATAKA</option><option value="30">GOA</option><option value="31">LAKSHADWEEP</option><option value="32">KERALA</option><option value="33">TAMIL NADU</option><option value="34">PONDICHERRY</option><option value="35">ANDAMAN & NICOBAR ISLANDS</option>
+</select>
+</div>
+<div class="col-sm-6 col-xs-12">
+<label for="">District</label>
+<select id="customer_district" name="customer_district" class="districts">
+<option value="">Select</option>
+<option value="514">Belgaum</option><option value="515">Bagalkot</option><option value="516">Bijapur</option><option value="517">Gulbarga</option><option value="518">Bidar</option><option value="519">Raichur</option><option value="520">Koppal</option><option value="521">Gadag</option><option value="522">Dharwad</option><option value="523">Uttara Kannada</option><option value="524">Haveri</option><option value="525">Bellary</option><option value="526">Chitradurga</option><option value="527">Davangere</option><option value="528">Shimoga</option><option value="529">Udupi</option><option value="530">Chikmagalur</option><option value="531">Tumkur</option><option value="532">Kolar</option><option value="533">Bangalore</option><option value="534">Bangalore Rural</option><option value="535">Mandya</option><option value="536">Hassan</option><option value="537">Dakshina Kannada</option><option value="538">Kodagu</option><option value="539">Mysore</option><option value="540">Chamrajnagar</option>
+</select>
+</div>
+</div>
+<div class="row mtb-10p">
+<div class="col-sm-6 col-xs-12">
+<label for="">Locality</label>
+<input type="text" name="customer_locality" value="" required autocomplete="nope">
+</div>
+<div class="col-sm-6 col-xs-12">
+<label for="">Pincode</label>
+<input type="text" class="numberonly" maxlength="6" name="customer_pincode" value="" autocomplete="nope" required>
+</div>
+</div>
+<div class="row mtb-10p">
+<div class="col-xs-12"><input type="checkbox" name="make_dflt" id="make_dflt" checked="checked">
+&nbsp;<span>Make this as my default address</span></div>
+</div>
+<div class="row mtb-10p">
+<div class="col-xs-12"><input type="submit" value="Update"></div>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+<div class="mb-30p">&nbsp;</div>
+</div>
+
+</div>
+</div>
+</div>
+<script type="text/javascript">
+
+	function selectDistrict(event){
+
+	var id = $(event).val();
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'addresses/get_districts',
+
+		data:{id:id},
+
+		success: function(out){
+
+			if(out.status == 404){
+
+				window.location.href = base_url;
+
+			}
+
+			else{
+
+				var out = JSON.parse(out);
+
+				var htm = '<option selected="selected" disabled value="">Select</option>';
+
+				for(var i=0;i<out.length;i++){
+
+					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
+
+				}
+
+				$('.districts').html(htm);
+
+			}
+
+		}
+
+	})
+
+}
+
+</script>
+<script language="javascript" type="text/javascript">
+function removeSpaces(string) {
+ return string.split(' ').join('');
+}
+
+function getAge() 
+{
+    var dateString = document.getElementById("age").value;
+    if(dateString !="")
+    {
+        var today = new Date();
+        var birthDate = new Date(dateString); //format is mm.dd.yyyy
+        var age = today.getFullYear() - birthDate.getFullYear();
+
+        if(age < 18 || age > 100)
+        {
+            alert("Age "+age+" is restrict");
+            return false;
+        } 
+        // else 
+        // {
+        //     alert("Age "+age+" is allowed");
+        // }
+    } 
+    
+}
+
+</script><style type="text/css">
+	.primal-ftr{
+
+	    width: 14px;
+	    display: inline-block;
+        margin: -3px 2px 0 0;
+	}
+   
+</style>
+
+
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://wazaitoon.com/Wishlist/get_wish_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+</script>
+<script type="text/javascript">
+	
+	$(".numberonly").keydown(function (e) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+         // Allow: Ctrl+A, Command+A
+        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+         // Allow: home, end, left, right, down, up
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+             // let it happen, don't do anything
+             return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+});
+</script>
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	// alert("dfgfrg");
+
+    $(document).on('keydown',".numberonly",function (e) {
+    	
+
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+
+            // let it happen, don't do anything
+            return;
+
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+
+        }
+
+    });
+
+});
+
+</script>
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://wazaitoon.com/Cart/get_cart_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+
+
+
+
+
+
+	function selectDistrict(event){
+
+	var id = $(event).val();
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'addresses/get_districts',
+
+		data:{id:id},
+
+		success: function(out){
+
+			if(out.status == 404){
+
+				window.location.href = base_url;
+
+			}
+
+			else{
+
+				var out = JSON.parse(out);
+
+				var htm = '<option selected="selected" disabled value="">Select</option>';
+
+				for(var i=0;i<out.length;i++){
+
+					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
+
+				}
+
+				$('.districts').html(htm);
+
+			}
+
+		}
+
+	})
+
+}
+
+</script>
+<script type="text/javascript">
+
+$(document).on('click','#track',function(e){
+
+	e.preventDefault();
+
+	
+
+
+
+	
+
+	$('#myModal_track').modal('show');
+
+})
+
+
+
+$(document).on('click','#track-btn',function(e){
+
+	var order_id = $.trim($('#order_id').val());
+	var mobile_no = $.trim($('#mobile_no').val());
+
+	//var id = $(this).attr('data-id');
+
+	// alert(order_id); 
+
+	if(order_id){
+		if(mobile_no){
+
+		//$('#delivery_pincode').parent().css('border-bottom','2px solid #2874f0');
+
+		$.ajax({
+
+			type:'post',
+
+			data:{order_id:order_id,mobile_no:mobile_no},
+
+			url:base_url+'Orders/track_order_by_id',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				if(out.status == 1){
+
+							window.location.href = base_url+'Orders/my_order_track?order_id='+order_id
+
+
+
+				}
+
+				else{
+
+					 msg = 'Order id does not exist';
+
+					 $('.check_order_msg').attr('style', 'color: red !important');
+
+					  $('.check_order_msg').show();
+
+				 $('.check_order_msg').html(msg);
+
+
+
+				}
+
+				//console.log(msg);
+
+				
+
+
+
+
+
+			}
+
+		})
+		}
+else{
+
+		$('#mobile_no').focus();
+
+		msg = 'Please enter your Mobile number';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+	}
+
+	else{
+
+		$('#order_id').focus();
+
+		msg = 'Please enter your Order id';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+
+})
+
+</script>
+<script>
+	$('.banner .owl-carousel').owlCarousel({
+	autoplay:true,
+	autoplayTimeout:5000,
+	autoplayHoverPause:false,
+	smartSpeed:1000,
+
+	animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
+
+	loop:true,
+	margin:0,
+
+	dots: true,
+	nav: true,
+	navText : ['<i class="fas fa-chevron-left"></i>','<i class="fas fa-chevron-right"></i>'],
+
+	responsive:{
+
+	  0:{ items:1 },
+	  600:{ items:1 },
+	  1000:{ items:1 }
+	}
+});
+</script>
+{% endblock %}

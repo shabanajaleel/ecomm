@@ -83,26 +83,36 @@ def fnregister(request):
     return render(request,'user_register.html',context)
 
 def fnchangeuserpassword(request):
-    currentUser=request.session['customer']
+    
     if request.method=="POST":
+        currentUser=request.session['customer']
+        print(currentUser)
         old_password=request.POST['old_password']
+        print(old_password)
         new_password=request.POST['new_password']
+        print(new_password)
         retype_password=request.POST['retype_password']
+        print(retype_password)
         customer=Customer.objects.get(id=currentUser)
+        print(customer.password)
         old_hashed_password=check_password(old_password,customer.password)
         if old_hashed_password == True:
             new_hashed_password=make_password(new_password,salt=None, hasher='default')
             retype_hashed_password=make_password(retype_password,salt=None, hasher='default')
             customer.password=new_hashed_password
             customer.conf_password=retype_hashed_password
-            customer.save()
+            new_password=customer.save()
+            if new_password:
+                print("success")
+            else:
+                print("error")
             messages.success(request,'password changed successfully')
-            return render(request,'changeUserPassword.html',{'currentUser':currentUser})
+            return render(request,'edit_profile.html')
         else:
             messages.error(request,'Invalid Password')
-            return render(request,'changeUserPassword.html',{'currentUser':currentUser})
+            return render(request,'edit_profile.html')
 
-    return render(request,'changeUserPassword.html',{'currentUser':currentUser})
+    return render(request,'edit_profile.html')
 
 def fnlogin(request):
     if request.method=="POST":
@@ -224,7 +234,7 @@ def fnwishlist(request):
             if check_wishlist== True:
                 message="Product is already in Wishlist"
                 return JsonResponse({'message':message})
-                
+
             else:
 
                 wishlist=Wishlist(customer_id=currentUser,product_id=varient,unit_price=product.Selling_Prize)
@@ -237,7 +247,7 @@ def fnwishlist(request):
         message="Login to add items to wishlist"
         return JsonResponse({'login':message})
 
-
+@login_cart
 def fnviewwishlist(request):
     currentUser=request.session['customer']
     user_wishlist=Wishlist.objects.filter(customer_id=currentUser)
@@ -518,6 +528,7 @@ def fnchangeqty(request):
             data={'new_item_total':new_item_total,'total_qty':total_qty,'total_price':total_price}
         return JsonResponse(data)
 
+@login_cart
 def fncheckout(request):
     currentUser=request.session['customer']
 
@@ -540,6 +551,28 @@ def fncheckout(request):
 
     return render(request,'checkout.html',context)
 
+def fnproduct_search(request):
+    if request.method=="GET":
+        products=Product.objects.filter(status="Active").values_list('Name',flat=True)
+        product_list=list(products)
+        return JsonResponse(product_list,safe=False)
+
+def fnproductsearch(request):
+    if request.method=="POST":
+        search_product=request.POST.get('search_word')
+        if search_product=="":
+            return redirect(request.META.get('HTTP_REFERER'))
+        else:
+            products=Product_Varients.objects.filter(product__Name__contains=search_product).first()
+            catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+            allcatogory=Catogory.objects.filter(status="Active")
+            cart_count=0
+            wish_count=0
+            context={'catogory': catogory,'allcat':allcatogory,'product':products,'cart_count':cart_count,"wish_count":wish_count}
+            return render(request,'product.html',context)
+
+    return redirect(request.META.get('HTTP_REFERER'))
+
 def fnselectaddress(request):
     if request.method=="POST":
         add_id=request.POST.get('address_id')
@@ -550,6 +583,27 @@ def fnselectaddress(request):
         
         return JsonResponse(data)
 
+def fneditaddress(request):
+    if request.method=="POST":
+        add_id=request.POST.get('id')
+        print(add_id)
+        new_address=Address.objects.get(id=add_id)
+        data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'landmark':new_address.landmark,'pin':new_address.pin}
+        return JsonResponse(data)
+
+def fnedituseraddress(request):
+    if request.method=="POST":
+        currentUser=request.session['customer']
+        id=request.POST['add_id']
+        address=request.POST['address']
+        state=request.POST['state']
+        district=request.POST['district']
+        location=request.POST['location']
+        pin=request.POST['pin']
+        country=request.POST['country']
+        landmark=request.POST['landmark']
+        Address.objects.filter(id=id).update(username_id=currentUser,pin=pin,locality=location,address=address,state=state,district=district,landmark=landmark,country=country,default=0,address_type='Home')
+        return redirect(fncheckout)
 
 def fncoupon(request):
     if request.method=="POST":
@@ -601,7 +655,7 @@ def fnaddress(request):
             
         else:
             return render(request,'address.html',{'form':form})
-            messages.error(request,'form is not valid')
+            
     form=AddressForm()
     context={ 'form':form }
     return render(request,'address.html',context)
@@ -637,6 +691,7 @@ def fnoffers(request):
 
     return render(request,'offer.html',context)
 
+@login_cart
 def fnplace_order(request):
     if request.method=="POST":
         address=request.POST['address']
@@ -676,15 +731,40 @@ def fnplace_order(request):
         else:
             message=" Oops.Something Went Wrong "
             return JsonResponse({'message':message})
-    
+
+@login_cart    
 def fnconfirm_order(request):
     currentUser=request.session['customer']
-    # orderdetails=OrderDetails.objects.filter(customer_id=currentUser)
-    # for ord in orderdetails.order.all:
-    #     print(ord.id)
     
     context['orders']=OrderDetails.objects.filter(customer_id=currentUser)
     return render(request,'confirm_order.html',context)
+
+
+# user profile
+@login_cart
+def fnprofile(request):
+    currentUser=request.session['customer']
+    context['customer']=Customer.objects.get(id=currentUser)
+    context['addresses']=Address.objects.filter(username_id=currentUser)
+
+    return render(request,'profile.html',context)
+
+
+@login_cart
+def fneditprofile(request):
+    currentUser=request.session['customer']
+
+    customer=Customer.objects.get(id=currentUser)
+    form=CustomerForm(request.POST or None,instance=customer)
+    print(form)
+    if form.is_valid():
+        form.save()
+    else:
+        context['form']=form
+        return render(request,'edit_profile.html',context)
+        
+    context['form']=form
+    return render(request,'edit_profile.html',context)
 
 
 

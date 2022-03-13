@@ -246,8 +246,8 @@ class Customer(models.Model):
     phone=models.BigIntegerField(unique=True)
     profile_image=models.ImageField(upload_to='images/profile',null=True,blank=True)
     registered_date=models.DateTimeField(auto_now_add=True,null=True)
-    password=models.CharField(max_length=200)
-    conf_password=models.CharField(max_length=200)
+    password=models.CharField(max_length=200,null=True,blank=True)
+    conf_password=models.CharField(max_length=200,null=True,blank=True)
     status=models.BooleanField(default=True)
     otp=models.CharField(max_length=10,default=False)
 

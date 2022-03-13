@@ -1402,6 +1402,11 @@ def fndelete_order(request,prod_id):
     order=OrderDetails.objects.filter(id=prod_id).delete()
     return redirect(fnorders)
 
+def fndeletecustomer(request,customid):
+    customer=Customer.objects.get(id=customid)
+    customer.delete()
+    return redirect(fncustomers)
+
  
 
 
