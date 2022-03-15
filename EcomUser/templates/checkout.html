@@ -3,7 +3,6 @@
 {% block content %}
 
 
-
 <div class="checkout">
   <input type="hidden" name="" id="buynow" value="0">
 
@@ -369,39 +368,43 @@
 
 	<input type="text" id="edit-delivery-id" name="add_id" class="form-control" hidden>
 
-    <div class="col-12">
+    <div class="col-10">
     <label style="margin-left: 15px;">Enter address</label>
-    <textarea id="edit-delivery-address" name="address" style="margin-left: 15px;"></textarea>
+    <textarea id="edit-delivery-address" name="address" style="margin-left: 15px;" class="form-control"></textarea>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
     <label>State</label>
 	
-    <input type="text" id="edit-delivery-state"  name="state"  class="form-control">
+    <input type="text" id="edit-delivery-state"  name="state"   class="form-control">
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
     <label>District</label>
     <input type="text" id="edit-delivery-district" name="district" class="form-control">
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
     <label>Location</label>
     <input type="text" id="edit_searchTextField" name="location" class="form-control" type="text" size="50" placeholder="Enter a location" autocomplete="on" runat="server" />
     </div>
-    <div class="col-md-6">
+    <div class="col-md-5">
     <label>Pincode</label>
     <input type="text" name="pin" class="numberonly form-control" maxlength="6" id="edit-delivery-pincode">
     </div>
-	<div class="col-md-6">
+	<div class="col-md-5">
 		<label>Country</label>
 		<input type="text" name="country" class="form-control" id="edit-delivery-country">
+	</div>
+
+	<div class="col-md-5">
+		<label>Landmark</label>
+		<input type="text" name="landmark" class="form-control" id="edit-delivery-land">
+	</div>
+
+	<div class="col-md-12 mt-4" >
+		<div class="row">
+		<button type="submit"  class="button okay-btn">Save</button>
 		</div>
-		<div class="col-md-6">
-			<label>Landmark</label>
-			<input type="text" class="form-control" name="landmark" id="edit-delivery-landmark">
-			</div>
-   
-    <div class="col-12" style="margin-top:10px;">
-    <button data-id=""  class="button okay-btn">Save</button>
-    </div>
+   </div>
+  
 	</form>
     </div>
 
@@ -419,107 +422,26 @@
   </div>
 </div>
 
-<script type="text/javascript">
-	$(document).on('click', '.nos-minus-btn', function(e) {
-		e.preventDefault();
-		var elem = $(this).parent().find('.nos');
-		var nos = parseInt($.trim($(elem).val()));
-		var id = $(this).attr('data-id');
 
-		var price = $(this).attr('data-price');
-		var offer_price = $(this).attr('data-oprice');
-		$('.divLoad').show();
+<!-- error message -->
+<style type="text/css">
+	.error_field {
 
-		if (nos > 1) {
-			$(elem).val(nos - 1);
+		padding: 1px;
+		float: left;
+	}
 
-
-			$.ajax({
-
-				type: 'post',
-
-				url: 'https://wazaitoon.com/Cart/update_cart_details',
-
-				data: {
-					id: id,
-					nos: nos - 1,
-					price: price,
-					offer_price: offer_price
-				},
-
-				success: function(out) {
-					$('.divLoad').hide();
-
-					var out = JSON.parse(out);
-
-					if (out.status == 1) {
-
-						window.location.reload();
-
-					} else {
-
-						alert(out.data);
-
-					}
-
-				}
-
-			})
-		}
-	})
-
-	$(document).on('click', '.nos-plus-btn', function(e) {
-		e.preventDefault();
-		var elem = $(this).parent().find('.nos');
-		var nos = parseInt($.trim($(elem).val()));
-
-		var id = $(this).attr('data-id');
-		var price = $(this).attr('data-price');
-		var offer_price = $(this).attr('data-oprice');
-		$('.divLoad').show();
-		// alert(nos);
-		if (nos > 29) {
-			alert("Product count cannot be more than 10!");
-			$(elem).val('10');
-		} else {
-			$(elem).val(nos + 1);
+	.error_msg {
+		display: none;
+		clear: both;
+		color: #f00;
+	}
+</style>
+<!-- end of error message -->
 
 
-			$.ajax({
-
-				type: 'post',
-
-				url: 'https://wazaitoon.com/Cart/update_cart_details',
-
-				data: {
-					id: id,
-					nos: nos + 1,
-					price: price,
-					offer_price: offer_price
-				},
-
-				success: function(out) {
-					$('.divLoad').hide();
-
-					var out = JSON.parse(out);
-
-					if (out.status == 1) {
-
-						window.location.reload();
-
-					} else {
-
-						//alert(out.data);
-
-					}
-
-				}
-
-			})
-		}
-	})
-
-
+<script>
+	
 	function hideDelivery() {
 		// document.getElementById('delivery-container').style.display = "none";
 		$('#myModal').modal('hide');
@@ -544,100 +466,10 @@
 		$('#new-address-block').show();
 		$('#edit-address-block').hide();
 	})
+</script>
 
-
-	$(document).on('click', '#update-delivery-btn', function(e) {
-
-		var address = $.trim($('#delivery-address').val());
-		var state = $.trim($('#delivery-state').val());
-		var district = $.trim($('#delivery-district').val());
-		var location = $.trim($('#searchTextField').val());
-		var pincode = $.trim($('#delivery-pincode').val());
-		var phone = $.trim($('#phone').val());
-		var email = $.trim($('#email').val());
-		var cust_id = $.trim($('#customers').val());
-		console.log(cust_id);
-		var set_default = 0;
-		if ($('#default').is(':checked')) set_default = 1;
-		var e1, e2, e3, e4, e5, e6, e7 = 0;
-		if (address) {
-			$('#delivery-address').css('border', '1px solid #d6d6d6');
-			e1 = 1;
-		} else {
-			$('#delivery-address').css('border', '1px solid #ff5a60');
-			e1 = 0;
-		}
-		if (state) {
-			$('#delivery-state').css('border', '1px solid #d6d6d6');
-			e2 = 1;
-		} else {
-			$('#delivery-state').css('border', '1px solid #ff5a60');
-			e2 = 0;
-		}
-		if (district) {
-			$('#delivery-district').css('border', '1px solid #d6d6d6');
-			e3 = 1;
-		} else {
-			$('#delivery-district').css('border', '1px solid #ff5a60');
-			e3 = 0;
-		}
-		if (location) {
-			$('#searchTextField').css('border', '1px solid #d6d6d6');
-			e4 = 1;
-		} else {
-			$('#searchTextField').css('border', '1px solid #ff5a60');
-			e4 = 0;
-		}
-
-
-
-
-		var reg = /^\d+$/;
-		if (pincode && reg.test(pincode)) {
-			$('#delivery-pincode').css('border', '1px solid #d6d6d6');
-			e5 = 1;
-		} else {
-			$('#delivery-pincode').css('border', '1px solid #ff5a60');
-			e5 = 0;
-		}
-
-		if (e1 && e2 && e3 && e4 && e5) {
-			$(".delivery").attr("disabled", true);
-			$(".delivery").css('cursor', 'not-allowed');
-			$.ajax({
-				type: 'post',
-				url: base_url + 'Addresses/save_address',
-				data: {
-					address: address,
-					state: state,
-					district: district,
-					locality: location,
-					phone: phone,
-					email: email,
-					pincode: pincode,
-					default: set_default,
-					cust_id: cust_id
-				},
-				success: function(out) {
-					$(".delivery").attr("disabled", false);
-					var out = JSON.parse(out);
-					console.log(out);
-					if (out.status == 1) {
-						window.location.reload();
-						//window.location.href = base_url+'addresses/';
-					} else {
-						var event = "y";
-						show_address(event);
-						alert(out.data);
-					}
-				}
-			})
-		}
-	})
-
-
-
-	$(document).on('click', '.edit-delivery-address', function(e) {
+<script>
+		$(document).on('click', '.edit-delivery-address', function(e) {
 		e.preventDefault();
 		var id = $(this).attr('data-id');
 		console.log(id)
@@ -656,7 +488,7 @@
 				$('#new-address-block').hide();
 				   $('#edit-address-block').show();
 				   $('#add-new-delivery-btn').hide()
-				
+				  	$('#edit_delivery-land').val(data.landmark);
 					$('#edit-delivery-id').val(data.id)
 					$('#edit-delivery-address').val(data.address);
 					$('#edit-delivery-state').val(data.state);
@@ -664,7 +496,7 @@
 					$('#edit_searchTextField').val(data.locality);
 					$('#edit-delivery-pincode').val(data.pin);
 					$('#edit-delivery-country').val(data.country);
-					$('#edit_delivery-landmark').val(data.landmark);
+					
 					
 				
 			}
@@ -703,510 +535,8 @@
 		})
 	
 	})
-
-	$(document).on('click', '#update-delivery-address-btn', function(e) {
-		// alert("sdfv");
-		var id = $(this).attr('data-id');
-		var address = $.trim($('#edit-delivery-address').val());
-		var state = $.trim($('#edit-delivery-state').val());
-		var district = $.trim($('#edit-delivery-district').val());
-		var location = $.trim($('#edit_searchTextField').val());
-		var pincode = $.trim($('#edit-delivery-pincode').val());
-		// 	 var lat = $.trim($('#edit_delivery-lat').val());
-		//   var long = $.trim($('#edit_delivery-long').val());
-	
-		if (address) {
-			$('#edit-delivery-address').css('border', '1px solid #d6d6d6');
-			e1 = 1;
-		} else {
-			$('#edit-delivery-address').css('border', '1px solid #ff5a60');
-			e1 = 0;
-		}
-		if (state) {
-			$('#edit-delivery-state').css('border', '1px solid #d6d6d6');
-			e2 = 1;
-		} else {
-			$('#edit-delivery-state').css('border', '1px solid #ff5a60');
-			e2 = 0;
-		}
-		if (district) {
-			$('#edit-delivery-district').css('border', '1px solid #d6d6d6');
-			e3 = 1;
-		} else {
-			$('#edit-delivery-district').css('border', '1px solid #ff5a60');
-			e3 = 0;
-		}
-		if (location) {
-			$('#edit-delivery-locality').css('border', '1px solid #d6d6d6');
-			e4 = 1;
-		} else {
-			$('#edit-delivery-locality').css('border', '1px solid #ff5a60');
-			e4 = 0;
-		}
-
-
-		var reg = /^\d+$/;
-		if (pincode && reg.test(pincode)) {
-			$('#edit-delivery-pincode').css('border', '1px solid #d6d6d6');
-			e5 = 1;
-		} else {
-			$('#edit-delivery-pincode').css('', '1px solid #ff5a60');
-			e5 = 0;
-		}
-		if (e1 && e2 && e3 && e4) {
-			$.ajax({
-				type: 'post',
-				url: base_url + 'addresses/save_edit_address',
-				data: {
-					id: id,
-					address: address,
-					state: state,
-					district: district,
-					locality: location,
-					pincode: pincode,
-					default: set_default
-				},
-				success: function(out) {
-					var out = JSON.parse(out);
-					if (out.status == 1) {
-						window.location.reload();
-					} else {
-						alert(out.data);
-					}
-				}
-			})
-		} else {
-			alert('Please fill the column');
-		}
-	})
-
-	$(document).on('click', '#next_delivery_date', function(e) {
-
-		$('#next_delivery_date_error_msg').html('');
-
-		$('#next_delivery_date_error_msg').parent().hide();
-
-
-	})
-
-	$(document).on('click', '.place_order', function(e) {
-
-
-		// $(".place_order").prop('disabled', true);
-
-		// var d_option = $('input[name=delivery_option]:checked').val(); 
-		var d_charge = $('.d_charge').text();
-		var p_method = $('input[name=payment_cod]:checked').val();
-		var buy_status = $('#buynow').val();
-
-
-		$('#next_delivery_date_error_msg').html("");
-		$('#next_delivery_date_error_msg').parent().hide();
-		// next deli 
-
-
-					var nextdeliverydate = '';
-			var nextdeliverydate_time = '';
-
-		
-
-
-
-		var error = 0;
-		var redirect = base_url + 'Orders';
-
-		if (error) {
-			return false;
-		} else {
-			//     return true;
-			// }
-
-			var redirect = base_url + 'Orders';
-
-			$(".place_order").prop('disabled', true);
-			$(".place_order").attr("disabled", true);
-			$(".place_order").css('cursor', 'not-allowed');
-
-			// var point_id=$('#point_id').val();
-			if (p_method == "online") {
-				var redirect = base_url + 'Checkout/razor_checkout';
-
-			} else {
-				var redirect = base_url + 'Orders';
-
-			}
-			//  $(".place_order").attr("disabled", true); 
-			// $(".place_order").css('cursor', 'not-allowed');  		
-			//alert(d_charge);
-
-			//   var address = $.trim($('#delivery-address_new').val());
-
-
-			$.ajax({
-				type: 'post',
-				url: base_url + 'Checkout/check_out_main',
-				data: {
-					p_method: p_method,
-					d_charge: d_charge,
-					buy_status: buy_status,
-					nextdeliverydate: nextdeliverydate,
-					nextdeliverydate_time: nextdeliverydate_time
-				},
-				success: function(out) {
-					var out = JSON.parse(out);
-
-					console.log(out.status);
-					if (out.status == 1) {
-
-						$('#succ_msg').html('Order placed successfully');
-						alert('Order placed successfully');
-						// setTimeout(function(){
-						// window.location.href = redirect;
-						// },2500);
-
-
-						window.location.href = redirect;
-
-
-
-						// window.location.href="https://wazaitoon.com/orders";
-
-					} else if (out.status == 2) {
-
-						window.location.href = "https://wazaitoon.com/Account";
-
-
-
-					} else {
-						var event = "y";
-						show_address(event);
-
-						$(".place_order").attr("disabled", false);
-					}
-				}
-			})
-		}
-	})
 </script>
 
-<!-- error message -->
-<style type="text/css">
-	.error_field {
-
-		padding: 1px;
-		float: left;
-	}
-
-	.error_msg {
-		display: none;
-		clear: both;
-		color: #f00;
-	}
-</style>
-<!-- end of error message -->
-
-<!-- <script>
-	$(document).on('click', '.remove-cart-product-btn', function(e) {
-		e.preventDefault();
-		var id = $(this).attr('data-id');
-		// alert(id);
-		var vendor = $(this).attr('data-vendor');
-		$('.divLoad').show();
-		var msg = 'Confirm remove your cart product!';
-		$.confirm({
-
-			title: msg,
-
-			// content: 'Cant be reversed!',
-
-			buttons: {
-
-				confirm: function() {
-					$.ajax({
-						type: 'post',
-						url: 'https://wazaitoon.com/Cart/remove_cart_product',
-						data: {
-							id: id,
-							vendor: vendor
-						},
-						success: function(out) {
-							$('.divLoad').hide();
-							var out = JSON.parse(out);
-							if (out.status == 1) {
-								window.location.reload();
-							} else {
-								alert(out.data);
-							}
-						}
-					})
-				},
-
-				cancel: function() {
-
-					console.log('Cancelled!');
-
-				}
-
-			}
-
-		})
-	})
-</script> -->
-
-<script type="text/javascript">
-	$('#next_delivery_date').change(function() {
-
-
-
-		//  var dateId = $('#next_delivery_date').text();
-		// alert(dateId);
-		var date_id = $('#next_delivery_date').val();
-
-		// console.log(date_id);
-		$('#next_delivery_date_time').empty()
-
-
-
-		$.ajax({
-
-			type: "POST",
-
-			url: "https://wazaitoon.com/Checkout/gettimeslot",
-
-			data: {
-				'date_id': date_id
-			},
-
-			success: function(data) {
-
-
-
-				var opts = $.parseJSON(data);
-
-				$.each(opts, function(i, d) {
-
-					$('#next_delivery_date_time').append('<option value="' + d.time_id + '">' + d.time_slot + '</option>');
-
-				});
-
-			}
-
-		});
-
-	});
-</script>
-
-<!-- <script type="text/javascript">
-	$(document).on('click', '.update-cart-btn', function(e) {
-		e.preventDefault();
-		// 
-
-		var id = $(this).attr('data-id');
-		var price = $(this).attr('data-price');
-		var offer_price = $(this).attr('data-oprice');
-		var nos = $(this).parent().find('.nos').val();
-		// alert("vbnvbn");
-		console.log(111);
-		$.ajax({
-			type: 'post',
-			url: 'https://wazaitoon.com/Cart/update_cart_details',
-			data: {
-				id: id,
-				nos: nos,
-				price: price,
-				offer_price: offer_price
-			},
-			success: function(out) {
-				var out = JSON.parse(out);
-				console.log(out);
-				if (out.status == 1) {
-					window.location.reload();
-				} else {
-					alert(out.data);
-				}
-			}
-		})
-	})
-</script> -->
-
-<script type="text/javascript">
-	function checkphone() {
-
-		var phone = document.getElementById("phone").value;
-
-		if (phone) {
-
-			$.ajax({
-
-				type: 'post',
-
-				url: 'https://wazaitoon.com/account/checkduplicate',
-
-				data: {
-					user_phone: phone,
-				},
-
-				success: function(response) {
-
-					if (response == "1") {
-
-						return true;
-
-					} else {
-
-						$('#phone_status').html('Phone number already exists');
-
-						$('#phone').val(' ');
-
-						return false;
-
-					}
-
-				}
-
-			});
-
-		} else {
-
-			$('#phone_status').html("");
-
-			return false;
-
-		}
-
-	}
-
-	function checkemail() {
-
-		var email = document.getElementById("email").value;
-
-		if (email) {
-
-			$.ajax({
-
-				type: 'post',
-
-				url: 'https://wazaitoon.com/account/checkduplicate',
-
-				data: {
-					user_email: email,
-				},
-
-				success: function(response) {
-
-					if (response == "1") {
-
-						return true;
-
-					} else {
-
-						$('#email_status').html('Email Id already exists');
-
-						$('#email').val(' ');
-
-						return false;
-
-					}
-
-				}
-
-			});
-
-		} else {
-
-			$('#email_status').html("");
-
-			return false;
-
-		}
-
-	}
-
-	function check() {
-
-		var exp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-		if (!document.add.email.value.match(exp)) {
-			setTimeout(function() {
-				alert('Enter valid Email Id');
-			}, 1000);
-
-			document.add.email.focus();
-
-			return false;
-		}
-	}
-</script>
-
-
-<script type="text/javascript">
-
-	
-
-	$(document).ready(function(){
-
-// alert("dffgdfgg");
-
-		$.ajax({
-
-			type:'post',
-
-// 			data:{pincode:pincode},
-
-			url:'https://wazaitoon.com/Wishlist/get_wish_list_count',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				var count=out.msg;
-
-				console.log(count);
-
-				if(out.status == 1){
-
-					// alert("hii");
-
-				
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">'+count+'</a>');
-
-				}else if(out.status == 2){
-
-					// alert("hoi");
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
-
-				}
-
-				else{
-
-					// alert("has");
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
-
-
-
-				}
-
-			
-
-
-
-
-
-			}
-
-		});
-
-
-
-
-
-	});
-
-</script>
 
 <script type="text/javascript">
 	
@@ -1260,234 +590,6 @@
 
 </script>
 
-<script type="text/javascript">
-
-	
-
-	$(document).ready(function(){
-
-// alert("dffgdfgg");
-
-		$.ajax({
-
-			type:'post',
-
-// 			data:{pincode:pincode},
-
-			url:'https://wazaitoon.com/Cart/get_cart_list_count',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				var count=out.msg;
-
-				console.log(count);
-
-				if(out.status == 1){
-
-					// alert("hii");
-
-				
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">'+count+'</a>');
-
-				}else if(out.status == 2){
-
-					// alert("hoi");
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
-
-				}
-
-				else{
-
-					// alert("has");
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
-
-
-
-				}
-
-			
-
-
-
-
-
-			}
-
-		});
-
-
-
-
-
-	});
-
-
-
-
-
-
-
-	function selectDistrict(event){
-
-	var id = $(event).val();
-
-	$.ajax({
-
-		type:'post',
-
-		url:base_url+'addresses/get_districts',
-
-		data:{id:id},
-
-		success: function(out){
-
-			if(out.status == 404){
-
-				window.location.href = base_url;
-
-			}
-
-			else{
-
-				var out = JSON.parse(out);
-
-				var htm = '<option selected="selected" disabled value="">Select</option>';
-
-				for(var i=0;i<out.length;i++){
-
-					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
-
-				}
-
-				$('.districts').html(htm);
-
-			}
-
-		}
-
-	})
-
-}
-
-</script>
-
-<script type="text/javascript">
-
-$(document).on('click','#track',function(e){
-
-	e.preventDefault();
-
-	
-
-
-
-	
-
-	$('#myModal_track').modal('show');
-
-})
-
-
-
-$(document).on('click','#track-btn',function(e){
-
-	var order_id = $.trim($('#order_id').val());
-	var mobile_no = $.trim($('#mobile_no').val());
-
-	//var id = $(this).attr('data-id');
-
-	// alert(order_id); 
-
-	if(order_id){
-		if(mobile_no){
-
-		//$('#delivery_pincode').parent().css('border-bottom','2px solid #2874f0');
-
-		$.ajax({
-
-			type:'post',
-
-			data:{order_id:order_id,mobile_no:mobile_no},
-
-			url:base_url+'Orders/track_order_by_id',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				if(out.status == 1){
-
-							window.location.href = base_url+'Orders/my_order_track?order_id='+order_id
-
-
-
-				}
-
-				else{
-
-					 msg = 'Order id does not exist';
-
-					 $('.check_order_msg').attr('style', 'color: red !important');
-
-					  $('.check_order_msg').show();
-
-				 $('.check_order_msg').html(msg);
-
-
-
-				}
-
-				//console.log(msg);
-
-				
-
-
-
-
-
-			}
-
-		})
-		}
-else{
-
-		$('#mobile_no').focus();
-
-		msg = 'Please enter your Mobile number';
-
-		$('.check_order_msg').show();
-
-		 $('.check_order_msg').html(msg);
-
-	}
-
-	}
-
-	else{
-
-		$('#order_id').focus();
-
-		msg = 'Please enter your Order id';
-
-		$('.check_order_msg').show();
-
-		 $('.check_order_msg').html(msg);
-
-	}
-
-
-})
-
-</script>
 
 <script>
 	$('.banner .owl-carousel').owlCarousel({

@@ -28,11 +28,15 @@
         Sort by : <b>Recommended</b>&nbsp; 
         </button>
     <ul class="dropdown-menu" style="float:left; padding: 5px 22px;">
-	
+	{% if cat_id %}
         <li><a href="/products/?cat_id={{cat_id}}&sort=0">What's New</a></li>
         <li><a href="/products/?cat_id={{cat_id}}&sort=1">Price: Low to High</a></li>
         <li><a href="/products/?cat_id={{cat_id}}&sort=2">Price: High to Low</a></li>
-		
+	{% else %}
+		<li><a href="/products/?sort=0">What's New</a></li>
+        <li><a href="/products/?sort=1">Price: Low to High</a></li>
+        <li><a href="/products/?sort=2">Price: High to Low</a></li>	
+	{% endif %}
 
     </ul>
     </div>
@@ -73,8 +77,9 @@
 
 <div class="col-md-9 product-model-sec">
     {% for product in products %}
-    {% for pro in product.product_varients_set.all %}
-    {% if forloop.first %}
+
+    {% for pro in product.product_varients_set.all %} 
+	{% if forloop.first %}
 
 <div class="product-grid love-grid">
 <div class="more-product"><span> </span></div>
@@ -89,7 +94,7 @@
 	<a href="{% url 'product_item' prod_id=pro.id %}">
 		<img src="/media/{{img.Thumbnail_image}}" class="img-responsive" alt="" />
 	</a>
-       
+        
     {% endif %}
     {% endfor %}
 
@@ -124,9 +129,9 @@
 </div>
 
 
+	{% endif %}
+	{% endfor %}
 
-{% endif %}
-{% endfor %}
 {% endfor %}
 
 </div>
@@ -190,7 +195,8 @@
 
 							});
 
-						</script>
+</script>
+
 <script type='text/javascript'>//<![CDATA[ 
 
 					$(window).load(function(){
@@ -217,7 +223,8 @@
 
 					});//]]> 
 
-					</script>
+</script>
+
 <script type="text/javascript">
 
 	$(document).on('click','.quick-view-btn',function(e){
@@ -277,260 +284,13 @@
 
 </style>
 
-<script type="text/javascript">
-	$(document).on('click','.add-to-wish-btn',function(e){
-		
-		e.preventDefault();
-		var elem = $(this);
-		var htm = elem.html();
-		var product = $(this).attr('data-id');
-		var price = $(this).attr('data-price');
-		var offer = $(this).attr('data-offer');
-		var offer_price = $(this).attr('data-oprice');
-		var note = '';
-		
-		if(offer_price) offer_price = offer_price;
-		else offer_price = price;
-		$('.divLoad').show();
-		$.ajax({
-			type:'post',
-			url:'https://wazaitoon.com/Wishlist/add_wish_list',
-			data:{product:product,price:offer_price},
-			success: function(out){
-			    $('.divLoad').hide();
-				var out = JSON.parse(out);
-				if(out.status==1){
-					// var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
-					// $('.vendor-cart .checkout-btn').html(cart);
-					elem.html('<i class="fa fa-check"></i>');
-					elem.addClass('add_to_cart_suc');
-					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg" style="color: green;float: right;margin-right: 20px; font-size:14px;">'+out.data+'</p>');
-					setTimeout(function(){
-						elem.html(htm);
-						elem.removeClass('add_to_cart_suc');
-						elem.parent().find('.e-msg').remove();
-						location.reload();
-					},2500);
-					
 
-					
-				}
-				else if(out.status == 2){
-					window.location.href="https://wazaitoon.com/Account";
-				}
-				else{
-					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg">'+out.data+'</p>');
-					elem.html('<i class="fa fa-times"></i>');
-					elem.addClass('add_to_cart_err');
-					setTimeout(function(){
-						elem.html(htm);
-						elem.removeClass('add_to_cart_err');
-						elem.parent().find('.e-msg').remove();
-					},1400);
-				}
-			}
-		})
-	})
-</script>
-<script type="text/javascript">
 
-	$(document).on('click','.remove-wish-product-guest-btn',function(e){
-	e.preventDefault();
-	var prdt = $(this).attr('data-prdt');
- 	// alert(id);
-	var vendor = $(this).attr('data-vendor');
 
-	var msg ='Confirm remove your wishlist!';
-    $.confirm({
 
-      title: msg,
 
-      // content: 'Cant be reversed!',
 
-      buttons: {
 
-          confirm: function () {
-
-	$.ajax({
-			type:'post',
-			url:'https://wazaitoon.com/Wishlist/remove_wish_product',
-			data:{prdt:prdt,vendor:vendor},
-			success: function(out){
-				var out = JSON.parse(out);
-				if(out.status==1){
-					window.location.reload();
-				}
-				else{
-					alert(out.data);
-				}
-			}
-		})
-	},
-
-          cancel: function () {
-
-              console.log('Cancelled!');
-
-          }
-
-      }
-
-  })
-})
-
-	$(document).on('click','.remove-wish-btn',function(e){
-
-		
-		e.preventDefault();
-		var elem = $(this);
-		var htm = elem.html();
-		var id = $(this).attr('data-id');
-		// var price = $(this).attr('data-price');
-		// var offer = $(this).attr('data-offer');
-		// var offer_price = $(this).attr('data-oprice');
-		var note = '';
-		
-		// if(offer_price) offer_price = offer_price;
-		// else offer_price = price;
-		 $('.divLoad').show();
-		// alert("xsfvgb");
-		$.ajax({
-			type:'post',
-			url:'https://wazaitoon.com/Wishlist/remove_wish_productlist',
-			data:{id:id},
-			success: function(out){
-			     $('.divLoad').hide();
-				var out = JSON.parse(out);
-				if(out.status==1){
-					// var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
-					// $('.vendor-cart .checkout-btn').html(cart);
-					elem.html('<i class="fa fa-check"></i>');
-					elem.addClass('add_to_cart_suc');
-					elem.parent().find('.remove-wish-btn').after('<p class="e-msg" style="color: red;float: right;margin-right: 20px; font-size:14px;">'+out.data+'</p>');
-					setTimeout(function(){
-						elem.html(htm);
-						elem.removeClass('add_to_cart_suc');
-						elem.parent().find('.e-msg').remove();
-						location.reload();
-					},2500);
-					
-
-					
-				}
-				else if(out.status == 2){
-					window.location.href="https://wazaitoon.com/Account";
-				}
-				else{
-					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg">'+out.data+'</p>');
-					elem.html('<i class="fa fa-times"></i>');
-					elem.addClass('add_to_cart_err');
-					setTimeout(function(){
-						elem.html(htm);
-						elem.removeClass('add_to_cart_err');
-						elem.parent().find('.e-msg').remove();
-					},1400);
-				}
-			}
-		})
-	})
-</script>
-<script type="text/javascript">
-
-$(document).on('click','#quotation',function(e){
-
-	e.preventDefault();
-
-	
-	var product = $(this).attr('data-id');
-
-	var product_name = $(this).attr('data-name');
-
-	var product_code = $(this).attr('data-code');
-
-	var image = $(this).attr('data-image');
-
-	$('.p_id').val(product);
-
-	$('.p_code').html('Code:'+product_code);
-
-	$('.p_name').html(product_name);
-
-	// $('.p_image').html(image);
-
-    $('.p_image').attr("src",image);
-	
-
-	$('#get_quotation').modal('show');
-
-})
-
-
-
-$(document).on('click','#quotation-btn',function(e){
-
-	var product_id = $.trim($('.p_id').val());
-	var mobile_no = $.trim($('.mobile_no').val());
-	var user_name = $.trim($('#user_name').val());
-	var user_email = $.trim($('#user_email').val());
-	var message = $.trim($('#msg').val());
-
-	   // alert(mobile_no); 
-	 $("#quotation-btn").attr("disabled", true); 
-    	 $("#quotation-btn").css('cursor', 'not-allowed');
-
-
-		$.ajax({
-
-			type:'post',
-
-			data:{product_id:product_id,mobile_no:mobile_no,user_name:user_name,user_email:user_email,message:message},
-
-			url:base_url+'Product/get_quotation',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				if(out.status == 1){
-
-							 location.reload();
-
-
-				}
-
-				else{
-
-					//  msg = 'Order id does not exist';
-
-					//  $('.check_order_msg').attr('style', 'color: red !important');
-
-					//   $('.check_order_msg').show();
-
-				 // $('.check_order_msg').html(msg);
-
-
-
-				}
-
-				//console.log(msg);
-
-				
-
-
-
-
-
-			}
-
-		})
-
-	
-
-})
-
-</script>
 <script type="text/javascript">
 
   $(document).ready(function(){
@@ -574,75 +334,7 @@ $(document).on('click','#quotation-btn',function(e){
    
 </style>
 
-<script type="text/javascript">
 
-	
-
-	$(document).ready(function(){
-
-// alert("dffgdfgg");
-
-		$.ajax({
-
-			type:'post',
-
-// 			data:{pincode:pincode},
-
-			url:'https://wazaitoon.com/Wishlist/get_wish_list_count',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				var count=out.msg;
-
-				console.log(count);
-
-				if(out.status == 1){
-
-					// alert("hii");
-
-				
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">'+count+'</a>');
-
-				}else if(out.status == 2){
-
-					// alert("hoi");
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
-
-				}
-
-				else{
-
-					// alert("has");
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
-
-
-
-				}
-
-			
-
-
-
-
-
-			}
-
-		});
-
-
-
-
-
-	});
-
-</script>
 <script type="text/javascript">
 	
 	$(".numberonly").keydown(function (e) {
@@ -693,136 +385,13 @@ $(document).on('click','#quotation-btn',function(e){
 });
 
 </script>
-<script type="text/javascript">
 
-	
-
-	$(document).ready(function(){
-
-// alert("dffgdfgg");
-
-		$.ajax({
-
-			type:'post',
-
-// 			data:{pincode:pincode},
-
-			url:'https://wazaitoon.com/Cart/get_cart_list_count',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				var count=out.msg;
-
-				console.log(count);
-
-				if(out.status == 1){
-
-					// alert("hii");
-
-				
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">'+count+'</a>');
-
-				}else if(out.status == 2){
-
-					// alert("hoi");
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
-
-				}
-
-				else{
-
-					// alert("has");
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
-
-
-
-				}
-
-			
-
-
-
-
-
-			}
-
-		});
-
-
-
-
-
-	});
-
-
-
-
-
-
-
-	function selectDistrict(event){
-
-	var id = $(event).val();
-
-	$.ajax({
-
-		type:'post',
-
-		url:base_url+'addresses/get_districts',
-
-		data:{id:id},
-
-		success: function(out){
-
-			if(out.status == 404){
-
-				window.location.href = base_url;
-
-			}
-
-			else{
-
-				var out = JSON.parse(out);
-
-				var htm = '<option selected="selected" disabled value="">Select</option>';
-
-				for(var i=0;i<out.length;i++){
-
-					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
-
-				}
-
-				$('.districts').html(htm);
-
-			}
-
-		}
-
-	})
-
-}
-
-</script>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 
 $(document).on('click','#track',function(e){
 
 	e.preventDefault();
 
-
-
-	
-
-
-
-	
 
 	$('#myModal_track').modal('show');
 
@@ -921,7 +490,7 @@ else{
 
 })
 
-</script>
+</script> -->
 <script>
 	$('.banner .owl-carousel').owlCarousel({
 	autoplay:true,

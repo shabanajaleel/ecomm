@@ -67,6 +67,7 @@ urlpatterns=[
     path('edit_prodvarients/<edititem_id>',views.fnedititems,name="edit_prodvarients"),
     path('disable_prodvarients/<disitem_id>',views.fndisableitem,name="disable_prodvarients"),
     path('bulk_stock',views.fnbulkstock,name="bulk_stock"),
+    path('add_related_products/<prod_id>',views.fnrelatedproducts,name="add_related_products"),
 
 
     path('varienttype/',views.fnvarienttype,name="varienttype"),

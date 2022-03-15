@@ -374,13 +374,24 @@ def fnfeedback(request):
     return render(request,'feedback/contact.html',context)
 
 def fnproductlist(request):
+
     cat_id=request.GET.get('cat_id')
     print(cat_id)
+    sort=request.GET.get('sort')
+    print(sort)
 
-    if cat_id:
+    if cat_id :
 
-        products=Product.objects.filter(Product_Category=cat_id)
+        if sort == "0":
+            products=Product.objects.filter(Product_Category=cat_id).order_by("id")
+        elif sort == "1" :
+            products=Product.objects.filter(Product_Category=cat_id).order_by("-product_varients__Selling_Prize").distinct()
+        elif sort == "2" :
+            products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__Selling_Prize").distinct()
+        else:
+            products=Product.objects.filter(Product_Category=cat_id)
 
+        print(products)
         paginator=Paginator(products,12)
         page_num=request.GET.get('page')
         newproducts=paginator.get_page(page_num)
@@ -398,24 +409,29 @@ def fnproductlist(request):
             cart_count=Cart.objects.filter(customer=currentUser).count()
             wish_count=Wishlist.objects.filter(customer=currentUser).count()
 
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count}
+            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id}
             return render(request,'product_list.html',context)
 
-        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count}
+        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id}
         return render(request,'product_list.html',context)
 
 
        
     else:
-         # filter
-        orderby="id"
-        new=request.GET.get('sort')
-       
-        # end filter
 
-        products=Product.objects.filter(status="Active")
+    
+        if sort == "0":
+            products=Product.objects.filter(status="Active").order_by("id")
+        elif sort == "1" :
+            products=Product.objects.all().order_by("-product_varients__Selling_Prize").distinct()
+        elif sort == "2" :
+            products=Product.objects.all().order_by("product_varients__Selling_Prize").distinct()
+        else:
+            products=Product.objects.filter(status="Active")
 
-        paginator=Paginator(products,7)
+        
+
+        paginator=Paginator(products,12)
         page_num=request.GET.get('page')
         newproducts=paginator.get_page(page_num)
 
@@ -427,48 +443,45 @@ def fnproductlist(request):
         wish_count=0
 
         
-        if new=="0":
-            orderby="product_varients__id"
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
-            return render(request,'product_list.html',context)
+        # if new=="0":
+        #     orderby="product_varients__id"
+        #     context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
+        #     return render(request,'product_list.html',context)
 
-        if new=="1":
-            orderby="product_varients__Selling_Prize"
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
-            return render(request,'product_list.html',context)
-        if new=="2":
-            orderby="-product_varients__Selling_Prize"
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
-            return render(request,'product_list.html',context)
+        # if new=="1":
+        #     orderby="product_varients__Selling_Prize"
+        #     context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
+        #     return render(request,'product_list.html',context)
+        # if new=="2":
+        #     orderby="-product_varients__Selling_Prize"
+        #     context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
+        #     return render(request,'product_list.html',context)
 
 
         if 'customer' in request.session:
             currentUser=request.session['customer']
             cart_count=Cart.objects.filter(customer=currentUser).count()
             wish_count=Wishlist.objects.filter(customer=currentUser).count()
-            print(new)
-            if new=="0":
-               
-                orderby="-product_varients__id"
-                context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
-                return render(request,'product_list.html',context)
-
-            if new == "1":
-                print('hai')
-                orderby="product_varients__Selling_Prize"
-                context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
-                return render(request,'product_list.html',context)
-            if new=="2":
-                orderby="-product_varients__Selling_Prize"
-                context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
-                return render(request,'product_list.html',context)
-
             
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
+
+            if sort == "0":
+                products=Product.objects.filter(status="Active").order_by("id")
+            elif sort == "1" :
+                products=Product.objects.all().order_by("-product_varients__Selling_Prize").distinct()
+            elif sort == "2" :
+                products=Product.objects.all().order_by("product_varients__Selling_Prize").distinct()
+            else:
+                products=Product.objects.filter(status="Active")
+
+            paginator=Paginator(products,12)
+            page_num=request.GET.get('page')
+            newproducts=paginator.get_page(page_num)
+            print(products)
+            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count}
             return render(request,'product_list.html',context)
 
         
-        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'orderby':orderby}
+        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count}
         return render(request,'product_list.html',context)
         
 
@@ -563,13 +576,16 @@ def fnproductsearch(request):
         if search_product=="":
             return redirect(request.META.get('HTTP_REFERER'))
         else:
-            products=Product_Varients.objects.filter(product__Name__contains=search_product).first()
-            catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
-            allcatogory=Catogory.objects.filter(status="Active")
-            cart_count=0
-            wish_count=0
-            context={'catogory': catogory,'allcat':allcatogory,'product':products,'cart_count':cart_count,"wish_count":wish_count}
-            return render(request,'product.html',context)
+            products=Product_Varients.objects.filter(product__Name=search_product).first()
+            if products:
+                catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+                allcatogory=Catogory.objects.filter(status="Active")
+                cart_count=0
+                wish_count=0
+                context={'catogory': catogory,'allcat':allcatogory,'product':products,'cart_count':cart_count,"wish_count":wish_count}
+                return render(request,'product.html',context)
+            else:
+                return redirect(request.META.get('HTTP_REFERER'))
 
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -588,6 +604,8 @@ def fneditaddress(request):
         add_id=request.POST.get('id')
         print(add_id)
         new_address=Address.objects.get(id=add_id)
+        landmark=new_address.landmark
+        print(landmark)
         data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'landmark':new_address.landmark,'pin':new_address.pin}
         return JsonResponse(data)
 
@@ -678,7 +696,7 @@ def fnnew(request):
     return render(request,'news.html')
 
 def fnoffers(request):
-    offers=Offers.objects.all()
+    offers=Offers.objects.filter(status="Active")
     cart_count=0
     wish_count=0
     if 'customer' in request.session:

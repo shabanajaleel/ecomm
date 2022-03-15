@@ -180,6 +180,7 @@ class Product(models.Model):
     Varient_Type = models.ForeignKey(VarientType,on_delete=models.CASCADE)
     Product_Category = models.ForeignKey(Catogory,on_delete=models.CASCADE)
     Product_Brand = models.ForeignKey(Brand,on_delete=models.CASCADE,blank=True,null=True)
+    related_product=models.ManyToManyField('Product',blank=True,null=True)
     
     status = models.CharField(default='Active',max_length=20, choices=(
         ('Active','Active'),

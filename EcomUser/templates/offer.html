@@ -23,7 +23,9 @@
         <li class="active">Offers</li>
     </ol>
 
+	{% if offer %}
 	{% for offers in offer %}
+	{% if offers.is_expired == True %}
 
 	<div class="arrivals">
 		<h3>{{offers.offer_name}}</h3>
@@ -47,19 +49,29 @@
 		</div>
 		</a>
 		</li>
+
 	
+
 		{% endfor %}
 
 		</ul>
 		</div>
 		</div>
 
-	{% endfor  %}	
+	{% endif %}
+
+	{% endfor  %}
+
+	{% else %}
+
+	<h1>No Offers Available</h1>
+	
+	{% endif %}
 
 
 
 
-
+</div>
 </div>
 
 <script>

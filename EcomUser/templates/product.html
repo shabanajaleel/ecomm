@@ -177,137 +177,48 @@
 </style>
 </div>
 
+
+{% if product.product.related_product.all %}
+<div class="arrivals">
+    <h3>Related Products</h3>
+    <div class="arrival-grids">
+    <ul id="flexiselDemo1">
+        {% for rel in product.product.related_product.all %}
+
+        
+    <li>
+        {% for var in rel.product_varients_set.all %}
+        {% if forloop.first %}
+    <a href="{% url 'product_item' prod_id=var.id %}">
+
+    {% for img in rel.productimage_set.all %}
+    {% if forloop.first %}
+    <img src="/media/{{img.Thumbnail_image}}" class="img-responsive" alt="" />
+    {% endif %}	
+    {% endfor %}
+
+
+   
+    <div class="arrival-info">
+    <p></p>
+    <h4>{{var.product.Name}}{{var.Varient_Values.varient_values}}</h4>
+    <p>&#8377 {{var.Selling_Prize}}/-</p>
+    <span class="disc"></span>
+    </div>
+    {% endif %}
+    {% endfor %}
+   </li>
+
+   
+    {% endfor %}
+    </ul>
+    </div>
+    </div>
+    {% endif %}
+    
 </div>
 <div class="clearfix"></div>
-<!-- <div class="container">
-<div class="row mt-20p">
-<div class="col-12">
-<div class="product-table1">
-<div class="item-sec">
-</div>
-</div>
-</div>
-<div class="arrivals">
-<h3>Related Products</h3>
-<div class="arrival-grids">
-<ul id="flexiselDemo1">
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1355">
-<img src="https://wazaitoon.com/uploads/product/pro59760208.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Celeste Body Yogurt- Cherry Blossom</p>
-<h4>ID: 558</h4>
-<p>&#8377 600/-</p>
-<span class="disc"></span>
- </div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1354">
-<img src="https://wazaitoon.com/uploads/product/pro57960427.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Celeste- Body Yogurt Lavender</p>
-<h4>ID: 557</h4>
-<p>&#8377 600/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1353">
-<img src="https://wazaitoon.com/uploads/product/pro57420376.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Celeste- Hand Cream Cherry Blossom</p>
-<h4>ID: 556</h4>
-<p>&#8377 450/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1352">
-<img src="https://wazaitoon.com/uploads/product/pro57060633.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Celeste- Matcha Green Tea Face Cleaner</p>
-<h4>ID: 555</h4>
-<p>&#8377 450/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1351">
-<img src="https://wazaitoon.com/uploads/product/pro56760180.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Celeste- Hand Cream Lavender</p>
- <h4>ID: 555</h4>
-<p>&#8377 450/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1350">
-<img src="https://wazaitoon.com/uploads/product/pro56340995.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Celeste- Satsuma Face Cleaner</p>
-<h4>ID: 554</h4>
-<p>&#8377 450/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1349">
-<img src="https://wazaitoon.com/uploads/product/pro55800124.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Potporri- Lavender</p>
-<h4>ID: 553</h4>
-<p>&#8377 150/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1348">
-<img src="https://wazaitoon.com/uploads/product/pro55620658.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Potpourri- Fresh Linen</p>
-<h4>ID: 552</h4>
-<p>&#8377 150/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1347">
-<img src="https://wazaitoon.com/uploads/product/pro55440430.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Potpourri- Apple Cinnamon</p>
-<h4>ID: 551</h4>
-<p>&#8377 125/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-<li>
-<a href="https://wazaitoon.com/product/productdetails/1346">
-<img src="https://wazaitoon.com/uploads/product/pro55080890.jpg" class="img-responsive" alt="" />
-<div class="arrival-info">
-<p>Iris Acrylic Tea Lights - Pina Colada (Pack Of 6)</p>
-<h4>ID: 550</h4>
-<span class="pric1" style="font-family: Roboto, Arial, sans-serif"><del>&#8377 25/-</del></span>
-<p>&#8377 125/-</p>
-<span class="disc"></span>
-</div>
-</a>
-</li>
-</ul>
-</div>
-</div>
-</div>
-</div> -->
-<!-- <div class="clearfix"></div> -->
+
 </div>
 
 <script>

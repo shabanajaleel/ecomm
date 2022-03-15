@@ -1,5 +1,6 @@
 import csv
 from django.shortcuts import render,redirect
+from . models import *
 from django.http import JsonResponse,HttpResponse
 from . forms import *
 from django.db.models import Q
@@ -1062,6 +1063,26 @@ def fnaddproducts(request):
         return redirect(fnlistproducts)
                           
     return render(request,'products/addproduct.html',{'form':form})
+
+def fnrelatedproducts(request,prod_id):
+    if request.method=="POST":
+        rel_products=request.POST.getlist('products')
+        product=Product.objects.get(id=prod_id)
+
+        
+        for item in rel_products:
+            print(item)
+            product.related_product.add(Product.objects.get(id=item))
+        messages.success(request,'Related products added successfully')
+        return redirect(fnlistproducts)
+
+
+    products=Product.objects.filter(status="Active")
+    context={'products':products}
+    return render(request,'products/related_products.html',context)
+
+
+
 
 def fnvarientselect(request):
     if request.method=="POST":
