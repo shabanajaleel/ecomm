@@ -11,6 +11,15 @@ from . decorator import login_cart
 from django.db.models import Sum
 from django.db.models import F
 from django.core.paginator import Paginator
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponseBadRequest
+# razorpay
+
+from django.conf import settings
+import razorpay
+
+razorpay_client = razorpay.Client(
+    auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
 
 # twilio
 import os
@@ -189,6 +198,7 @@ def fnenterotp(request):
             user=request.session['customer']
             customer=Customer.objects.get(id=user)
             if otp==customer.otp :
+                messages.error(request,'Successfully Logged In')
                 return redirect(fnhome)
             else:
                 messages.error(request,'incorrect otp')
@@ -219,6 +229,7 @@ def fnenterotp(request):
 def fnlogout(request):
     print(request.session['customer'])
     del request.session['customer']
+    messages.success(request,"Logged Out")
     return redirect(fnhome)
 
 
@@ -544,6 +555,7 @@ def fnchangeqty(request):
 @login_cart
 def fncheckout(request):
     currentUser=request.session['customer']
+    
 
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
     allcat=Catogory.objects.filter(status="Active")
@@ -557,9 +569,17 @@ def fncheckout(request):
     total_price=0
     total_qty=0
     for items in user_cart:
-        total_qty += items.quantity
-        total_price += items.selling_price * items.quantity
+        if items.quantity > items.product.Product_stock:
+            items.delete()
+            messages.error(request,'the'+ items.product.product.Name +' is out of stock now')
+            return redirect(fnviewcart)
+        else:
+            total_qty += items.quantity
+            total_price += items.selling_price * items.quantity
+            
     # Cart_total(customer_id=currentUser,order_total=total_price,total_quantity=total_qty).save()
+
+
     context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat}
 
     return render(request,'checkout.html',context)
@@ -581,11 +601,26 @@ def fnproductsearch(request):
                 catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
                 allcatogory=Catogory.objects.filter(status="Active")
                 cart_count=0
-                wish_count=0
+                wish_count=0 
+
+
+                if 'customer' in request.session: 
+                    currentUser=request.session['customer']
+                    cart_count=Cart.objects.filter(customer=currentUser).count()
+                    wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+                    context={'catogory': catogory,'allcat':allcatogory,'product':products,'cart_count':cart_count,"wish_count":wish_count}
+                    return render(request,'product.html',context)
+
+
+
+
                 context={'catogory': catogory,'allcat':allcatogory,'product':products,'cart_count':cart_count,"wish_count":wish_count}
                 return render(request,'product.html',context)
             else:
                 return redirect(request.META.get('HTTP_REFERER'))
+
+        
 
     return redirect(request.META.get('HTTP_REFERER'))
 
@@ -749,6 +784,114 @@ def fnplace_order(request):
         else:
             message=" Oops.Something Went Wrong "
             return JsonResponse({'message':message})
+
+@login_cart
+def fnplace_order_razorpay(request):
+    if request.method=="POST":
+        address=request.POST['address']
+        order_price=request.POST['order_price']
+        total_qty=request.POST['total_qty']
+
+        currency = 'INR'
+        amount=float(order_price)*100
+    
+        # Create a Razorpay Order
+        razorpay_order = razorpay_client.order.create(dict(amount=amount,
+                                                        currency=currency,
+                                                        payment_capture='1'))
+
+        # addto order table
+
+        currentUser=request.session['customer']
+        customer=Customer.objects.get(id=currentUser)
+        phone=customer.phone
+       
+        if address and order_price:
+            orderid="ORD"+str(phone)+str(randint(1000,9999))
+            print(orderid)
+            neworder=OrderDetails(orderid=orderid,customer_id=currentUser,address_id=address,order_status="Pending",order_total=order_price,totalcount=total_qty,payment_mode="COD",payment_status="Pending",platform="web",Razorpay_order_id=razorpay_order['id']).save()
+            neworder_id=OrderDetails.objects.get(customer_id=currentUser,orderid=orderid).id
+            ordered_products=Cart.objects.filter(customer_id=currentUser)
+
+            for items in ordered_products:
+                quantity=items.quantity
+                order=Order(order_id_id=neworder_id,product_id=items.product.id,count=quantity,order_total=items.selling_price).save()
+                # product_varient_stock=items.product.Product_stock
+                # new_stock=product_varient_stock-quantity
+                # # update product quantity
+                # Product_Varients.objects.filter(id=items.product.id).update(Product_stock=new_stock)
+
+    
+        # order id of newly created order.
+        razorpay_order_id = razorpay_order['id']
+        callback_url = '/paymenthandler/'
+        data={'razorpay_order_id':razorpay_order_id,"razorpay_merchant_key":settings.RAZOR_KEY_ID,"razorpay_amount":order_price,"currency":currency,'callback_url':callback_url}
+        return JsonResponse(data)
+
+@csrf_exempt
+def fnpaymenthandler(request):
+ 
+    # only accept POST request.
+    if request.method == "POST":
+        try:
+            print("post")
+           
+            # get the required parameters from post request.
+            payment_id = request.POST.get('razorpay_payment_id', '')
+            razorpay_order_id = request.POST.get('razorpay_order_id', '')
+            signature = request.POST.get('razorpay_signature', '')
+            params_dict = {
+                'razorpay_order_id': razorpay_order_id,
+                'razorpay_payment_id': payment_id,
+                'razorpay_signature': signature
+            }
+            
+            order_details=OrderDetails.objects.get(Razorpay_order_id=razorpay_order_id)
+            # verify the payment signature.
+            result = razorpay_client.utility.verify_payment_signature(params_dict)
+
+            print(result)
+
+            if result is True:
+                print("hello")
+                total_amount = order_details.order_total  # Rs. 200
+                print(total_amount)
+                amount=float(total_amount)*100
+                
+                print(amount)
+                try:
+ 
+                    # capture the payemt
+                    
+                    new=razorpay_client.payment.capture(payment_id, amount)
+                    
+                    
+                    order_details.Razorpay_payment_id=razorpay_payment_id
+                    order_details.Razorpay_signature=signature
+                    order_success=order_details.save()
+                    if order_success:
+                        ordered_products=Cart.objects.filter(customer_id=currentUser).delete()
+                    
+                    # render success page on successful caputre of payment
+                    return render(request, 'paymentsuccess.html')
+                except:
+ 
+                    # if there is an error while capturing payment.
+                    return render(request, 'paymentfail.html')
+            else:
+                print("Hai")
+ 
+                # if signature verification fails.
+                return render(request, 'paymentfail.html')
+        except:
+            print("no parametre")
+ 
+            # if we don't find the required parameters in POST data
+            return HttpResponseBadRequest()
+    else:
+        print("no post")
+       # if other than POST request is made.
+        return HttpResponseBadRequest()
 
 @login_cart    
 def fnconfirm_order(request):

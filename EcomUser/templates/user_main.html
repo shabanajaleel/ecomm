@@ -7,7 +7,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="keywords" content="" />
 <meta name="description" content="" />
-<meta property="og:type" content="article" />
+<!-- <meta property="og:type" content="article" />
 <meta property="og:title" content="" />
 <meta property="og:description" content="" />
 <meta property="og:url" content="https://wazaitoon.com/all_products" />
@@ -15,7 +15,7 @@
 <meta property="og:image" itemprop="image" content="https://wazaitoon.com/assets/images/logo-og.pnghttps://wazaitoon.com/" />
 <meta property="og:image:width" content="100" />
 <meta property="og:image:height" content="100" />
-<meta property="og:type" content="website" />
+<meta property="og:type" content="website" /> -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
 <link href="https://wazaitoon.com/assets/front/css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
 <link href="https://wazaitoon.com/assets/front/css/custom-layout.css?version=5" rel="stylesheet" type="text/css" media="all" />
@@ -30,6 +30,10 @@
 <link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owl.carousel.min.css">
 <link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owl.theme.default.min.css">
 <link rel="stylesheet" type="text/css" href="https://wazaitoon.com/assets/front/css/owlcarousel/animate.css">
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+<!-- Default theme -->
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css"/>
+
 <script src="https://wazaitoon.com/assets/front/js/jquery.min.js"></script>
 
 <script type="text/javascript" src="https://wazaitoon.com/assets/front/js/jquery-ui.min.js"></script>
@@ -106,53 +110,18 @@
 
 		});
 	</script>
-<!-- <script>
-		$(window).load(function() {
+
+	<!-- alertify -->
+<script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+<script>
+	alertify.set('notifier','position', 'top-right');
+	'{% for message in messages %}'
+		alertify.success('{{message}}');
+	'{% endfor %}'
+
+</script>
 
 
-			$.ajax({
-
-				type: 'post',
-
-				// 			data:{pincode:pincode},
-
-				url: 'https://wazaitoon.com/Checkout/get_avaiable_timeslot_show',
-
-				success: function(out) {
-
-					var out = JSON.parse(out);
-
-					var msg;
-
-					var count = out.msg;
-
-					alldatetimeslot = out.date;
-
-					//console.log(alldatetimeslot);
-
-					// if(out.status == 1){
-
-
-					$('#show_date_time_slot').html('DELIVERY : ' + count);
-
-					// }
-
-
-
-
-
-
-
-				}
-
-			});
-
-
-
-
-
-		});
-	</script> -->
 <script type="text/javascript">
 		$(window).load(function() {
 			$("#flexiselDemo1").flexisel({
@@ -323,7 +292,7 @@
 <a href="javascript:;" class="categoriesbar-title"><i class="fas fa-caret-down"></i>
 &nbsp;&nbsp;&nbsp;Categories</a>
 <div class="categories-drop">
-<div class="categories ">
+<div class="categories first-active">
 <ul>
   {% for cat in catogory%}
 <li class="has-submenu" style="display: block">
@@ -357,12 +326,12 @@
 <li class="grid active"><a href="{% url 'product-offers' %}">OFFERS</a></li>
 <li class="grid active"><a href="https://wazaitoon.com/about">ABOUT US</a></li>
 <li class="grid active"><a href="https://wazaitoon.com/contact">CONTACT</a></li>
-<!-- <li class="grid active">
+ <li class="grid active">
 <a class="sh-mobile-on">
 <b>CATEGORIES</b>
 </a>
-</li> -->
-<!-- <li class="grid active">
+</li> 
+ <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/192">
 &nbsp;&nbsp;Nuts & Seeds </a>
 </li>
@@ -409,7 +378,7 @@
 <li class="grid active">
 <a class="sh-mobile-on" style="font-size: 12px; font-weight:300; " href="https://wazaitoon.com/product/217">
 &nbsp;&nbsp;Staples </a>
-</li> -->
+</li> 
 </ul>
 
 </div>
@@ -488,111 +457,6 @@ function startautocomplete(data)
 </script>
 
 
-<!-- <script type="text/javascript">
-	$(document).on('click', '.add-to-wish-btn', function(e) {
-
-
-
-		e.preventDefault();
-
-		var elem = $(this);
-
-		var htm = elem.html();
-
-		var product = $(this).attr('data-id');
-
-		var price = $(this).attr('data-price');
-
-		var offer = $(this).attr('data-offer');
-
-		var offer_price = $(this).attr('data-oprice');
-
-		var note = '';
-		$('.divLoad').show();
-
-
-
-		if (offer_price) offer_price = offer_price;
-
-		else offer_price = price;
-
-		$.ajax({
-
-			type: 'post',
-
-			url: 'https://wazaitoon.com/Wishlist/add_wish_list',
-
-			data: {
-				product: product,
-				price: offer_price
-			},
-
-			success: function(out) {
-
-				$('.divLoad').hide();
-
-				var out = JSON.parse(out);
-
-				if (out.status == 1) {
-
-					// var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>'+out.cart.cart_nos+'</span> )<i class="fas fa-rupee-sign"></i> <span>'+out.cart.cart_total+'</span>';
-
-					// $('.vendor-cart .checkout-btn').html(cart);
-
-					elem.html('<i class="fa fa-check"></i>');
-
-					elem.addClass('add_to_cart_suc');
-
-					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg" style="color: green;float: right;margin-right: 20px;">' + out.data + '</p>');
-
-					setTimeout(function() {
-
-						elem.html(htm);
-
-						elem.removeClass('add_to_cart_suc');
-
-						elem.parent().find('.e-msg').remove();
-						location.reload();
-
-					}, 2000);
-
-
-
-
-
-
-
-				} else if (out.status == 2) {
-
-					window.location.href = "https://wazaitoon.com/Account";
-
-				} else {
-
-					elem.parent().find('.add-to-wish-btn').after('<p class="e-msg">' + out.data + '</p>');
-
-					elem.html('<i class="fa fa-times"></i>');
-
-					elem.addClass('add_to_cart_err');
-
-					setTimeout(function() {
-
-						elem.html(htm);
-
-						elem.removeClass('add_to_cart_err');
-
-						elem.parent().find('.e-msg').remove();
-
-					}, 1400);
-
-				}
-
-			}
-
-		})
-
-	})
-</script> -->
-
 <script type="text/javascript">
 	$(document).on('click', '.quick-view-btn', function(e) {
 
@@ -606,207 +470,12 @@ function startautocomplete(data)
 
 		$('#myModal' + key + '').modal('show');
 
-		// alert(id);
-
-		/*	$.ajax({
-
-				
-
-				type :"post",
-
-		        url : "https://wazaitoon.com/product/productdetails_quick/"+id,
-
-			
-
-				success: function(out){
-
-					var out = JSON.parse(out);
-
-					console.log(out);
-
-					if(out.status == 404){
-
-						window.location.href = base_url;
-
-					}
-
-					else if(out.status == 1){
-
-
-
-						var images = out.data.images;
-
-						console.log(images);
-
-						var product = out.data.product;
-
-
-
-						var img = '';
-
-						if( images !='')
-
-						{
-
-
-
-
-
-							for(var i=0;i<images.length;i++)
-
-							{
-
-								if(i == 4)
-
-								{
-
-									return false;
-
-								}
-
-
-
-								img += '<li data-thumb="https://wazaitoon.com/uploads/product/'+images[i].image_path+'" style="width: 309px; float: left; display: block;"><img src="https://wazaitoon.com/uploads/product/'+images[i].image_path+'" /></li>';
-
-							}
-
-
-
-
-
-						}
-
-						else
-
-						{
-
-							img +='<li data-thumb="https://wazaitoon.com/uploads/product/p2.jpg" style="width: 309px; float: left; display: block;" ><img src="https://wazaitoon.com/uploads/product/p2.jpg" class="img-responsive" alt=""/>';
-
-						}
-
-
-
-						// $('.flexslider').flexslider({
-
-						// 			animation: "slide",
-
-						// 			controlNav: "thumbnails"
-
-						// 		  });
-
-
-
-						
-
-						//$('.slides').html(img);
-
-						$('#myModal').modal('show');
-
-					}
-
-				}
-
-			})*/
+		
 
 	})
 </script>
 
-<!-- <script type="text/javascript">
-	$(document).on('click', '.add-to-cart-btn', function(e) {
 
-		e.preventDefault();
-
-		var elem = $(this);
-
-		var htm = elem.html();
-
-		var product = $(this).attr('data-id');
-
-		var price = $(this).attr('data-price');
-
-		var offer = $(this).attr('data-offer');
-
-		var offer_price = $(this).attr('data-oprice');
-
-
-
-
-
-		if (offer_price) offer_price = offer_price;
-
-		else offer_price = price;
-
-		$.ajax({
-
-			type: 'post',
-
-			url: 'https://wazaitoon.com/Cart/add_to_cart',
-
-			data: {
-				product: product,
-				price: price,
-				offer_price: offer_price,
-				offer: offer
-			},
-
-			success: function(out) {
-
-				var out = JSON.parse(out);
-
-				if (out.status == 1) {
-
-					var cart = '<i class="fas fa-shopping-bag"></i> My Cart ( <span>' + out.cart.cart_nos + '</span> )<i class="fas fa-rupee-sign"></i> <span>' + out.cart.cart_total + '</span>';
-
-					$('.vendor-cart .checkout-btn').html(cart);
-
-					elem.html('<i class="fa fa-check"></i>');
-
-					elem.addClass('add_to_cart_suc');
-
-					elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">' + out.data + '</p>');
-
-					setTimeout(function() {
-
-						elem.html(htm);
-
-						elem.removeClass('add_to_cart_suc');
-
-						elem.parent().find('.e-msg').remove();
-
-					}, 1400);
-
-					location.reload();
-
-				} else if (out.status == 2) {
-
-					window.location.href = "https://wazaitoon.com/Account";
-
-				} else {
-
-					elem.parent().find('.add-to-cart-btn').after('<p class="e-msg">' + out.data + '</p>');
-
-					elem.html('<i class="fa fa-times"></i>');
-
-					elem.addClass('add_to_cart_err');
-
-					setTimeout(function() {
-
-						elem.html(htm);
-
-						elem.removeClass('add_to_cart_err');
-
-						elem.parent().find('.e-msg').remove();
-
-					}, 1400);
-
-				}
-
-			}
-
-		})
-
-	})
-</script> -->
 
 <style type="text/css">
 	.primal-ftr{
@@ -856,75 +525,7 @@ function startautocomplete(data)
 <p>Copyright © 2021 Wazaitoon. All Rights Reserved | Powered by <a target="_blank" href="http://primeecart.com/"><span><img src="https://wazaitoon.com/assets/images/prime-ecart-icon.svg" class="primal-ftr" alt=""></span>Prime <span style="color:#f6921e;">eCart</span></a></p>
 </div>
 </div>
-<!-- <script type="text/javascript">
 
-	
-
-	$(document).ready(function(){
-
-// alert("dffgdfgg");
-
-		$.ajax({
-
-			type:'post',
-
-// 			data:{pincode:pincode},
-
-			url:'https://wazaitoon.com/Wishlist/get_wish_list_count',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				var count=out.msg;
-
-				console.log(count);
-
-				if(out.status == 1){
-
-					// alert("hii");
-
-				
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">'+count+'</a>');
-
-				}else if(out.status == 2){
-
-					// alert("hoi");
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
-
-				}
-
-				else{
-
-					// alert("has");
-
-					$('.wishlist').html('<a href="https://wazaitoon.com/Wishlist" title="My Wish List"  style="color: #fff;">0</a>');
-
-
-
-				}
-
-			
-
-
-
-
-
-			}
-
-		});
-
-
-
-
-
-	});
-
-</script> -->
 <script type="text/javascript">
 	
 	$(".numberonly").keydown(function (e) {
@@ -975,233 +576,7 @@ function startautocomplete(data)
 });
 
 </script>
-<!-- <script type="text/javascript">
 
-	
-
-	$(document).ready(function(){
-
-// alert("dffgdfgg");
-
-		$.ajax({
-
-			type:'post',
-
-// 			data:{pincode:pincode},
-
-			url:'https://wazaitoon.com/Cart/get_cart_list_count',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				var count=out.msg;
-
-				console.log(count);
-
-				if(out.status == 1){
-
-					// alert("hii");
-
-				
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">'+count+'</a>');
-
-				}else if(out.status == 2){
-
-					// alert("hoi");
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
-
-				}
-
-				else{
-
-					// alert("has");
-
-					$('.cartlist').html('<a href="https://wazaitoon.com/Cart" title="My Cart List"  style="color: #fff;">0</a>');
-
-
-
-				}
-
-			
-
-
-
-
-
-			}
-
-		});
-
-
-
-
-
-	});
-
-
-
-
-
-
-
-	function selectDistrict(event){
-
-	var id = $(event).val();
-
-	$.ajax({
-
-		type:'post',
-
-		url:base_url+'addresses/get_districts',
-
-		data:{id:id},
-
-		success: function(out){
-
-			if(out.status == 404){
-
-				window.location.href = base_url;
-
-			}
-
-			else{
-
-				var out = JSON.parse(out);
-
-				var htm = '<option selected="selected" disabled value="">Select</option>';
-
-				for(var i=0;i<out.length;i++){
-
-					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
-
-				}
-
-				$('.districts').html(htm);
-
-			}
-
-		}
-
-	})
-
-}
-
-</script> -->
-<!-- <script type="text/javascript">
-
-$(document).on('click','#track',function(e){
-
-	e.preventDefault();
-
-	
-
-
-
-	
-
-	$('#myModal_track').modal('show');
-
-})
-
-
-
-$(document).on('click','#track-btn',function(e){
-
-	var order_id = $.trim($('#order_id').val());
-	var mobile_no = $.trim($('#mobile_no').val());
-
-	//var id = $(this).attr('data-id');
-
-	// alert(order_id); 
-
-	if(order_id){
-		if(mobile_no){
-
-		//$('#delivery_pincode').parent().css('border-bottom','2px solid #2874f0');
-
-		$.ajax({
-
-			type:'post',
-
-			data:{order_id:order_id,mobile_no:mobile_no},
-
-			url:base_url+'Orders/track_order_by_id',
-
-			success: function(out){
-
-				var out = JSON.parse(out);
-
-				var msg;
-
-				if(out.status == 1){
-
-							window.location.href = base_url+'Orders/my_order_track?order_id='+order_id
-
-
-
-				}
-
-				else{
-
-					 msg = 'Order id does not exist';
-
-					 $('.check_order_msg').attr('style', 'color: red !important');
-
-					  $('.check_order_msg').show();
-
-				 $('.check_order_msg').html(msg);
-
-
-
-				}
-
-				//console.log(msg);
-
-				
-
-
-
-
-
-			}
-
-		})
-		}
-else{
-
-		$('#mobile_no').focus();
-
-		msg = 'Please enter your Mobile number';
-
-		$('.check_order_msg').show();
-
-		 $('.check_order_msg').html(msg);
-
-	}
-
-	}
-
-	else{
-
-		$('#order_id').focus();
-
-		msg = 'Please enter your Order id';
-
-		$('.check_order_msg').show();
-
-		 $('.check_order_msg').html(msg);
-
-	}
-
-
-})
-
-</script> -->
 <script>
 	$('.banner .owl-carousel').owlCarousel({
 	autoplay:true,

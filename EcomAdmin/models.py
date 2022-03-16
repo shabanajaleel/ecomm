@@ -296,6 +296,9 @@ class OrderDetails(models.Model):
         ('Pending','Pending'),
         ('Received','Received')))
     platform=models.CharField(max_length=100)
+    Razorpay_order_id=models.CharField(max_length=200,null=True)
+    Razorpay_payment_id=models.CharField(max_length=200,null=True)
+    Razorpay_signature=models.CharField(max_length=200,null=True)
 
 class Order(models.Model):
     order_id=models.ForeignKey(OrderDetails,on_delete=models.CASCADE)

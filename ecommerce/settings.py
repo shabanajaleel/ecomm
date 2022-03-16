@@ -162,3 +162,8 @@ EMAIL_USE_TLS=True
 EMAIL_USE_SSL=False
 
 
+# razorpay keys
+
+RAZOR_KEY_ID = "rzp_test_MVQMN8mLlhM1qS"
+RAZOR_KEY_SECRET = "FuiHFnyhDKzU1hOOlOPYR47O"
+

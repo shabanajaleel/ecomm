@@ -122,14 +122,14 @@
 				   },
 				   success: (data) => {
 					   if (data.login){
-						
+						 alertify.success(data.login)
 						   
 						   document.location.href="/login_user/"
    
 					   }
 					  
 					   else{
-						   alert(data.message)
+						   alertify.success(data.message)
 						  
 						   count_html="("+ data.count+ ")"
    
@@ -178,12 +178,12 @@
 					
 					   if (data.login){
 						   
-						   alert(data.login)
+						   alertify.success(data.login)
 						   document.location.href="/login_user/"
    
 					   }
 					   else{
-						alert(data.message)
+						alertify.success(data.message)
 
 						   count_html="("+ data.count+ ")"
    

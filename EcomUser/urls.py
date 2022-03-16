@@ -52,6 +52,8 @@ urlpatterns=[
     path('apply_coupon_code/',views.fncoupon,name="apply_coupon_code"),
 
     path('place_order/',views.fnplace_order,name="place_order"),
+    path('place_order_razorpay/',views.fnplace_order_razorpay,name="place_order_razorpay"),
+    path('paymenthandler/',views.fnpaymenthandler,name="paymenthandler"),
     path('confirm-order/',views.fnconfirm_order,name="confirm-order"),
 
    
