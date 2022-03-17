@@ -22,13 +22,17 @@
     <!-- <input type="hidden" id="is_guest_login" value="0" placeholder="" name="is_guest_login">
     <input type="hidden" id="product_id" value="" placeholder="" name="product_id">
     <input type="hidden" id="cart_product_id" value="" placeholder="" name="cart_product_id"> -->
-    <h5>Password: <a href="#" id="forgotbtn" class="lost-pass" onclick="myForgot()" style="color: #B05B25;
+    <!-- <h5>Password: <a href="#" id="forgotbtn" class="lost-pass" onclick="myForgot()" style="color: #B05B25;
         float: right;
-        font-size: 11px;">Forgot Password?</a></h5>
+        font-size: 11px;">Forgot Password?</a></h5> -->
     <input type="password" value="" name="password" required="" placeholder="******">
     <div class="col-md-12 col-sm-6 ">
     <input type="submit" value="Login">
-    <a class="acount-btn" href="{% url 'user_register' %}">Create an Account</a>
+    <a class="acount-btn float-right" href="{% url 'user_register' %}">Create an Account</a>
+    </div>
+    <div class="col-md-12 col-sm-6 ">
+       <center> <a class="acount-btn btn-block btn-primary" href=""> Login With OTP </a> </center> 
+
     </div>
     
     

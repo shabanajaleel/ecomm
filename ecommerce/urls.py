@@ -21,6 +21,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', include('EcomAdmin.urls')),
     path('', include('EcomUser.urls')),
+    path('API/', include('EcommAPI.urls')),
 
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

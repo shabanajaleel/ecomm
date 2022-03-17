@@ -13,6 +13,7 @@ from django.db.models import F
 from django.core.paginator import Paginator
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponseBadRequest
+from django.shortcuts import get_object_or_404
 # razorpay
 
 from django.conf import settings
@@ -127,29 +128,24 @@ def fnlogin(request):
     if request.method=="POST":
         mobile=request.POST['mobile']
         password=request.POST['password']
-        customer=Customer.objects.get(phone=mobile)
-        enc_password=check_password(password,customer.password)
-        if enc_password==True:
-            mobile=customer.phone
-            print(mobile)
-            otp=str(randint(1000,9999))
-            customer.otp=otp
-            customer.save()
-            request.session['customer']=customer.id
-            message = client.messages \
-                    .create(
-                        body="Your OTP for login is " + otp,
-                        from_='+19107765960',
-                        to='+91' + str(mobile)
-                    )
-            if message:
-                return render(request,'enter_otp.html')
+        customer=get_object_or_404(Customer,phone=mobile)
+        mobile=customer.phone
+        if mobile:
+
+            enc_password=check_password(password,customer.password)
+            if enc_password==True:
+                
+                print(mobile)
+                session_id=str(randint(1000000000,9999999999))
+                customer.session_id=session_id
+                customer.save()
+                messages.success(request,'Successfully Logged In')
+                return redirect(fnhome)
             else:
-                return render(request,'userlogin.html')
-
-
+                messages.error(request,'Wrong Password...')
+                return redirect(fnlogin)
         else:
-            messages.error(request,'Wrong Password...')
+            messages.error(request,'Invalid Entries')
             return redirect(fnlogin)
 
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
@@ -198,7 +194,7 @@ def fnenterotp(request):
             user=request.session['customer']
             customer=Customer.objects.get(id=user)
             if otp==customer.otp :
-                messages.error(request,'Successfully Logged In')
+                messages.success(request,'Successfully Logged In')
                 return redirect(fnhome)
             else:
                 messages.error(request,'incorrect otp')
@@ -846,43 +842,68 @@ def fnpaymenthandler(request):
                 'razorpay_signature': signature
             }
             
-            order_details=OrderDetails.objects.get(Razorpay_order_id=razorpay_order_id)
+            
             # verify the payment signature.
-            result = razorpay_client.utility.verify_payment_signature(params_dict)
+            try:
+                result = razorpay_client.utility.verify_payment_signature(params_dict)
+                order_details=OrderDetails.objects.get(Razorpay_order_id=razorpay_order_id)
+                order_details.Razorpay_payment_id=payment_id
+                order_details.Razorpay_signature=signature
+                order_success=order_details.save()
 
-            print(result)
-
-            if result is True:
-                print("hello")
-                total_amount = order_details.order_total  # Rs. 200
-                print(total_amount)
-                amount=float(total_amount)*100
                 
-                print(amount)
-                try:
+
+                order_id=order_details.id
+                orders=Order.objects.filter(order_id_id=order_id)
+                for allorders in orders:
+                    product_varient_stock=allorders.product.Product_stock
+                    print(product_varient_stock)
+                    quantity=allorders.count
+                    print(quantity)
+                    new_stock=product_varient_stock - int(quantity)
+                    print(new_stock)
+                # # update product quantity
+                    Product_Varients.objects.filter(id=allorders.product.id).update(Product_stock=new_stock)
+
+                currentUser=request.session['customer']
+                order_products=Cart.objects.filter(customer_id=currentUser).delete()
+
+                return render(request, 'paymentsuccess.html',{'status':True})
+            except:
+                return render(request, 'paymentsuccess.html')
+           
+
+            # if result is True:
+            #     print("hello")
+            #     total_amount = order_details.order_total  # Rs. 200
+            #     print(total_amount)
+            #     amount=float(total_amount)*100
+                
+            #     print(amount)
+            #     try:
  
-                    # capture the payemt
+            #         # capture the payemt
                     
-                    new=razorpay_client.payment.capture(payment_id, amount)
+            #         new=razorpay_client.payment.capture(payment_id, amount)
+            #         print(new)
+            #         order_details=OrderDetails.objects.get(Razorpay_order_id=razorpay_order_id)
+            #         order_details.Razorpay_payment_id=payment_id
+            #         order_details.Razorpay_signature=signature
+            #         order_success=order_details.save()
+            #         # if order_success:
+            #             # ordered_products=Cart.objects.filter(customer_id=currentUser).delete()
                     
-                    
-                    order_details.Razorpay_payment_id=razorpay_payment_id
-                    order_details.Razorpay_signature=signature
-                    order_success=order_details.save()
-                    if order_success:
-                        ordered_products=Cart.objects.filter(customer_id=currentUser).delete()
-                    
-                    # render success page on successful caputre of payment
-                    return render(request, 'paymentsuccess.html')
-                except:
+            #         # render success page on successful caputre of payment
+            #         return render(request, 'paymentsuccess.html')
+            #     except:
  
-                    # if there is an error while capturing payment.
-                    return render(request, 'paymentfail.html')
-            else:
-                print("Hai")
+            #         # if there is an error while capturing payment.
+            #         return render(request, 'paymentfail.html')
+            # else:
+            #     print("Hai")
  
-                # if signature verification fails.
-                return render(request, 'paymentfail.html')
+            #     # if signature verification fails.
+            #     return render(request, 'paymentfail.html')
         except:
             print("no parametre")
  

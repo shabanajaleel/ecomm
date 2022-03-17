@@ -251,6 +251,7 @@ class Customer(models.Model):
     conf_password=models.CharField(max_length=200,null=True,blank=True)
     status=models.BooleanField(default=True)
     otp=models.CharField(max_length=10,default=False)
+    session_id=models.CharField(max_length=20,null=True,blank=True)
 
     class Meta:
         db_table='Customer'
