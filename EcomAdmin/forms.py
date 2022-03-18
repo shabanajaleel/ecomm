@@ -293,6 +293,8 @@ class PincodeForm(forms.ModelForm):
 
 
 class CustomerForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+    conf_password=forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model=Customer
         fields="__all__"
@@ -301,9 +303,7 @@ class CustomerForm(forms.ModelForm):
 
     def __init__(self,*args , **kwargs):
         super(CustomerForm,self).__init__(*args, **kwargs)
-        self.fields['first_name'].widget.attrs['placeholder'] = 'First Name'
-        self.fields['last_name'].widget.attrs['placeholder'] = 'Last Name'
-        self.fields['username'].widget.attrs['placeholder'] = 'UserName'
+        self.fields['name'].widget.attrs['placeholder'] = 'Name'
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
         self.fields['phone'].widget.attrs['placeholder'] = 'Mobile No'
         self.fields['password'].widget.attrs['placeholder'] = 'Password'

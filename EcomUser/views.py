@@ -53,7 +53,7 @@ def login_required_custom(request):
         return True
 
 def fnhome(request):
-    products=Product.objects.all()
+    products=Product.objects.all()[:8]  
     brands=Brand.objects.all()
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
     allcatogory=Catogory.objects.filter(status="Active")
@@ -78,6 +78,15 @@ def fnregister(request):
     if request.method=="POST":
         form=CustomerForm(request.POST or None)
         if form.is_valid():
+            otp=str(randint(10000,99999))
+            mobile=form.cleaned_data['phone']
+            message = client.messages \
+                .create(
+                            body="Your OTP for login is " + otp,
+                            from_='+19107765960',
+                            to='+91' + str(mobile)
+                        )
+
             register=form.save(commit=False)
             password=form.cleaned_data['password']
             conf_password=form.cleaned_data['conf_password']
@@ -85,12 +94,29 @@ def fnregister(request):
             newconfpassword=make_password(conf_password, salt=None, hasher='default')
             register.password=newpassword
             register.conf_password=newconfpassword
+            register.otp=otp
             register.save()
-            messages.success(request,'Successfully signed in..')
-            return redirect(fnlogin)
+            request.session['customer']=register.id
+            return render(request,'enter_register_otp.html')
         else:
             return render(request,'user_register.html',{'form':form})
     return render(request,'user_register.html',context)
+
+def fnregister_otp(request):
+    if request.method=='POST':
+        otp=request.POST['otp']
+        currentuser=request.session['customer']
+        customer=Customer.objects.get(id=currentuser)
+        if customer.otp == otp:
+            return redirect(fnlogin)
+        else:
+            customer.delete()
+            del request.session['customer']
+            messages.error(request,'Incorrect OTP')
+            return render(request,'enter_register_otp.html')
+
+
+
 
 def fnchangeuserpassword(request):
     
@@ -131,16 +157,26 @@ def fnlogin(request):
         customer=get_object_or_404(Customer,phone=mobile)
         mobile=customer.phone
         if mobile:
-
             enc_password=check_password(password,customer.password)
-            if enc_password==True:
-                
-                print(mobile)
-                session_id=str(randint(1000000000,9999999999))
-                customer.session_id=session_id
-                customer.save()
-                messages.success(request,'Successfully Logged In')
-                return redirect(fnhome)
+            if enc_password==True: 
+                if customer.session_id:
+                    request.session['customer']=customer.id
+                    request.session['customer_id']=customer.session_id
+
+                    messages.success(request,'Successfully Logged In')
+                    return redirect(fnhome)
+
+                else:
+                    session_id=str(randint(10000,99999))+str(mobile)
+                    print(session_id)
+                    customer.session_id=session_id
+                    customer.save()
+
+                    request.session['customer']=customer.id
+                    request.session['customer_id']=customer.session_id
+
+                    messages.success(request,'Successfully Logged In')
+                    return redirect(fnhome)
             else:
                 messages.error(request,'Wrong Password...')
                 return redirect(fnlogin)
@@ -153,39 +189,40 @@ def fnlogin(request):
     form=CustomerForm()
     context={'form':form,'catogory': catogory,'allcat':allcatogory}
     return render(request,'user_login.html',context)
-    
-
-
 
 def fnotplogin(request):
     if request.method=="POST":
-        username=request.POST['username']
-        email=request.POST['email']
-        customer=Customer.objects.get(username=username,email=email)
-        if customer:
-            mobile=customer.phone
-            print(mobile)
-            otp=str(randint(1000,9999))
-            customer.otp=otp
-            customer.save()
-            request.session['customer']=customer.id
-            message = client.messages \
-                    .create(
-                        body="Your OTP for login is " + otp,
-                        from_='+19107765960',
-                        to='+91' + str(mobile)
-                    )
-            if message:
-                return render(request,'enter_otp.html')
+            phone=request.POST['phone']
+            
+            customer=Customer.objects.get(phone=phone)
+            if customer:
+                mobile=customer.phone
+                otp=str(randint(10000,99999))
+                customer.otp=otp
+                customer.save()
+                
+                request.session['customer']=customer.id
+                
+                message = client.messages \
+                .create(
+                            body="Your OTP for login is " + otp,
+                            from_='+19107765960',
+                            to='+91' + str(mobile)
+                        )
+                if message:
+                    return render(request,'enter_otp.html')
+                else:
+                    messages.error(request,'Error occured in sending OTP')
+                    return render(request,'enter_phone.html')
+
+
             else:
-                return render(request,'user_otp_login.html')
+                messages.error(request,'invalid Phone Number')
+                return render(request,'enter_phone.html')
 
 
-        else:
-            messages.error(request,'invalid username or email')
-            return redirect(fnotplogin)
-
-    return render(request,'user_otp_login.html')
+    return render(request,'enter_phone.html')
+    
 
 def fnenterotp(request):
     if request.method=="POST":
@@ -193,12 +230,18 @@ def fnenterotp(request):
         if request.session.has_key('customer'):
             user=request.session['customer']
             customer=Customer.objects.get(id=user)
+            mobile=customer.phone
             if otp==customer.otp :
+                session_id=str(randint(10000,99999))+str(mobile)
+                print(session_id)
+                customer.session_id=session_id
+                customer.save()
+                request.session['customer_id']=customer.session_id
                 messages.success(request,'Successfully Logged In')
                 return redirect(fnhome)
             else:
                 messages.error(request,'incorrect otp')
-                return render(request,'enter_otp.html')
+                return render(request,'enter_phone.html')
 
     return render(request,'enter_otp.html')
 

@@ -17,22 +17,17 @@
     <p>Welcome, please enter the following to continue.</p>
     <form action="" method="POST" >
         {% csrf_token %}
-    <h5>Phone:</h5>
-    <input type="text" class="numberonly" placeholder="Enter your phone" name="mobile" required="" maxlength="10" minlength="10" value="">
+        <h5>Phone Number</h5>
+        <input type="text" value="" placeholder="Enter your phone number" name="phone" required>
+       
     <!-- <input type="hidden" id="is_guest_login" value="0" placeholder="" name="is_guest_login">
     <input type="hidden" id="product_id" value="" placeholder="" name="product_id">
     <input type="hidden" id="cart_product_id" value="" placeholder="" name="cart_product_id"> -->
-    <!-- <h5>Password: <a href="#" id="forgotbtn" class="lost-pass" onclick="myForgot()" style="color: #B05B25;
-        float: right;
-        font-size: 11px;">Forgot Password?</a></h5> -->
-    <input type="password" value="" name="password" required="" placeholder="******">
+    
+  
     <div class="col-md-12 col-sm-6 ">
-    <input type="submit" value="Login">
-    <a class="acount-btn float-right" href="{% url 'user_register' %}">Create an Account</a>
-    </div>
-    <div class="col-md-12 col-sm-6 ">
-       <center> <a href="{% url 'otp_login' %}" class="acount-btn btn-block btn-primary" href=""> Login With OTP </a> </center> 
-
+    <input type="submit" value="Sent OTP">
+    <a class="acount-btn" href="{% url 'user_register' %}">Create an Account</a>
     </div>
     
     
@@ -41,7 +36,7 @@
     <h5 style="color: red;"></h5>
     </div>
     
-    <div class="col-md-4 col-sm-6 col-xs-10 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 log " id="forgot" style="display: none;">
+    <!-- <div class="col-md-4 col-sm-6 col-xs-10 col-md-offset-4 col-sm-offset-3 col-xs-offset-1 log " id="forgot" style="display: none;">
     
     <h2>Forgot Password</h2>
     <p></p>
@@ -54,7 +49,7 @@
     
     </form>
     
-    </div>
+    </div> -->
     <div class="clearfix"></div>
     </div>
     </div>

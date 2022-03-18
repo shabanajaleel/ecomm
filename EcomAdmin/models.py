@@ -240,9 +240,7 @@ class Offers(models.Model):
 
 
 class Customer(models.Model):
-    first_name=models.CharField(max_length=100)
-    last_name=models.CharField(max_length=100)
-    username=models.CharField(max_length=100)
+    name=models.CharField(max_length=100)
     email=models.EmailField(max_length=100,unique=True)
     phone=models.BigIntegerField(unique=True)
     profile_image=models.ImageField(upload_to='images/profile',null=True,blank=True)

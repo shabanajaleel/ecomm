@@ -8,7 +8,9 @@ urlpatterns=[
     
     path('login_user/',views.fnlogin,name="login_user"),
     path('user_register/',views.fnregister,name="user_register"),
-    path('login_otp/',views.fnotplogin,name="login_otp"),
+    path('register/',views.fnregister_otp,name="register"),
+    # path('login/',views.fnlogin,name="login"),
+    path('otp_login/',views.fnotplogin,name="otp_login"),
     path('enter_otp/',views.fnenterotp,name="enter_otp"),
     path('logout_user/',views.fnlogout,name="logout_user"),
     # path('register/',views.fnregister,name="register"),
