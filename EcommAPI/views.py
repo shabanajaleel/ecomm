@@ -5,6 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from .serializers import *
 from EcomAdmin.models import *
+from EcomUser.models import *
+from django.db.models import Sum,Count
 from django.contrib.auth.hashers import make_password,check_password
 import os
 from twilio.rest import Client
@@ -114,13 +116,207 @@ def fnhomeapi(request):
         catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
         catogory_serializer=CatogorySerializer(catogory,many='True')
 
-        data={'wish_count':0,'cart_count':0,'banners':banner_serializer.data,'category_list':catogory_serializer.data}
+        # get latest product
+        products=Product.objects.filter(status="Active")
+        latest_product_serializer=LatestProductSerializer(products,many=True)
+
+
+        data={'wish_count':0,'cart_count':0,'banners':banner_serializer.data,'category_list':catogory_serializer.data,"latest_product":latest_product_serializer.data,"response_code":0,'message':"success"}
         return JsonResponse(data, status=201)
 
 
     if request.method=="POST":
         data=JSONParser().parse(request)
-        pass
+        s_id=data.get('s_id')
+        try:
+
+            # get User
+            customer=Customer.objects.get(session_id=s_id)
+            print(customer.id)
+            currentUser=customer.id
+
+            # get Banner
+            banners=Banners.objects.filter(status="Active")
+            banner_serializer=BannerSerializer(banners,many='True')
+
+            #get catogory
+            catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
+            catogory_serializer=CatogorySerializer(catogory,many='True')
+
+            # get latest product
+            products=Product.objects.filter(status="Active")
+            latest_product_serializer=LatestProductSerializer(products,many=True)
+
+            # wish-count and cart-count
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'banners':banner_serializer.data,'category_list':catogory_serializer.data,"latest_product":latest_product_serializer.data,"response_code":0,'message':"success"}
+            return JsonResponse(data, status=201)
+
+
+        except Customer.DoesNotExist:
+            data={'response_code':1,'message':"Invalid User"}
+            return JsonResponse(data)
+
+@csrf_exempt
+def fnaddtocart(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        varient_id=data.get('varient_id')
+        qty=data.get('qty')
+
+        try:
+            # get user
+            customer=Customer.objects.get(session_id=s_id)
+            currentUser=customer.id
+
+
+            # check product quantity
+            product=Product_Varients.objects.get(id=varient_id)
+            if product.Product_stock < int(qty):
+                data={'response_code':1,'message':"Product is out of stock"}
+                return JsonResponse(data)
+
+            else:
+                # check if product already exists in cart
+                check_cart=Cart.objects.filter(customer=currentUser,product=varient_id).exists()
+                
+                if check_cart== True:
+                    data={'response_code':1,'message':"Product is already in cart"}
+                    return JsonResponse(data)
+
+                else:
+
+                    cart=Cart(customer_id=currentUser,product_id=varient_id,quantity=qty,selling_price=product.Selling_Prize,display_price=product.Display_Prize)
+                    cart.save()
+
+                    # wish-count and cart-count
+                    cart_count=Cart.objects.filter(customer=currentUser).count()
+                    wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+                    data={'wish_count':wish_count,'cart_count':cart_count,'response_code':0,'message':"Product added to cart successfully"}
+                    return JsonResponse(data)
+
+        except Customer.DoesNotExist:
+            data={'response_code':1,'message':"Invalid User"}
+            return JsonResponse(data)    
+
+@csrf_exempt
+def fnaddtowishlist(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        varient_id=data.get('varient_id')
+
+        try:
+            # get user
+            customer=Customer.objects.get(session_id=s_id)
+            currentUser=customer.id
+
+            product=Product_Varients.objects.get(id=varient_id)
+            check_wishlist=Wishlist.objects.filter(customer=currentUser,product=varient_id).exists()
+            
+            if check_wishlist== True:
+                data={'response_code':1,'message':"Product is already in Wishlist"}
+                return JsonResponse(data)
+
+            else:
+
+                wishlist=Wishlist(customer_id=currentUser,product_id=varient_id,unit_price=product.Selling_Prize)
+                wishlist.save()
+
+
+                cart_count=Cart.objects.filter(customer=currentUser).count()
+                wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+                data={'wish_count':wish_count,'cart_count':cart_count,'response_code':0,'message':"Product added to Wishlist successfully"}
+                return JsonResponse(data)
+
+
+        except Customer.DoesNotExist:
+            data={'response_code':1,'message':"Invalid User"}
+            return JsonResponse(data)
+
+@csrf_exempt
+def fnviewcart(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        try:
+            # get user
+            customer=Customer.objects.get(session_id=s_id)
+            currentUser=customer.id
+
+            # get cart item
+            cart=Cart.objects.filter(customer=currentUser)
+            cartserializer=ViewCartSerializer(cart,many=True)
+
+            # cart total
+            cart_total=0
+            for items in cart:
+                cart_total += items.selling_price * items.quantity
+
+                # if items.quantity < items.product.Product_stock:
+                #     stock_status=1
+                # elif items.quantity > items.product.Product_stock:
+                #     stock_status=0
+                # else items.product.Product_stock == 0:
+                #     stock_status=2
+
+
+            # get cart-wish count
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'cart_total':cart_total,'products':cartserializer.data,'response_code':0,'message':"success"}
+            return JsonResponse(data)
+
+
+        except Customer.DoesNotExist:
+            data={'response_code':1,'message':"Invalid User"}
+            return JsonResponse(data)
+
+@csrf_exempt
+def fnupdatecart(request):
+    if request.method=='PUT':
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        id=data.get('cart_id')
+        customer=Customer.objects.get(session_id=s_id)
+        currentUser=customer.id
+
+        cart=Cart.objects.get(customer=currentUser,id=id)
+
+        cartserializer=CartSerializer(cart,data)
+        if cartserializer.is_valid():
+            cartserializer.save()
+            data={'response_code':0,'message':"Cart Updated Successfully"}
+            return JsonResponse(data)
+        else:
+            return JsonResponse(cartserializer.errors)
+
+        
+
+
+
+
+            
+
+
+
+
+    
+
+
+
+
+
+
+            
+
 
 
     

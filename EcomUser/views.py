@@ -53,7 +53,8 @@ def login_required_custom(request):
         return True
 
 def fnhome(request):
-    products=Product.objects.all()[:8]  
+    products=Product.objects.filter(status="Active")[:8]
+    print(products)  
     brands=Brand.objects.all()
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
     allcatogory=Catogory.objects.filter(status="Active")
@@ -63,6 +64,7 @@ def fnhome(request):
     
 
     if 'customer' in request.session:
+        print('hai')
         currentUser=request.session['customer']
         cart_count=Cart.objects.filter(customer=currentUser).count()
         wish_count=Wishlist.objects.filter(customer=currentUser).count()

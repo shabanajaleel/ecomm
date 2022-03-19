@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from EcomAdmin.models import Customer,Banners,Catogory
+from EcomAdmin.models import Customer,Banners,Catogory,Product_Varients,Product
+from EcomUser.models import Cart
 from django.contrib.auth.hashers import make_password
 from random import randint
 import os
@@ -68,8 +69,35 @@ class CatogorySerializer(serializers.ModelSerializer):
         fields = ['id','catogory_name','catogory_image']
 
 
-class ProductSerializer(serializers.ModelSerializer):
-    pass
+class LatestProductSerializer(serializers.ModelSerializer):
+    Sku_Code=serializers.CharField(source='product_varients_set.first.Sku_Code')
+    Selling_Prize=serializers.CharField(source='product_varients_set.first.Selling_Prize')
+    Cut_Prize=serializers.CharField(source='product_varients_set.first.Display_Prize')
+    prod_varient_id=serializers.CharField(source='product_varients_set.first.id')
+    prod_image=serializers.CharField(source='productimage_set.first.Thumbnail_image')
+    
+
+
+    class Meta:
+        model = Product
+        fields=['id','prod_varient_id','Name','Sku_Code','prod_image','Selling_Prize','Cut_Prize']
+   
+class ViewCartSerializer(serializers.ModelSerializer):
+
+    user_id=serializers.CharField(source="customer.id")
+    product_code=serializers.CharField(source="product.Sku_Code")
+    product_varient_id=serializers.CharField(source="product.id")
+    product_name=serializers.CharField(source="product.product.Name")
+    product_image=serializers.CharField(source="product.product.productimage_set.first.Thumbnail_image")
+    productvarient_values=serializers.CharField(source="product.Varient_Values.varient_values")
+    class Meta:
+        model = Cart
+        fields = ['id','user_id','product_code','product_varient_id','product_name','product_image','productvarient_values','quantity','selling_price','display_price','get_total']
+
+class CartSerializer(serializers.ModelSerializer):
+     class Meta:
+        model = Cart
+        fields = ['id','quantity']
 
 
 
