@@ -160,6 +160,74 @@ def fnhomeapi(request):
             return JsonResponse(data)
 
 @csrf_exempt
+def fnallproducts(request):
+    if request.method=="GET":
+        products=Product.objects.filter(status="Active")
+        productserializer=ProductSerializer(products,many="True")
+
+        data={'wish_count':0,'cart_count':0,"All Products":productserializer.data,"response_code":0,'message':"success"}
+        return JsonResponse(data, status=201)
+
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        cat_id=data.get('cat_id')
+
+        if s_id:
+            if cat_id is None:
+                products=Product.objects.filter(status="Active")
+                productserializer=ProductSerializer(products,many="True")
+
+                customer=Customer.objects.get(session_id=s_id)
+                currentUser=customer.id
+
+                cart_count=Cart.objects.filter(customer=currentUser).count()
+                wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+                data={'wish_count':wish_count,'cart_count':cart_count,"All Products":productserializer.data,"response_code":0,'message':"success"}
+                return JsonResponse(data, status=201)
+            
+            if cat_id:
+
+                products=Product.objects.filter(Product_Category=cat_id,status="Active")
+                productserializer=ProductSerializer(products,many="True")
+
+                customer=Customer.objects.get(session_id=s_id)
+                currentUser=customer.id
+
+                cart_count=Cart.objects.filter(customer=currentUser).count()
+                wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+                data={'wish_count':wish_count,'cart_count':cart_count,"All Products":productserializer.data,"response_code":0,'message':"success"}
+                return JsonResponse(data, status=201)
+
+        elif cat_id:
+            products=Product.objects.filter(Product_Category=cat_id,status="Active")
+            productserializer=ProductSerializer(products,many="True")
+
+            data={'wish_count':0,'cart_count':0,"All Products":productserializer.data,"response_code":0,'message':"success"}
+            return JsonResponse(data, status=201)
+
+@csrf_exempt
+def fnproductdetails(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        product_varient_id=data.get('varient_id')
+
+        products=Product_Varients.objects.filter(id=product_varient_id)
+        print(products.product.id)
+        image=ProductImage.objects.filter(product_id=products.product.id)
+        print(image)
+        image_serializer=ProductImageSerializer(image,many="True")
+
+        # productvarientserializer=ProductVarientSerializer(products,many="False")
+
+        data={'wish_count':0,'cart_count':0,"Product":productvarientserializer.data,"images":image_serializer.data,"response_code":0,'message':"success"}
+        return JsonResponse(data, status=201)
+
+
+
+@csrf_exempt
 def fnaddtocart(request):
     if request.method=="POST":
         data=JSONParser().parse(request)
@@ -293,10 +361,144 @@ def fnupdatecart(request):
         cartserializer=CartSerializer(cart,data)
         if cartserializer.is_valid():
             cartserializer.save()
-            data={'response_code':0,'message':"Cart Updated Successfully"}
+
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'response_code':0,'message':"Cart Updated Successfully"}
             return JsonResponse(data)
         else:
             return JsonResponse(cartserializer.errors)
+
+@csrf_exempt
+def fnremovecart(request):
+    if request.method=='DELETE':
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        cart_id=data.get('cart_id')
+
+        customer=Customer.objects.get(session_id=s_id)
+        currentUser=customer.id
+
+        
+
+        try:
+            cart=Cart.objects.get(id=cart_id,customer_id=currentUser)
+            cart.delete()
+
+            #cart and wish count 
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'response_code':0,'message':"Cart removed Successfully"}
+            return JsonResponse(data)
+
+        except Cart.DoesNotExist:
+            data={'response_code':1,'message':"Invalid Entries"}
+            return JsonResponse(data)
+
+@csrf_exempt
+def fnviewwishlist(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        try:
+            # get user
+            customer=Customer.objects.get(session_id=s_id)
+            currentUser=customer.id
+
+            # get cart item
+            wishlist=Wishlist.objects.filter(customer=currentUser)
+            wishserializer=ViewWishlistSerializer(wishlist,many=True)
+
+            # get cart-wish count
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'products':wishserializer.data,'response_code':0,'message':"success"}
+            return JsonResponse(data)
+
+
+        except Customer.DoesNotExist:
+            data={'response_code':1,'message':"Invalid User"}
+            return JsonResponse(data)
+
+@csrf_exempt
+def fnremovewishlist(request):
+    if request.method=='DELETE':
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        wish_id=data.get('wish_id')
+
+        customer=Customer.objects.get(session_id=s_id)
+        currentUser=customer.id
+
+        
+
+        try:
+            wish=Wishlist.objects.get(id=wish_id,customer_id=currentUser)
+            wish.delete()
+
+            #cart and wish count 
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'response_code':0,'message':"Item removed from wishlist"}
+            return JsonResponse(data)
+
+        except Wishlist.DoesNotExist:
+            data={'response_code':1,'message':"Invalid Entries"}
+            return JsonResponse(data)
+
+@csrf_exempt
+def fnwishtocart(request):
+    if request.method=="POST":
+        data=JSONParser().parse(request)
+        s_id=data.get('s_id')
+        wish_id=data.get('wish_id')
+        product_varient_id=data.get('varient_id')
+        qty=data.get('qty')
+
+        print("hai")
+        product=Product_Varients.objects.get(id=product_varient_id)
+        print(product)
+
+        customer=Customer.objects.get(session_id=s_id)
+        currentUser=customer.id
+        print(currentUser)
+        check_cart=Cart.objects.filter(customer=currentUser,product=product_varient_id).exists()
+        print(check_cart)
+
+        if check_cart== True:
+            data={'response_code':1,'message':"Item Already exist in cart"}
+            return JsonResponse(data)
+        else:
+
+            cart=Cart(customer_id=currentUser,product_id=product_varient_id,quantity=qty,selling_price=product.Selling_Prize,display_price=product.Display_Prize)
+            cart.save()
+            wishlist=Wishlist.objects.filter(customer_id=currentUser,product_id=product_varient_id)
+            wishlist.delete()
+
+            #cart and wish count 
+            cart_count=Cart.objects.filter(customer=currentUser).count()
+            wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+            data={'wish_count':wish_count,'cart_count':cart_count,'response_code':0,'message':"Item added to cart succesfully"}
+            return JsonResponse(data)
+
+
+
+
+
+
+
+
+
+
 
         
 
