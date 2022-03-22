@@ -22,6 +22,7 @@ urlpatterns=[
     path('add_new_address/',views.fnaddnewaddress,name="add_new_address"),
     path('edit_address/',views.fneditaddress,name="edit_address"),
     path('edit_user_address/',views.fnedituseraddress,name="eedit_user_address"),
+    path('check_pin',views.fncheck_pin,name="check_pin"),
     
 
     path('products/',views.fnproductlist,name="products"),

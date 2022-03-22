@@ -100,17 +100,15 @@
 		{% endif %}</a>
     <h5>Delivery Address </h5>
     </div>
-	{% for add in address %}
-	{% if forloop.first %}
+	
     <p class="new_address" >
 		<input type="text" value="{{add.id}}" id="add_id" hidden>
 		<span class="font-weight-bold">
-		{{add.username.first_name}} {{add.username.last_name}}</span>
-		</br>{{add.address}}, {{add.locality}} 
-		</br> {{add.state}}, {{add.country}} 
-		</br> {{add.pin}}</p>
-	{% endif%}
-	{% endfor %}
+		{{default_address.username.name}} </span>
+		</br>{{default_address.address}}, {{default_address.locality}} 
+		</br> {{default_address.state}}, {{default_address.country}} 
+		</br> <span class="default_pin">{{default_address.pin}}</span></p>
+	
     </div>
     </div>
     </div>
@@ -889,6 +887,34 @@ else{
   //     rzp1.open();
       
   
+  </script>
+  <script>
+    $(document).ready(function(){
+      var pin=$('.default_pin').html()
+      $.ajaxSetup({
+      		headers:{"X-CSRFToken":'{{csrf_token}}'}
+    		})
+
+			$.ajax({
+			type:'POST',
+			url:'{% url "check_pin" %}',
+			data:{
+				'pin':pin,
+				
+			},
+      success: (data) => {
+        if(data.error){
+         alertify.error(data.error)
+
+        }
+                   
+                  //  document.location.href="/confirm-order/"
+                  // alertify.success(data.message)
+            
+                   }
+   })
+
+    })
   </script>
 
 

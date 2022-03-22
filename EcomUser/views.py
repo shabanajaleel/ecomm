@@ -4,7 +4,7 @@ from django.shortcuts import render,redirect
 from . forms import *
 from django.contrib.auth.hashers import make_password,check_password
 from django.contrib import messages
-from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients,CoupenCode,Offers,OrderDetails,Order
+from EcomAdmin.models import Banners,Catogory,Brand,Product,Customer,Product_Varients,CoupenCode,Offers,OrderDetails,Order,Pincode
 from EcomAdmin.forms import CustomerForm
 from django.contrib.auth.decorators import user_passes_test
 from . decorator import login_cart
@@ -617,7 +617,8 @@ def fncheckout(request):
     form=AddressForm()
     cart_count=Cart.objects.filter(customer=currentUser).count()
     wish_count=Wishlist.objects.filter(customer=currentUser).count()
-    
+    default_address=Address.objects.get(username_id=currentUser,default="1")
+    print(default_address)
     address=Address.objects.filter(username_id=currentUser)
     user_cart=Cart.objects.filter(customer_id=currentUser)
     total_price=0
@@ -634,7 +635,7 @@ def fncheckout(request):
     # Cart_total(customer_id=currentUser,order_total=total_price,total_quantity=total_qty).save()
 
 
-    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat}
+    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat,'default_address':default_address}
 
     return render(request,'checkout.html',context)
 
@@ -779,12 +780,13 @@ def fnaddnewaddress(request):
     make_dflt=request.POST['make_dflt']
     print(make_dflt)
     # address_type=request.POST['address_type']
-    if make_dflt=="1":
-
-        new_address=Address(username_id=currentUser,pin=pin,locality=locality,address=address,state=state,district=district,landmark=landmark,country=country,default=make_dflt)
-        new_address.save()
-        print(new_address)
+    new_address=Address(username_id=currentUser,pin=pin,locality=locality,address=address,state=state,district=district,landmark=landmark,country=country,default=make_dflt)
+    new_address.save()
+    if new_address.default == "1":
         adresses=Address.objects.filter(username_id=currentUser).exclude(id=new_address.id)
+        for adress in adresses:
+            Address.objects.filter(id=adress.id).update(default="0")
+            
         print(adresses)
     return redirect(fncheckout)
 
@@ -1016,6 +1018,29 @@ def fneditprofile(request):
         
     context['form']=form
     return render(request,'edit_profile.html',context)
+
+def fncheck_pin(request):
+    if request.method=="POST":
+        pin=request.POST.get('pin')
+
+        currentUser=request.session['customer']
+
+        customer=Customer.objects.get(id=currentUser)
+
+        pincode=Pincode.objects.filter(status="Active",pincode=pin).exists()
+        if pincode==False:
+            message="Sorry,No delivery to this area"
+            return JsonResponse({'error':message})
+        else:
+            message=""
+            return JsonResponse({'success':message})
+
+
+        
+                
+            
+
+
 
 
 
