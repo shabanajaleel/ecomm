@@ -23,14 +23,15 @@
     </ul>
     {% for items in wishlist %}
     <ul class="cart-header">
-    <li class="ring-in"><a href="">
+ 
         {% for img in items.product.product.productimage_set.all %}
 		{% if forloop.first %}
-    <img src="/media/{{img.Thumbnail_image}}" class="img-responsive" alt=""></a>
-     
+        <li class="ring-in cartproduct-image"><a href="">
+            <img src="/media/{{img.Thumbnail_image}}" class="img-responsive" alt=""></a>
+         </li>       
         {% endif %}
         {% endfor %}
-    </li>
+ 
     <li><span>{{items.product.product}}-{{items.product.Varient_Values.varient_values}}</span></li>
     <li><span>&#8377 {{items.product.Selling_Prize}}</span></li>
     {% if items.product.Product_stock > 0 %}
@@ -47,6 +48,9 @@
     {% endfor %}
    
     </div>
+    <div class="full-block">
+		<a class="continueshopping-button" href="{% url 'Home' %}">Continue Shopping</a>
+	</div>
     </div>
     </div>
     </div>

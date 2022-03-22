@@ -179,7 +179,7 @@
     </div>
     <div class="col-md-4" style="margin-top: 10px; text-align: right;">
     <div class=""  style="font-family: Roboto, Arial, sans-serif">
-      &#8377
+      <!-- &#8377 -->
     <span class="price">{{total_price}}</span>
     </div>
     </div>
@@ -345,11 +345,20 @@
 		<label>Landmark</label>
 		<input placeholder="Landmark" name="landmark" type="text"  >
 		</div>
-    <div class="col-md-12">
+    <!-- <div class="col-md-12">
 		Home:<input type="radio" name="address_type" value="home"  class="ml-3 mr-3" >
         Work:<input type="radio" name="address_type" value="work" class="ml-3 mr-3" >
         Others:<input type="radio" name="address_type" value="others" class="ml-3 mr-3" >
-    </div>
+    </div> -->
+ 
+      <div class="col-12 ml-4">
+        <div class="row">
+          <input type='hidden' value='0' name="make_dflt">
+          <input type="checkbox" name="make_dflt" value="1"  checked="checked">
+      &nbsp;<span>Make this as my default address</span>
+        </div>
+        </div>
+
     <div class="col-12" style="margin-top:10px;">
     <button id="update-delivery-btn" class="button okay-btn delivery">Save</button>
     </div>
@@ -745,7 +754,7 @@
 			success: (data) => {
                    
                     document.location.href="/confirm-order/"
-					alert(data.message)
+					         alertify.success(data.message)
              
                     }
     })
@@ -754,7 +763,7 @@
 
 		}
 		else{
-			alert("select delivery address")
+			alertify.error("select delivery address")
 		}
 	})
 

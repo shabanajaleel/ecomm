@@ -120,7 +120,7 @@
 
 
 		<div class="full-block">
-		<a class="continueshopping-button" href="https://wazaitoon.com/product">Continue Shopping</a>
+		<a class="continueshopping-button" href="{% url 'Home' %}">Continue Shopping</a>
 		</div>
 
 	</div>
@@ -151,9 +151,9 @@
 						<div class="clearfix"></div>
 					</div>
 				<h4 class="last-price">TOTAL</h4>
-				<span class="total final">&#8377 {{total_price}}</span>
+				<span class="total-price final">&#8377 {{total_price}}</span>
 				<div class="clearfix"></div>
-				<a class="placeorder-button" href="{% url 'checkout'%}" style="margin-bottom: 14px;">Place Order</a>
+				<a class="placeorder-button"  style="margin-bottom: 14px;">Place Order</a>
 				</div>
 			</div>
 		</div>
@@ -1038,5 +1038,19 @@ else{
             })
         }
     })
+</script>
+<script>
+	$(document).ready(function(){
+		$('.placeorder-button').click(function(){
+			if ('{{total_qty}}'== 0)
+			{
+				alertify.error("Your Cart is empty")
+			}
+			else{
+				document.location.href="{% url 'checkout' %}"
+			}
+
+		})
+	})
 </script>
 {% endblock %}

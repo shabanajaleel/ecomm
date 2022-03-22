@@ -57,6 +57,8 @@ AUTH_USER_MODEL = 'EcomAdmin.CustomAdmin'
 
 ROOT_URLCONF = 'ecommerce.urls'
 
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

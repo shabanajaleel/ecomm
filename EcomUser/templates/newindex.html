@@ -122,13 +122,24 @@
 				   },
 				   success: (data) => {
 					   if (data.login){
+						  
 						 alertify.success(data.login)
 						   
 						   document.location.href="/login_user/"
    
 					   }
+					   else if(data.stock)
+					   {
+						alertify.success(data.stock)
+
+					   }
+					   else if(data.incart)
+					   {
+						alertify.success(data.incart)  
+					   }
 					  
 					   else{
+						   console.log(data.message)
 						   alertify.success(data.message)
 						  
 						   count_html="("+ data.count+ ")"

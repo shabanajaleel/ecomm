@@ -1,3 +1,4 @@
+
 $(document).ready(function() {
 
     var dropDownChooser = $('.categories-drop > .categories > ul >li');

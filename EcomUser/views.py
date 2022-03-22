@@ -38,6 +38,9 @@ client = Client(account_sid, auth_token)
 context={}
 context['catogory']=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
 context['allcat']=Catogory.objects.filter(status="Active")
+context['cart_count']=0
+context['wish_count']=0
+
 
 #end context 
 
@@ -76,7 +79,7 @@ def fnhome(request):
 
 def fnregister(request):
     form=CustomerForm()
-    context={'form':form}
+    context['form']=form
     if request.method=="POST":
         form=CustomerForm(request.POST or None)
         if form.is_valid():
@@ -110,6 +113,7 @@ def fnregister_otp(request):
         currentuser=request.session['customer']
         customer=Customer.objects.get(id=currentuser)
         if customer.otp == otp:
+            messages.success(request,'Registered Successfully')
             return redirect(fnlogin)
         else:
             customer.delete()
@@ -189,7 +193,8 @@ def fnlogin(request):
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
     allcatogory=Catogory.objects.filter(status="Active")
     form=CustomerForm()
-    context={'form':form,'catogory': catogory,'allcat':allcatogory}
+    context['form']=form
+    # context={'form':form,'catogory': catogory,'allcat':allcatogory}
     return render(request,'user_login.html',context)
 
 def fnotplogin(request):
@@ -223,7 +228,7 @@ def fnotplogin(request):
                 return render(request,'enter_phone.html')
 
 
-    return render(request,'enter_phone.html')
+    return render(request,'enter_phone.html',context)
     
 
 def fnenterotp(request):
@@ -355,20 +360,21 @@ def fncart(request):
             product=Product_Varients.objects.get(id=varient)
             if product.Product_stock < int(qty):
                 message="Product is out of stock "
-                return JsonResponse({'message':message})
+                return JsonResponse({'stock':message})
 
             else:
                 check_cart=Cart.objects.filter(customer=currentUser,product=varient).exists()
                 
                 if check_cart== True:
                     message="Product is already in cart"
-                    return JsonResponse({'message':message})
+                    return JsonResponse({'incart':message})
                 else:
 
                     cart=Cart(customer_id=currentUser,product_id=varient,quantity=qty,selling_price=product.Selling_Prize,display_price=product.Display_Prize)
                     cart.save()
                     count=Cart.objects.filter(customer_id=currentUser).count()
                     message="Product is added to cart"
+                    print(message)
                     return JsonResponse({'count':count,'message':message})
     else:
         message="login to add items to cart"
@@ -442,6 +448,8 @@ def fnproductlist(request):
             products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__Selling_Prize").distinct()
         else:
             products=Product.objects.filter(Product_Category=cat_id)
+        
+        cat_name=Catogory.objects.get(id=cat_id)
 
         print(products)
         paginator=Paginator(products,12)
@@ -461,10 +469,10 @@ def fnproductlist(request):
             cart_count=Cart.objects.filter(customer=currentUser).count()
             wish_count=Wishlist.objects.filter(customer=currentUser).count()
 
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id}
+            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'cat_name':cat_name}
             return render(request,'product_list.html',context)
 
-        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id}
+        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'cat_name':cat_name}
         return render(request,'product_list.html',context)
 
 
@@ -519,21 +527,26 @@ def fnproductlist(request):
             if sort == "0":
                 products=Product.objects.filter(status="Active").order_by("id")
             elif sort == "1" :
-                products=Product.objects.all().order_by("-product_varients__Selling_Prize").distinct()
+                products=Product.objects.all().order_by("product_varients__Selling_Prize")
+                print(products)
+                # pro_list=[products]
+                # new_list=set()
+            
             elif sort == "2" :
-                products=Product.objects.all().order_by("product_varients__Selling_Prize").distinct()
+                products=Product.objects.all().order_by("-product_varients__Selling_Prize")
+                print(products)
             else:
                 products=Product.objects.filter(status="Active")
 
-            paginator=Paginator(products,12)
-            page_num=request.GET.get('page')
-            newproducts=paginator.get_page(page_num)
-            print(products)
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count}
+            # paginator=Paginator(products,12)
+            # page_num=request.GET.get('page')
+            # newproducts=paginator.get_page(page_num)
+            # print(products)
+            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products"}
             return render(request,'product_list.html',context)
 
         
-        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count}
+        context={'catogory': catogory,'allcat':allcatogory,'products':products,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products"}
         return render(request,'product_list.html',context)
         
 
@@ -763,8 +776,16 @@ def fnaddnewaddress(request):
     country=request.POST['country']
     pin=request.POST['pin']
     landmark=request.POST['landmark']
-    address_type=request.POST['address_type']
-    new_address=Address(username_id=currentUser,pin=pin,locality=locality,address=address,state=state,district=district,landmark=landmark,country=country,default=0,address_type=address_type).save()
+    make_dflt=request.POST['make_dflt']
+    print(make_dflt)
+    # address_type=request.POST['address_type']
+    if make_dflt=="1":
+
+        new_address=Address(username_id=currentUser,pin=pin,locality=locality,address=address,state=state,district=district,landmark=landmark,country=country,default=make_dflt)
+        new_address.save()
+        print(new_address)
+        adresses=Address.objects.filter(username_id=currentUser).exclude(id=new_address.id)
+        print(adresses)
     return redirect(fncheckout)
 
 
@@ -799,6 +820,9 @@ def fnplace_order(request):
         currentUser=request.session['customer']
         customer=Customer.objects.get(id=currentUser)
         phone=customer.phone
+        if total_qty == 0:
+            message="Your Cart is Empty "
+            return JsonResponse({'empty':message})
        
         if address and order_price:
             orderid="ORD"+str(phone)+str(randint(1000,9999))

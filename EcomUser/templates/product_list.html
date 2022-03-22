@@ -20,7 +20,7 @@
 <div class="container">
     <ol class="breadcrumb">
         <li><a href="{% url 'Home' %}">Home</a></li>
-        <li class="active"></li>
+        <li class="active">{{cat_name}}</li>
     </ol>
 
     <div class="dropdown" style="float:right;    margin-bottom: 10px;">
@@ -76,8 +76,7 @@
 
 
 <div class="col-md-9 product-model-sec">
-    {% for product in products %}
-
+    {% for product in products|remove_duplicate %}
     {% for pro in product.product_varients_set.all %} 
 	{% if forloop.first %}
 
@@ -131,6 +130,7 @@
 
 	{% endif %}
 	{% endfor %}
+
 
 {% endfor %}
 
@@ -540,11 +540,22 @@ else{
 			   },
 			   success: (data) => {
 				if (data.login){
-						   
-						   alert(data.login)
-						   document.location.href="/login_user/"
-   
-					   }
+						  
+                          alertify.success(data.login)
+                            
+                            document.location.href="/login_user/"
+    
+                        }
+                        else if(data.stock)
+                        {
+                         alertify.success(data.stock)
+ 
+                        }
+                        else if(data.incart)
+                        {
+                         alertify.success(data.incart)  
+                        }
+                       
 
 				else{
 						alert(data.message)

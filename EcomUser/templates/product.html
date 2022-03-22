@@ -1,6 +1,19 @@
 {% extends 'user_main.html' %}
 {% load static %}
 {% block content %}
+<style>
+    .varients_list {
+    width: 85%;
+    max-width: 270px;
+    /* display: inline-block; */
+    margin: 6px -16px 21px;
+    padding: 8px 10px 8px;
+    font-size: 0.9em;
+    color: #7b84a5;
+    background: #fff;
+    border: 1px solid #d6d6d6;
+    }
+</style>
 
 <div class="single-sec">
 <div class="container">
@@ -88,7 +101,7 @@
  <div class="col-12">
 
 
-<select class='varients_list  customize_item'>
+<select class='varients_list v2 customize_item'>
     {% for varient in product.product.product_varients_set.all%}
 
         {% if product.Varient_Values.varient_values == varient.Varient_Values %}
@@ -137,25 +150,26 @@
 </div>
 <div class="row">
 </div>
-<!-- <div class="row " style="margin-top: 20px;">
+<div class="row " style="margin-top: 20px;">
 <div class="col-md-12">
 <div class="product-social-share">
  <span class="product-info-title">Share Via :</span>
-<a href="https://www.facebook.com/sharer.php?u=https://wazaitoon.com/product_details/1356" target="_blank" title="Click to share"><i class="fab fa-facebook-square" style="font-size:20px;color:#365899; margin-left:10px"></i>
+<a href="https://www.facebook.com/sharer.php?u={{ request.build_absolute_uri }}" target="_blank" title="Click to share"><i class="fab fa-facebook-square" style="font-size:20px;color:#365899; margin-left:10px"></i>
 </a>
-<a href="https://api.whatsapp.com/send?text=https://wazaitoon.com/product_details/1356" data-action="share/whatsapp/share" target="_blank" title="Click to share">
+<a href="https://api.whatsapp.com/send?text={{ request.build_absolute_uri }}" data-action="share/whatsapp/share" target="_blank" title="Click to share">
 <i class="fab fa-whatsapp" style="font-size:20px;color:green; margin-left:10px"></i>
 </a>
-<a href="https://www.twitter.com/share?u=https://wazaitoon.com/product_details/1356" target="_blank" title="Click to share">
+<a href="https://www.twitter.com/share?u={{ request.build_absolute_uri }}" target="_blank" title="Click to share">
 <i class="fab fa-twitter" style="font-size:20px;color:#1c94e0; margin-left:10px"></i>
 </a>
+
 </div>
 </div>
-</div> -->
+</div>
 <div class="row" style="margin-top: 20px;">
 <div class="col-md-12">
 
-<h4 class="" style="position:relative;left:-000px;"><b>Product Description</b><br><br><span style="font-weight: 200; line-height: 1.5em;    display: block;    font-size: 1em;    color: #999;">{{product.product.Description}}</span></h4>
+<h4 class="" style="position:relative;left:-000px;"><b>Product Description</b><br><br><span style="font-weight: 200; line-height: 1.5em;    display: block;    font-size: 1em;    color: #999;">{{product.product.Description|safe}}</span></h4>
 </div>
 </div>
 
@@ -1622,13 +1636,24 @@ else{
                 },
                 success: (data) => {
                     if (data.login){
-						   
-						   alert(data.login)
-						   document.location.href="/login_user/"
-   
-					   }
+						  
+                          alertify.success(data.login)
+                            
+                            document.location.href="/login_user/"
+    
+                        }
+                        else if(data.stock)
+                        {
+                         alertify.success(data.stock)
+ 
+                        }
+                        else if(data.incart)
+                        {
+                         alertify.success(data.incart)  
+                        }
+                       
 				else{
-						alert(data.message)
+                    alertify.success(data.message)
                         count_html="("+ data.count+ ")"
 
                         $('.cart_total').html(count_html)
@@ -1671,12 +1696,12 @@ if (varient_type) {
          
          if (data.login){
 						   
-						   alert(data.login)
+                    alertify.success(data.login)
 						   document.location.href="/login_user/"
    
 					   }
 				else{
-						alert(data.message)
+                    alertify.success(data.message)
 
                 if(data.count)
                 {
