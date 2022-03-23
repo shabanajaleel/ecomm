@@ -100,68 +100,6 @@
 		</div>
 	</div>
 
-	<!-- add to cart -->
-	<script>
-		$('.add-to-cart-btn').click(function(){
-		   var varient_type=$(this).attr('id')
-		   var qty=$('.qty').val()
-			
-		   
-		   console.log(varient_type)
-		   console.log(qty)
-		   if (varient_type) {
-			   $.ajaxSetup({
-			   headers:{"X-CSRFToken":'{{csrf_token}}'}
-		   })
-			   $.ajax({
-				   type:'POST',
-				   url:'{% url "add_to_cart" %}',
-				   data:{
-					   'varient_id':varient_type,
-					   'qty':qty,
-				   },
-				   success: (data) => {
-					   if (data.login){
-						  
-						 alertify.success(data.login)
-						   
-						   document.location.href="/login_user/"
-   
-					   }
-					   else if(data.stock)
-					   {
-						alertify.success(data.stock)
-
-					   }
-					   else if(data.incart)
-					   {
-						alertify.success(data.incart)  
-					   }
-					  
-					   else{
-						   console.log(data.message)
-						   alertify.success(data.message)
-						  
-						   count_html="("+ data.count+ ")"
-   
-						   $('.cart_total').html(count_html)
-   
-					   }
-					   
-				
-					   }
-			   })
-		   }
-	   })
-   
-   
-   
-
-   
-   
-	   
-   </script>
-   <!-- end -->
 
 
    <!-- add to wishlist -->
@@ -211,6 +149,68 @@
    </script>
 
    <!-- end wishlist -->
+
+   
+	<!-- add to cart -->
+	<script>
+		$(document).ready(function(){
+			$('.add-to-cart-btn').click(function(){
+		   var varient_type=$(this).attr('id')
+		   var qty=$('.qty').val()
+		   if (varient_type) {
+			   $.ajaxSetup({
+			   headers:{"X-CSRFToken":'{{csrf_token}}'}
+		   })
+			   $.ajax({
+				   type:'POST',
+				   url:'{% url "add_to_cart" %}',
+				   data:{
+					   'varient_id':varient_type,
+					   'qty':qty,
+				   },
+				   success: (data) => {
+					   if (data.login){
+						  
+						 alert(data.login)
+						   
+						   document.location.href="/login_user/"
+   
+					   }
+					   else{
+						if(data.stock)
+							{
+								alert(data.stock)
+
+							}
+						if(data.incart)
+							{
+								alert(data.incart)  
+							}
+						if(data.message && data.count)
+								{
+								console.log(data.message)
+								alert(data.message)
+								
+								count_html="("+ data.count+ ")"
+		
+								$('.cart_total').html(count_html)
+		
+							}
+					   
+
+					   }
+					   
+				
+					   }
+			   })
+		   }
+	   })
+
+		})
+	
+	   
+   </script>
+   <!-- end -->
 
 	{% endblock %}
 	

@@ -22,6 +22,8 @@ urlpatterns=[
     path('add_new_address/',views.fnaddnewaddress,name="add_new_address"),
     path('edit_address/',views.fneditaddress,name="edit_address"),
     path('edit_user_address/',views.fnedituseraddress,name="eedit_user_address"),
+    path('edit_profile_address/',views.fneditprofileaddress,name="edit_profile_address"),
+    
     path('check_pin',views.fncheck_pin,name="check_pin"),
     
 
@@ -50,6 +52,12 @@ urlpatterns=[
 
     path('checkout/',views.fncheckout,name="checkout"),
     path('select_address/',views.fnselectaddress,name="select_address"),
+    path('delete_address/<add_id>',views.fndeleteaddress,name="delete_address"),
+
+    path('order_success/',views.fnordersuccess,name="order_success"),
+
+    
+
 
 
     path('apply_coupon_code/',views.fncoupon,name="apply_coupon_code"),
@@ -59,10 +67,8 @@ urlpatterns=[
     path('paymenthandler/',views.fnpaymenthandler,name="paymenthandler"),
     path('confirm-order/',views.fnconfirm_order,name="confirm-order"),
 
-   
+    path('user-order/',views.fnuser_order,name="user-order"),
 
-
-
-
+    
     path('contact_us/',views.fnfeedback,name="contact_us")
 ]

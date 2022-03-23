@@ -79,6 +79,7 @@
             </br>{{add.address}}, {{add.locality}} 
             </br> {{add.state}}, {{add.country}} 
             </br> {{add.pin}}</p>
+			<a href="{% url 'delete_address' add_id=add.id%}" class="btn btn-danger float-right">Delete</a>
             </div>
           </div>
     </div>

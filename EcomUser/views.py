@@ -67,7 +67,6 @@ def fnhome(request):
     
 
     if 'customer' in request.session:
-        print('hai')
         currentUser=request.session['customer']
         cart_count=Cart.objects.filter(customer=currentUser).count()
         wish_count=Wishlist.objects.filter(customer=currentUser).count()
@@ -352,9 +351,12 @@ def fnaddtocartwish(request):
 def fncart(request):
     if request.session.has_key('customer'):
         if request.method=="POST":
+           
         
             currentUser=request.session['customer']
             qty=request.POST['qty']
+            print('hai')
+            print(currentUser)
             
             varient=request.POST['varient_id']
             product=Product_Varients.objects.get(id=varient)
@@ -367,6 +369,7 @@ def fncart(request):
                 
                 if check_cart== True:
                     message="Product is already in cart"
+                    print(message)
                     return JsonResponse({'incart':message})
                 else:
 
@@ -441,20 +444,26 @@ def fnproductlist(request):
     if cat_id :
 
         if sort == "0":
-            products=Product.objects.filter(Product_Category=cat_id).order_by("id")
+            products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__id")
+            order_by="-id"
         elif sort == "1" :
-            products=Product.objects.filter(Product_Category=cat_id).order_by("-product_varients__Selling_Prize").distinct()
+            products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__Selling_Prize")
+            order_by="Selling_Prize"
         elif sort == "2" :
-            products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__Selling_Prize").distinct()
+            products=Product.objects.filter(Product_Category=cat_id).order_by("-product_varients__Selling_Prize")
+            order_by="-Selling_Prize"
         else:
-            products=Product.objects.filter(Product_Category=cat_id)
+            products=Product.objects.filter(Product_Category=cat_id).order_by("-product_varients__Product_stock")
+            order_by="-Product_stock"
+
+            
         
         cat_name=Catogory.objects.get(id=cat_id)
 
-        print(products)
-        paginator=Paginator(products,12)
-        page_num=request.GET.get('page')
-        newproducts=paginator.get_page(page_num)
+        # print(products)
+        # paginator=Paginator(products,12)
+        # page_num=request.GET.get('page')
+        # newproducts=paginator.get_page(page_num)
 
         catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
         allcatogory=Catogory.objects.filter(status="Active")
@@ -466,13 +475,26 @@ def fnproductlist(request):
         if 'customer' in request.session:
             currentUser=request.session['customer']
 
+            if sort == "0":
+                products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__id")
+                order_by="-id"
+            elif sort == "1" :
+                products=Product.objects.filter(Product_Category=cat_id).order_by("product_varients__Selling_Prize")
+                order_by="Selling_Prize"
+            elif sort == "2" :
+                products=Product.objects.filter(Product_Category=cat_id).order_by("-product_varients__Selling_Prize")
+                order_by="-Selling_Prize"
+            else:
+                products=Product.objects.filter(Product_Category=cat_id).order_by("-product_varients__Product_stock")
+                order_by="-Product_stock"
+
             cart_count=Cart.objects.filter(customer=currentUser).count()
             wish_count=Wishlist.objects.filter(customer=currentUser).count()
 
-            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'cat_name':cat_name}
+            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'cat_name':cat_name,'order_by':order_by}
             return render(request,'product_list.html',context)
 
-        context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'cat_name':cat_name}
+        context={'catogory': catogory,'allcat':allcatogory,'products':products,'cart_count':cart_count,"wish_count":wish_count,'cat_id':cat_id,'cat_name':cat_name,'order_by':order_by}
         return render(request,'product_list.html',context)
 
 
@@ -481,19 +503,24 @@ def fnproductlist(request):
 
     
         if sort == "0":
-            products=Product.objects.filter(status="Active").order_by("id")
+            products=Product.objects.filter(status="Active").order_by("-product_varients__id")
+            order_by="-id"
         elif sort == "1" :
-            products=Product.objects.all().order_by("-product_varients__Selling_Prize").distinct()
+            products=Product.objects.filter(status="Active").order_by("product_varients__Selling_Prize")
+            order_by="Selling_Prize"
+        
         elif sort == "2" :
-            products=Product.objects.all().order_by("product_varients__Selling_Prize").distinct()
+            products=Product.objects.filter(status="Active").order_by("-product_varients__Selling_Prize")
+            order_by="-Selling_Prize"
         else:
-            products=Product.objects.filter(status="Active")
+            products=Product.objects.filter(status="Active").order_by("-product_varients__Product_stock")
+            order_by="-Product_stock"
 
         
 
-        paginator=Paginator(products,12)
-        page_num=request.GET.get('page')
-        newproducts=paginator.get_page(page_num)
+        # paginator=Paginator(products,12)
+        # page_num=request.GET.get('page')
+        # newproducts=paginator.get_page(page_num)
 
         catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
         allcatogory=Catogory.objects.filter(status="Active")
@@ -525,28 +552,28 @@ def fnproductlist(request):
             
 
             if sort == "0":
-                products=Product.objects.filter(status="Active").order_by("id")
+                products=Product.objects.filter(status="Active").order_by("-product_varients__id")
+                order_by="-id"
             elif sort == "1" :
-                products=Product.objects.all().order_by("product_varients__Selling_Prize")
-                print(products)
-                # pro_list=[products]
-                # new_list=set()
+                products=Product.objects.filter(status="Active").order_by("product_varients__Selling_Prize")
+                order_by="Selling_Prize"
             
             elif sort == "2" :
-                products=Product.objects.all().order_by("-product_varients__Selling_Prize")
-                print(products)
+                products=Product.objects.filter(status="Active").order_by("-product_varients__Selling_Prize")
+                order_by="-Selling_Prize"
             else:
-                products=Product.objects.filter(status="Active")
+                products=Product.objects.filter(status="Active").order_by("-product_varients__Product_stock")
+                order_by="-Product_stock"
 
-            # paginator=Paginator(products,12)
+            # paginator=Paginator(products,20)
             # page_num=request.GET.get('page')
             # newproducts=paginator.get_page(page_num)
             # print(products)
-            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products"}
+            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products",'order_by':order_by}
             return render(request,'product_list.html',context)
 
         
-        context={'catogory': catogory,'allcat':allcatogory,'products':products,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products"}
+        context={'catogory': catogory,'allcat':allcatogory,'products':products,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products",'order_by':order_by}
         return render(request,'product_list.html',context)
         
 
@@ -678,6 +705,11 @@ def fnproductsearch(request):
         
 
     return redirect(request.META.get('HTTP_REFERER'))
+def fndeleteaddress(request,add_id):
+    currentUser=request.session['customer']
+    address=Address.objects.get(username_id=currentUser,id=add_id)
+    address.delete()
+    return redirect(fnprofile)
 
 def fnselectaddress(request):
     if request.method=="POST":
@@ -685,18 +717,16 @@ def fnselectaddress(request):
         print(add_id)
         currentUser=request.session['customer']
         new_address=Address.objects.get(username_id=currentUser,id=add_id)
-        data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country}
+        data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'pin':new_address.pin,'name':new_address.username.name}
         
         return JsonResponse(data)
 
 def fneditaddress(request):
     if request.method=="POST":
         add_id=request.POST.get('id')
-        print(add_id)
         new_address=Address.objects.get(id=add_id)
         landmark=new_address.landmark
-        print(landmark)
-        data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'landmark':new_address.landmark,'pin':new_address.pin}
+        data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'landmark':new_address.landmark,'pin':new_address.pin,'default':new_address.default}
         return JsonResponse(data)
 
 def fnedituseraddress(request):
@@ -710,8 +740,59 @@ def fnedituseraddress(request):
         pin=request.POST['pin']
         country=request.POST['country']
         landmark=request.POST['landmark']
-        Address.objects.filter(id=id).update(username_id=currentUser,pin=pin,locality=location,address=address,state=state,district=district,landmark=landmark,country=country,default=0,address_type='Home')
+        default=request.POST['make_dflt']
+        print(default)
+        edit_address=Address.objects.get(id=id)
+        edit_address.username_id=currentUser
+        edit_address.pin=pin
+        edit_address.locality=location
+        edit_address.address=address
+        edit_address.state=state
+        edit_address.district=district
+        edit_address.landmark=landmark
+        edit_address.country=country
+        edit_address.default=default
+        edit_address.save()
+        print(edit_address.id)
+
+        if edit_address.default == "1":
+            adresses=Address.objects.filter(username_id=currentUser).exclude(id=edit_address.id)
+            for adress in adresses:
+                Address.objects.filter(id=adress.id).update(default="0")
+
         return redirect(fncheckout)
+
+def fneditprofileaddress(request):
+    if request.method=="POST":
+        currentUser=request.session['customer']
+        id=request.POST['add_id']
+        address=request.POST['address']
+        state=request.POST['state']
+        district=request.POST['district']
+        location=request.POST['location']
+        pin=request.POST['pin']
+        country=request.POST['country']
+        landmark=request.POST['landmark']
+        edit_address=Address.objects.get(id=id)
+        edit_address.username_id=currentUser
+        edit_address.pin=pin
+        edit_address.locality=location
+        edit_address.address=address
+        edit_address.state=state
+        edit_address.district=district
+        edit_address.landmark=landmark
+        edit_address.country=country
+        edit_address.default="1"
+        edit_address.save()
+        print(edit_address.id)
+        messages.success(request,'Address edited successfully')
+
+        if edit_address.default == "1":
+            adresses=Address.objects.filter(username_id=currentUser).exclude(id=edit_address.id)
+            for adress in adresses:
+                Address.objects.filter(id=adress.id).update(default="0")
+    return redirect(fneditprofile)
+
 
 def fncoupon(request):
     if request.method=="POST":
@@ -997,6 +1078,10 @@ def fnconfirm_order(request):
 @login_cart
 def fnprofile(request):
     currentUser=request.session['customer']
+    cart_count=Cart.objects.filter(customer=currentUser).count()
+    wish_count=Wishlist.objects.filter(customer=currentUser).count()
+    context['cart_count']=cart_count
+    context['wish_count']=wish_count
     context['customer']=Customer.objects.get(id=currentUser)
     context['addresses']=Address.objects.filter(username_id=currentUser)
 
@@ -1008,15 +1093,25 @@ def fneditprofile(request):
     currentUser=request.session['customer']
 
     customer=Customer.objects.get(id=currentUser)
+
+    cart_count=Cart.objects.filter(customer=currentUser).count()
+    wish_count=Wishlist.objects.filter(customer=currentUser).count()
+    context['cart_count']=cart_count
+    context['wish_count']=wish_count
+
+    default_address=Address.objects.get(username_id=currentUser,default="1")
+    print(default_address)
+    context['address']=default_address
     form=CustomerForm(request.POST or None,instance=customer)
-    print(form)
     if form.is_valid():
         form.save()
+        messages.success(request,'Personal details changed successfully')
     else:
         context['form']=form
         return render(request,'edit_profile.html',context)
         
     context['form']=form
+    
     return render(request,'edit_profile.html',context)
 
 def fncheck_pin(request):
@@ -1035,7 +1130,14 @@ def fncheck_pin(request):
             message=""
             return JsonResponse({'success':message})
 
+def fnordersuccess(request):
+    return render(request,'ordersuccess.html')
 
+def fnuser_order(request):
+    currentUser=request.session['customer']
+    
+    context['orders']=OrderDetails.objects.filter(customer_id=currentUser)
+    return render(request,'myorders.html',context)
         
                 
             

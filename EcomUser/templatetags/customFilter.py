@@ -10,8 +10,17 @@ def total_amount(price,discount):
 @register.filter
 def remove_duplicate(queryset):
     print(queryset)
+    a=[]
+    for i in queryset:
+        if i not in a:
+            a.append(i)
+    print(a)
+    return a
+
+@register.filter
+def sort_by(queryset,order_by):
+    return queryset.order_by(order_by)
+
    
-    print(set([i for i in queryset]))
-    return set([i for i in queryset])
 
    

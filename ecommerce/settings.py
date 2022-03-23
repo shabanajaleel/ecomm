@@ -22,7 +22,7 @@ SECRET_KEY = 'django-insecure-)brpklaa!+(^_daj-5)bspfz8fepws%2$*g30lp!wn7=x7=w_d
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.1.3']
 
 
 # Application definition
@@ -85,24 +85,24 @@ TEMPLATE_LOADERS = (
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ecomm',
-#         'USER': 'root',
-#         'PORT': '3306',
-#         'PASSWD': '',
-#         'HOST': 'localhost',
-#         'OPTIONS': {'sql_mode': 'traditional',}
-#     }
-# }
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecomm',
+        'USER': 'root',
+        'PORT': '3306',
+        'PASSWD': '',
+        'HOST': 'localhost',
+        'OPTIONS': {'sql_mode': 'traditional',}
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation

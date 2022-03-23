@@ -3,6 +3,17 @@
 {% load customFilter %}
 
 <style>
+		.shrt{
+
+position: absolute;
+background: #eee;
+padding: unset;
+font-size: .9em;
+font-weight: 500;
+top: -1%;
+right: 1%;
+display: block !important;
+}
 	.pagination>li>a, .pagination>li>span {
     position: relative;
     float: left;
@@ -77,7 +88,7 @@
 
 <div class="col-md-9 product-model-sec">
     {% for product in products|remove_duplicate %}
-    {% for pro in product.product_varients_set.all %} 
+    {% for pro in product.product_varients_set.all|sort_by:order_by %} 
 	{% if forloop.first %}
 
 <div class="product-grid love-grid">
@@ -85,7 +96,9 @@
 <div class="product-img b-link-stripe b-animate-go  thickbox">
 	
 <div class="shrt">
-	<a href="javascript:void(0)" data-id="{{pro.id}}"  class="button add-Cart add-to-wish-btn" title="Add to Wishlist"></span>Wishlist</a>
+	
+		<a href="javascript:void(0)" data-id="{{pro.id}}"  class="button add-Cart add-to-wish-btn" title="Add to Wishlist"><span class="glyphicon glyphicon-heart" aria-hidden="true"></span>Wishlist</a>
+
 </div>
 
     {% for  img in product.productimage_set.all%}
@@ -558,7 +571,7 @@ else{
                        
 
 				else{
-						alert(data.message)
+						alertify.success(data.message)
 
 					   count_html="("+ data.count+ ")"
 
@@ -607,12 +620,16 @@ if (varient_type) {
    
 					   }
 				else{
-						alert(data.message)
+						alertify.success(data.message)
 
-
-				count_html="("+ data.count+ ")"
+					if(data.count)
+					{
+						count_html="("+ data.count+ ")"
 
 				$('.wishlist-total').html(count_html)
+
+					}
+				
 
 			}
 			

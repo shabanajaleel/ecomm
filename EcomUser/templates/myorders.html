@@ -1,0 +1,1556 @@
+{% extends 'user_main.html' %}
+{% load static %}
+{% block content %}
+<!--header-->	
+
+
+<div class="header-top">
+	
+ <script>
+    
+        $(document).ready(function () {
+
+            var dropDownChooser = $('.categories-drop > .categories > ul >li');
+
+            dropDownChooser.hover(function (e) {
+                e.preventDefault();
+                $('.categories-drop > .categories').toggleClass('first-active');
+            })
+
+        })
+    </script><div class="container">
+
+	  <ol class="breadcrumb">
+
+		  <li><a href="https://beru.co.in/index">Home</a></li>
+
+		  <li class="active">My Orders</li>
+
+		 </ol>
+
+
+
+
+
+<div class="section mtb-20p">
+<div class="container">
+
+	<div class="row">
+		<div class="col-xs-12">
+			<div class="row profile-menu">
+				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+					<div class="profile">
+						<div class="pic"><a href="https://beru.co.in/profile"><img src="https://beru.co.in/assets/front/images/profile.png" alt="Profile Pic" title="My Profile"></a></div>
+						<div class="disc">
+							<h5>Pranav</h5>
+							<!-- <p>Gender: Male</p> -->
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
+					<ul>
+						<li><a href="https://beru.co.in/profile" >My Profile</a></li>
+						<li><a href="https://beru.co.in/profile_edit">Edit Profile</a></li>
+						<li><a href="https://beru.co.in/cart">My Cart</a></li>
+						<li><a href="https://beru.co.in/orders"  class="active">My Orders</a></li>
+						<!-- <li><a href="https://beru.co.in/my-orders">My Reward Points</a></li> -->
+						<!-- <li><a href="https://beru.co.in/edit-profile">My cart</a></li>  -->	
+						<!--<li><a href="https://beru.co.in/my-carts">My Cart</a></li>-->
+						<li><a href="https://beru.co.in/account/logout_user">Logout</a></li>
+					</ul>
+				</div>
+
+			</div><!-- profile menu row -->
+		</div>
+	</div>
+
+</div><!-- /.container -->
+</div><!-- /.section -->
+
+<div class="section mb-30p">
+<div class="container">
+
+	<div class="row">
+		<div class="col-xs-12"><h3>Order List</h3></div>
+		<div class="col-xs-12 mb-30p">
+			<div class="order-list-accordian">
+                {% for order in orders %}
+								<div class="orderlist">
+					<div class="row no-gutters status-strip">
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Order Id: {{order.orderid}}</strong>
+							</div>
+
+							
+
+						</div>
+
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Delivery Location:</strong><br> {{order.address.address}},{{order.address.state}},{{order.address.pin}}						</div>
+						</div>
+						<div class="col-md-4 col-sm-12 col-xs-12">
+
+														<span class="button">
+
+								<i class="fas fa-ban"></i>
+								Rejected
+							</span>
+
+						</div>
+
+					</div>
+
+
+
+							<div class="panel">
+
+							
+									<div class="row">
+
+								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+																		  			<img src="https://beru.co.in/uploads/product/pro43740665.jpg" alt="" style="height: 70px; width: 100px;">
+								  										  		</div>
+
+								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+
+								  			<div class="block clear prl-20p">
+
+								  				<h4>Chilli powder- Extra Spicy (Hot) - Chilli powder- Extra Spicy (Hot)</h4>
+
+								  				<span>Nos : 1</span><br>
+
+								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 1</span><br>
+
+
+											</div>
+
+								  		</div>
+<!-- 
+								  		
+								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+										  			<div class="block order-status">
+
+										  				<p>Your item is pending delivery</p>
+
+										  			</div>
+
+										  		</div>
+
+								  			 -->
+
+								  	</div>
+
+								
+							</div>
+
+						  	<div class="row order-total">
+
+						  		<div class="col-sm-3 col-12"><div class="block">Ordered On:{{order.order_date}}</div>
+				<div class="block"><b>Deliverable On:</b> </div>
+</div>
+						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>0</b></div></div></div>
+								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
+
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+
+
+<h4>A PHP Error was encountered</h4>
+
+
+
+<p>Severity: Notice</p>
+
+<p>Message:  Undefined index: total_amount</p>
+
+<p>Filename: orders/my_order.php</p>
+
+<p>Line Number: 278</p>
+
+
+
+
+
+
+	<p>Backtrace:</p>
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
+
+			Line: 278<br />
+
+			Function: _error_handler
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
+
+			Line: 277<br />
+
+			Function: view
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/index.php<br />
+
+			Line: 315<br />
+
+			Function: require_once
+			</p>
+
+
+
+		
+
+
+	
+
+
+
+
+
+</div>-1</b></div></div></div> -->
+						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>1</b></div></div></div>
+								
+						  	</div>
+
+						</div>
+                        {% endfor %}
+
+									<div class="orderlist">
+					<div class="row no-gutters status-strip">
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Order Id: 447</strong>
+							</div>
+
+							
+
+						</div>
+
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Delivery Location:</strong><br> Primalcodes
+Westhill, Bangalore
+KARNATAKA, 560001							</div>
+						</div>
+						<div class="col-md-4 col-sm-12 col-xs-12">
+
+														<span class="button">
+
+								<i class="fas fa-ban"></i>
+								Cancelled
+							</span>
+
+						</div>
+
+					</div>
+
+
+
+							<div class="panel">
+
+							
+									<div class="row">
+
+								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+																		  			<img src="https://beru.co.in/uploads/product/pro43740665.jpg" alt="" style="height: 70px; width: 100px;">
+								  										  		</div>
+
+								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+
+								  			<div class="block clear prl-20p">
+
+								  				<h4>Chilli powder- Extra Spicy (Hot) - Chilli powder- Extra Spicy (Hot)</h4>
+
+								  				<span>Nos : 1</span><br>
+
+								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 1</span><br>
+
+
+											</div>
+
+								  		</div>
+<!-- 
+								  		
+								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+										  			<div class="block order-status">
+
+										  				<p>Order cancelled</p>
+
+										  			</div>
+
+										  		</div>
+
+								  			 -->
+
+								  	</div>
+
+								
+							</div>
+
+						  	<div class="row order-total">
+
+						  		<div class="col-sm-3 col-12"><div class="block">Ordered On: Mon, Nov 29th 2021</div>
+				<div class="block"><b>Deliverable On:</b> </div>
+</div>
+						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>0</b></div></div></div>
+								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
+
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+
+
+<h4>A PHP Error was encountered</h4>
+
+
+
+<p>Severity: Notice</p>
+
+<p>Message:  Undefined index: total_amount</p>
+
+<p>Filename: orders/my_order.php</p>
+
+<p>Line Number: 278</p>
+
+
+
+
+
+
+	<p>Backtrace:</p>
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
+
+			Line: 278<br />
+
+			Function: _error_handler
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
+
+			Line: 277<br />
+
+			Function: view
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/index.php<br />
+
+			Line: 315<br />
+
+			Function: require_once
+			</p>
+
+
+
+		
+
+
+	
+
+
+
+
+
+</div>-1</b></div></div></div> -->
+						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>1</b></div></div></div>
+								
+						  	</div>
+
+						</div>
+
+									<div class="orderlist">
+					<div class="row no-gutters status-strip">
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Order Id: 249</strong>
+							</div>
+
+							
+
+						</div>
+
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Delivery Location:</strong><br> House number 1
+Town, Bangalore
+KARNATAKA, 560001							</div>
+						</div>
+						<div class="col-md-4 col-sm-12 col-xs-12">
+
+														<span class="button">
+
+								<i class="fas fa-ban"></i>
+								Cancelled
+							</span>
+
+						</div>
+
+					</div>
+
+
+
+							<div class="panel">
+
+							
+									<div class="row">
+
+								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+																		  			<img src="https://beru.co.in/uploads/product/pro53700163.jpg" alt="" style="height: 70px; width: 100px;">
+								  										  		</div>
+
+								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+
+								  			<div class="block clear prl-20p">
+
+								  				<h4>Coconut Barfi - Coconut Barfi </h4>
+
+								  				<span>Nos : 1</span><br>
+
+								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 50</span><br>
+
+
+											</div>
+
+								  		</div>
+<!-- 
+								  		
+								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+										  			<div class="block order-status">
+
+										  				<p>Order cancelled</p>
+
+										  			</div>
+
+										  		</div>
+
+								  			 -->
+
+								  	</div>
+
+								
+							</div>
+
+						  	<div class="row order-total">
+
+						  		<div class="col-sm-3 col-12"><div class="block">Ordered On: Fri, May 28th 2021</div>
+				<div class="block"><b>Deliverable On:</b> Sun, Jun 06th 2021 :6:00 PM</div>
+</div>
+						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>50</b></div></div></div>
+								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
+
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+
+
+<h4>A PHP Error was encountered</h4>
+
+
+
+<p>Severity: Notice</p>
+
+<p>Message:  Undefined index: total_amount</p>
+
+<p>Filename: orders/my_order.php</p>
+
+<p>Line Number: 278</p>
+
+
+
+
+
+
+	<p>Backtrace:</p>
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
+
+			Line: 278<br />
+
+			Function: _error_handler
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
+
+			Line: 277<br />
+
+			Function: view
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/index.php<br />
+
+			Line: 315<br />
+
+			Function: require_once
+			</p>
+
+
+
+		
+
+
+	
+
+
+
+
+
+</div>-50</b></div></div></div> -->
+						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>100</b></div></div></div>
+								
+						  	</div>
+
+						</div>
+
+									<div class="orderlist">
+					<div class="row no-gutters status-strip">
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Order Id: 248</strong>
+							</div>
+
+							
+
+						</div>
+
+						<div class="col-md-4 col-sm-12 col-xs-12">
+							<div class="block ptrbl-10p">
+								<strong>Delivery Location:</strong><br> House number 1
+Town, Bangalore
+KARNATAKA, 560001							</div>
+						</div>
+						<div class="col-md-4 col-sm-12 col-xs-12">
+
+														<span class="button">
+
+								<i class="fas fa-ban"></i>
+								Cancelled
+							</span>
+
+						</div>
+
+					</div>
+
+
+
+							<div class="panel">
+
+							
+									<div class="row">
+
+								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
+																		  			<img src="https://beru.co.in/uploads/product/pro50460191.jpg" alt="" style="height: 70px; width: 100px;">
+								  										  		</div>
+
+								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
+
+								  			<div class="block clear prl-20p">
+
+								  				<h4>Wood Apple Candy(Sweet)/Belada haninna Candy - Wood Apple Candy(Sweet)/Belada haninna Candy</h4>
+
+								  				<span>Nos : 1</span><br>
+
+								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 65</span><br>
+
+
+											</div>
+
+								  		</div>
+<!-- 
+								  		
+								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+
+										  			<div class="block order-status">
+
+										  				<p>Order cancelled</p>
+
+										  			</div>
+
+										  		</div>
+
+								  			 -->
+
+								  	</div>
+
+								
+							</div>
+
+						  	<div class="row order-total">
+
+						  		<div class="col-sm-3 col-12"><div class="block">Ordered On: Fri, May 28th 2021</div>
+				<div class="block"><b>Deliverable On:</b> Sun, Jun 06th 2021 :6:00 PM</div>
+</div>
+						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>50</b></div></div></div>
+								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
+
+
+<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
+
+
+
+<h4>A PHP Error was encountered</h4>
+
+
+
+<p>Severity: Notice</p>
+
+<p>Message:  Undefined index: total_amount</p>
+
+<p>Filename: orders/my_order.php</p>
+
+<p>Line Number: 278</p>
+
+
+
+
+
+
+	<p>Backtrace:</p>
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
+
+			Line: 278<br />
+
+			Function: _error_handler
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
+
+			Line: 277<br />
+
+			Function: view
+			</p>
+
+
+
+		
+
+
+	
+
+
+		
+
+
+	
+
+
+		
+
+
+			<p style="margin-left:10px">
+
+			File: /home/beru/web/beru.co.in/public_html/index.php<br />
+
+			Line: 315<br />
+
+			Function: require_once
+			</p>
+
+
+
+		
+
+
+	
+
+
+
+
+
+</div>-65</b></div></div></div> -->
+						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>115</b></div></div></div>
+								
+						  	</div>
+
+						</div>
+
+					
+			</div>
+
+			<div class="pagination">
+
+	            <ul>
+
+				
+
+	            </ul>  
+
+	        </div>
+
+		</div></div>
+		
+	<div class="row">
+
+<div class="col-sm-6">
+
+<!--<div class="dataTables_info" id="dataTables-example_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div>-->
+
+</div>
+
+<div class="col-sm-6">
+
+<div class="dataTables_paginate paging_simple_numbers" id="dataTables-example_paginate" style="float: right;">
+
+<ul class="pagination"><li class="active"><a href="">1</a></li><li class="page"><a href="https://beru.co.in/Orders/index/10" data-ci-pagination-page="2">2</a></li><li class="next page"><a href="https://beru.co.in/Orders/index/10" data-ci-pagination-page="2" rel="next">Next →</a></li></ul>
+</div>
+
+</div>
+
+</div>		<!-- --------------- -->
+
+	</div>
+
+</div>
+
+</div>
+<script>
+
+var acc = document.getElementsByClassName("status-strip");
+
+var i;
+
+
+
+for (i = 0; i < acc.length; i++) {
+
+  acc[i].addEventListener("click", function() {
+
+    this.classList.toggle("active");
+
+    var panel = this.nextElementSibling;
+
+    if (panel.style.display === "block") {
+
+      panel.style.display = "none";
+
+    } else {
+
+      panel.style.display = "block";
+
+    }
+
+  });
+
+}
+
+
+
+$(document).on('click','.cancel-order-btn',function(e){
+	
+	e.preventDefault();
+
+	var id = $(this).attr('data-id');
+	
+	var msg ='Confirm Cancel your order!';
+    $.confirm({
+
+      title: msg,
+
+      // content: 'Cant be reversed!',
+
+      buttons: {
+
+          confirm: function () {
+
+	$.ajax({
+
+
+		type:'post',
+
+		url:base_url+'Orders/cancel_orders',
+
+		data:{id:id},
+
+		success: function(out){
+
+			var out = JSON.parse(out);
+
+			if(out.status==1){
+
+				alert('Your order has been cancelled, If you need any further support please contact customer care');
+
+				window.location.reload();
+
+			}
+
+			else{
+
+				alert(out.data);
+
+			}
+
+		}
+
+	})
+          },
+
+          cancel: function () {
+
+              console.log('Cancelled!');
+
+          }
+
+      }
+
+  })
+
+})
+
+$(document).on('click','.delete-order-btn',function(e){
+
+	e.preventDefault();
+
+	var id = $(this).attr('data-id');
+	var msg ='Confirm delete your order!';
+    $.confirm({
+
+      title: msg,
+
+      // content: 'Cant be reversed!',
+
+      buttons: {
+
+          confirm: function () {
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'Orders/delete_orders',
+
+		data:{id:id},
+
+		success: function(out){
+
+			var out = JSON.parse(out);
+
+			if(out.status==1){
+
+				alert('Your order has been deleted');
+
+				window.location.reload();
+
+			}
+
+			else{
+
+				alert(out.data);
+
+			}
+
+		}
+
+	})
+},
+
+          cancel: function () {
+
+              console.log('Cancelled!');
+
+          }
+
+      }
+
+  })
+
+})
+
+
+
+</script>
+
+
+
+<style type="text/css">
+	.primal-ftr{
+
+	    width: 14px;
+	    display: inline-block;
+        margin: -3px 2px 0 0;
+	}
+   
+</style>
+
+
+<!-- <div class="shoping">
+
+	 <div class="container">
+
+		 <div class="shpng-grids">
+
+			 <div class="col-md-4 shpng-grid">
+
+				 <h3>NORMAL DELIVERY</h3>
+
+				 <p style="color:#333;
+    font-size: 1em;
+    font-family:none;
+     text-transform: none; padding-top: 8px;
+    ">Delivery in a quick, friendly & hassle-free way.</p>
+
+			 </div>
+
+			 <div class="col-md-4 shpng-grid">
+
+				 <h3>EXPRESS DELIVERY</h3>
+<p style="color:#333;
+    font-size: 1em;
+    font-family:none;
+     text-transform: none; padding-top: 8px;
+    ">Your order will be delivered within 30 minutes of placing your order.</p>
+
+			 </div>
+
+			 <div class="col-md-4 shpng-grid">
+
+				 <h3>CASH ON DELIVERY</h3>
+
+				 <p style="color:#333;
+    font-size: 1em;
+    font-family:none;
+     text-transform: none; padding-top: 8px;
+    ">Cash on Delivery is available as a payment method for all items</p>
+
+			 </div>
+
+			 <div class="clearfix"></div>
+
+		 </div>
+
+	 </div>
+
+</div> -->
+
+<!---->
+
+
+<!---->
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://beru.co.in/Wishlist/get_wish_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.wishlist').html('<a href="https://beru.co.in/Wishlist" title="My Wish List"  style="color: black;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.wishlist').html('<a href="https://beru.co.in/Wishlist" title="My Wish List"  style="color: black;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.wishlist').html('<a href="https://beru.co.in/Wishlist" title="My Wish List"  style="color: black;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+</script>	
+
+<script type="text/javascript">
+	
+	$(".numberonly").keydown(function (e) {
+    // Allow: backspace, delete, tab, escape, enter and .
+    if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+         // Allow: Ctrl+A, Command+A
+        (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+         // Allow: home, end, left, right, down, up
+        (e.keyCode >= 35 && e.keyCode <= 40)) {
+             // let it happen, don't do anything
+             return;
+    }
+    // Ensure that it is a number and stop the keypress
+    if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+        e.preventDefault();
+    }
+});
+</script>
+
+
+<script type="text/javascript">
+
+	$(document).ready(function(){
+	// alert("dfgfrg");
+
+    $(document).on('keydown',".numberonly",function (e) {
+    	
+
+        // Allow: backspace, delete, tab, escape, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 27, 13, 110]) !== -1 ||
+
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) || 
+
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+
+            // let it happen, don't do anything
+            return;
+
+        }
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+            e.preventDefault();
+
+        }
+
+    });
+
+});
+
+</script>
+
+
+<script type="text/javascript">
+
+	
+
+	$(document).ready(function(){
+
+// alert("dffgdfgg");
+
+		$.ajax({
+
+			type:'post',
+
+// 			data:{pincode:pincode},
+
+			url:'https://beru.co.in/Cart/get_cart_list_count',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				var count=out.msg;
+
+				console.log(count);
+
+				if(out.status == 1){
+
+					// alert("hii");
+
+				
+
+					$('.cartlist').html('<a href="https://beru.co.in/Cart" title="My Cart List"  style="color: black;">'+count+'</a>');
+
+				}else if(out.status == 2){
+
+					// alert("hoi");
+
+					$('.cartlist').html('<a href="https://beru.co.in/Cart" title="My Cart List"  style="color: black;">0</a>');
+
+				}
+
+				else{
+
+					// alert("has");
+
+					$('.cartlist').html('<a href="https://beru.co.in/Cart" title="My Cart List"  style="color: black;">0</a>');
+
+
+
+				}
+
+			
+
+
+
+
+
+			}
+
+		});
+
+
+
+
+
+	});
+
+
+
+
+
+
+
+	function selectDistrict(event){
+
+	var id = $(event).val();
+
+	$.ajax({
+
+		type:'post',
+
+		url:base_url+'addresses/get_districts',
+
+		data:{id:id},
+
+		success: function(out){
+
+			if(out.status == 404){
+
+				window.location.href = base_url;
+
+			}
+
+			else{
+
+				var out = JSON.parse(out);
+
+				var htm = '<option selected="selected" disabled value="">Select</option>';
+
+				for(var i=0;i<out.length;i++){
+
+					htm += '<option value="'+out[i].district_id+'">'+out[i].district_name+'</option>';
+
+				}
+
+				$('.districts').html(htm);
+
+			}
+
+		}
+
+	})
+
+}
+
+</script>
+
+<script type="text/javascript">
+
+$(document).on('click','#track',function(e){
+
+	e.preventDefault();
+
+	
+
+
+
+	
+
+	$('#myModal_track').modal('show');
+
+})
+
+
+
+$(document).on('click','#track-btn',function(e){
+
+	var order_id = $.trim($('#order_id').val());
+	var mobile_no = $.trim($('#mobile_no').val());
+
+	//var id = $(this).attr('data-id');
+
+	// alert(order_id); 
+
+	if(order_id){
+		if(mobile_no){
+
+		//$('#delivery_pincode').parent().css('border-bottom','2px solid #2874f0');
+
+		$.ajax({
+
+			type:'post',
+
+			data:{order_id:order_id,mobile_no:mobile_no},
+
+			url:base_url+'Orders/track_order_by_id',
+
+			success: function(out){
+
+				var out = JSON.parse(out);
+
+				var msg;
+
+				if(out.status == 1){
+
+							window.location.href = base_url+'Orders/my_order_track?order_id='+order_id
+
+
+
+				}
+
+				else{
+
+					 msg = 'Order id does not exist';
+
+					 $('.check_order_msg').attr('style', 'color: red !important');
+
+					  $('.check_order_msg').show();
+
+				 $('.check_order_msg').html(msg);
+
+
+
+				}
+
+				//console.log(msg);
+
+				
+
+
+
+
+
+			}
+
+		})
+		}
+else{
+
+		$('#mobile_no').focus();
+
+		msg = 'Please enter your Mobile number';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+	}
+
+	else{
+
+		$('#order_id').focus();
+
+		msg = 'Please enter your Order id';
+
+		$('.check_order_msg').show();
+
+		 $('.check_order_msg').html(msg);
+
+	}
+
+
+})
+
+</script>
+<script>
+	$('.banner .owl-carousel').owlCarousel({
+	autoplay:true,
+	autoplayTimeout:5000,
+	autoplayHoverPause:false,
+	smartSpeed:1000,
+
+	animateOut: 'fadeOut',
+    animateIn: 'fadeIn',
+
+	loop:true,
+	margin:0,
+
+	dots: true,
+	nav: true,
+	navText : ['<i class="fas fa-chevron-left"></i>','<i class="fas fa-chevron-right"></i>'],
+
+	responsive:{
+
+	  0:{ items:1 },
+	  600:{ items:1 },
+	  1000:{ items:1 }
+	}
+});
+</script>
+{% endblock %}

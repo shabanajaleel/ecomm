@@ -82,7 +82,7 @@ input[type="date"]::-webkit-inner-spin-button {
 <div class="row">
 
 <div class="col-xs-12">
-<h3 class="mtb-0p">Edit My Profile</h3>
+<h3 class="mtb-0p">Edit My Profile </h3>
 </div>
 <div class="col-md-6 col-sm-12 col-xs-12">
 <div class="profile-info">
@@ -145,27 +145,29 @@ input[type="date"]::-webkit-inner-spin-button {
 <div class="row">
 <div class="col-xs-12">
 <h4>Address Details</h4>
-<form action="https://wazaitoon.com/profile/update_profile" method="post" autocomplete="off">
-<input autocomplete="false" name="hidden" type="text" style="display:none;">
+<form action="/edit_profile_address/" method="post" autocomplete="off">
+	{% csrf_token %}
+<input  type="text" name="add_id" value="{{address.id}}" style="display:none;" hidden>
 <div class="row mtb-10p">
 <div class="col-xs-12">
 <label for="">Address (Area and Street)</label>
-<textarea name="customer_address" id="" placeholder="Address" required onblur="this.value=removeSpaces(this.value);">									
-								</textarea>
+<textarea name="address" id="" >									
+	{{address.address}}	</textarea>
 </div>
 </div>
 <div class="row mtb-10p">
 <div class="col-sm-6 col-xs-12">
 <label for="">State</label>
-<select id="customer_state" name="customer_state" onchange="selectDistrict(this)">
-<option value="">Select</option>
+<select id="customer_state" name="state" >
+
+<option value="" selected>{{address.state}}</option>
 <option value="1">JAMMU & KASHMIR</option><option value="2">HIMACHAL PRADESH</option><option value="3">PUNJAB</option><option value="4">CHANDIGARH</option><option value="5">UTTARANCHAL</option><option value="6">HARYANA</option><option value="7">DELHI</option><option value="8">RAJASTHAN</option><option value="9">UTTAR PRADESH</option><option value="10">BIHAR</option><option value="11">SIKKIM</option><option value="12">ARUNACHAL PRADESH</option><option value="13">NAGALAND</option><option value="14">MANIPUR</option><option value="15">MIZORAM</option><option value="16">TRIPURA</option><option value="17">MEGHALAYA</option><option value="18">ASSAM</option><option value="19">WEST BENGAL</option><option value="20">JHARKHAND</option><option value="21">ORISSA</option><option value="22">CHHATTISGARH</option><option value="23">MADHYA PRADESH</option><option value="24">GUJARAT</option><option value="25">DAMAN & DIU</option><option value="26">DADRA & NAGAR HAVELI</option><option value="27">MAHARASHTRA</option><option value="28">ANDHRA PRADESH</option><option value="29" selected="selected">KARNATAKA</option><option value="30">GOA</option><option value="31">LAKSHADWEEP</option><option value="32">KERALA</option><option value="33">TAMIL NADU</option><option value="34">PONDICHERRY</option><option value="35">ANDAMAN & NICOBAR ISLANDS</option>
 </select>
 </div>
 <div class="col-sm-6 col-xs-12">
 <label for="">District</label>
-<select id="customer_district" name="customer_district" class="districts">
-<option value="">Select</option>
+<select id="customer_district" name="district" class="districts">
+<option value="" selected>{{address.district}}</option>
 <option value="514">Belgaum</option><option value="515">Bagalkot</option><option value="516">Bijapur</option><option value="517">Gulbarga</option><option value="518">Bidar</option><option value="519">Raichur</option><option value="520">Koppal</option><option value="521">Gadag</option><option value="522">Dharwad</option><option value="523">Uttara Kannada</option><option value="524">Haveri</option><option value="525">Bellary</option><option value="526">Chitradurga</option><option value="527">Davangere</option><option value="528">Shimoga</option><option value="529">Udupi</option><option value="530">Chikmagalur</option><option value="531">Tumkur</option><option value="532">Kolar</option><option value="533">Bangalore</option><option value="534">Bangalore Rural</option><option value="535">Mandya</option><option value="536">Hassan</option><option value="537">Dakshina Kannada</option><option value="538">Kodagu</option><option value="539">Mysore</option><option value="540">Chamrajnagar</option>
 </select>
 </div>
@@ -173,17 +175,22 @@ input[type="date"]::-webkit-inner-spin-button {
 <div class="row mtb-10p">
 <div class="col-sm-6 col-xs-12">
 <label for="">Locality</label>
-<input type="text" name="customer_locality" value="" required autocomplete="nope">
+<input type="text" name="location"  required value="{{address.locality}}">
 </div>
 <div class="col-sm-6 col-xs-12">
 <label for="">Pincode</label>
-<input type="text" class="numberonly" maxlength="6" name="customer_pincode" value="" autocomplete="nope" required>
+<input type="text" class="numberonly" maxlength="6" name="pin" value="{{address.pin}}" autocomplete="nope" required>
+</div>
+<div class="col-sm-6 col-xs-12">
+	<label for="">Landmark</label>
+	<input type="text"   name="landmark" value="{{address.landmark}}" autocomplete="nope" required>
+</div>
+<div class="col-sm-6 col-xs-12">
+	<label for="">Country</label>
+	<input type="text"   name="country" value="{{address.country}}" autocomplete="nope" required>
 </div>
 </div>
-<div class="row mtb-10p">
-<div class="col-xs-12"><input type="checkbox" name="make_dflt" id="make_dflt" checked="checked">
-&nbsp;<span>Make this as my default address</span></div>
-</div>
+
 <div class="row mtb-10p">
 <div class="col-xs-12"><input type="submit" value="Update"></div>
 </div>
@@ -199,6 +206,15 @@ input[type="date"]::-webkit-inner-spin-button {
 </div>
 </div>
 <script type="text/javascript">
+	  
+	$('#dflt_add').on('change', function(){
+   this.value = this.checked ? 1 : 0;
+  }).change();
+
+
+
+
+
 
 	function selectDistrict(event){
 
