@@ -299,7 +299,7 @@ class OrderDetails(models.Model):
     Razorpay_signature=models.CharField(max_length=200,null=True)
 
 class Order(models.Model):
-    order_id=models.ForeignKey(OrderDetails,on_delete=models.CASCADE)
+    order=models.ForeignKey(OrderDetails,on_delete=models.CASCADE)
     product=models.ForeignKey(Product_Varients,on_delete=models.CASCADE)
     count=models.CharField(max_length=50)
     order_total = models.DecimalField(max_digits=20,decimal_places=2)

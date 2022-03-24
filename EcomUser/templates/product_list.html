@@ -87,7 +87,7 @@ display: block !important;
 
 
 <div class="col-md-9 product-model-sec">
-    {% for product in products|remove_duplicate %}
+    {% for product in products %}
     {% for pro in product.product_varients_set.all|sort_by:order_by %} 
 	{% if forloop.first %}
 

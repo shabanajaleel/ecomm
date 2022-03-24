@@ -22,7 +22,7 @@
 
 	  <ol class="breadcrumb">
 
-		  <li><a href="https://beru.co.in/index">Home</a></li>
+		  <li><a href="">Home</a></li>
 
 		  <li class="active">My Orders</li>
 
@@ -39,24 +39,15 @@
 		<div class="col-xs-12">
 			<div class="row profile-menu">
 				<div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
-					<div class="profile">
-						<div class="pic"><a href="https://beru.co.in/profile"><img src="https://beru.co.in/assets/front/images/profile.png" alt="Profile Pic" title="My Profile"></a></div>
-						<div class="disc">
-							<h5>Pranav</h5>
-							<!-- <p>Gender: Male</p> -->
-						</div>
-					</div>
+					
 				</div>
 				<div class="col-lg-10 col-md-9 col-sm-8 col-xs-12">
 					<ul>
-						<li><a href="https://beru.co.in/profile" >My Profile</a></li>
-						<li><a href="https://beru.co.in/profile_edit">Edit Profile</a></li>
-						<li><a href="https://beru.co.in/cart">My Cart</a></li>
-						<li><a href="https://beru.co.in/orders"  class="active">My Orders</a></li>
-						<!-- <li><a href="https://beru.co.in/my-orders">My Reward Points</a></li> -->
-						<!-- <li><a href="https://beru.co.in/edit-profile">My cart</a></li>  -->	
-						<!--<li><a href="https://beru.co.in/my-carts">My Cart</a></li>-->
-						<li><a href="https://beru.co.in/account/logout_user">Logout</a></li>
+						<li><a href="{% url 'user_profile'%}" >My Profile</a></li>
+						<li><a href="{% url 'edit_profile' %}">Edit Profile</a></li>
+						<li><a href="{% url 'view_cart' %}" >My Cart</a></li>
+						<li><a href="{% url 'user-order' %}" class="active">My Orders</a></li>
+						<li><a href="{% url 'logout_user'%}">Logout</a></li>
 					</ul>
 				</div>
 
@@ -72,30 +63,31 @@
 
 	<div class="row">
 		<div class="col-xs-12"><h3>Order List</h3></div>
-		<div class="col-xs-12 mb-30p">
+		<div class="col-xs-12 mt-5">
+			{% for order in orders %}
 			<div class="order-list-accordian">
-                {% for order in orders %}
+               
 								<div class="orderlist">
-					<div class="row no-gutters status-strip">
-						<div class="col-md-4 col-sm-12 col-xs-12">
+					<div class="row no-gutters status-strip" >
+						<div class="col-md-3 col-sm-12 col-xs-12 m-3">
 							<div class="block ptrbl-10p">
-								<strong>Order Id: {{order.orderid}}</strong>
+								<strong>Order Id:{{order.orderid}}</strong>
 							</div>
 
 							
 
 						</div>
 
-						<div class="col-md-4 col-sm-12 col-xs-12">
+						<div class="col-md-3 col-sm-12 col-xs-12 m-2">
 							<div class="block ptrbl-10p">
-								<strong>Delivery Location:</strong><br> {{order.address.address}},{{order.address.state}},{{order.address.pin}}						</div>
+								<strong>Delivery Location:</strong><br> {{order.address.address}},{{order.address.state}},{{order.address.pin}}	</div>
 						</div>
-						<div class="col-md-4 col-sm-12 col-xs-12">
+						<div class="col-md-3 col-sm-12 col-xs-12 ml-auto">
 
 														<span class="button">
 
 								<i class="fas fa-ban"></i>
-								Rejected
+							{{order.order_status}}
 							</span>
 
 						</div>
@@ -103,25 +95,26 @@
 					</div>
 
 
-
 							<div class="panel">
 
-							
-									<div class="row">
+								{% for items in order.order_set.all %}
+									<div class="row mt-2 border-bottom">
+										{% for img in items.product.product.productimage_set.all%}
 
 								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-																		  			<img src="https://beru.co.in/uploads/product/pro43740665.jpg" alt="" style="height: 70px; width: 100px;">
-								  										  		</div>
+											<img src="/media/{{img.Thumbnail_image}}" alt="" style="height: 70px; width: 100px;">
+								  		</div>
+										  {% endfor %}
 
 								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
 
 								  			<div class="block clear prl-20p">
 
-								  				<h4>Chilli powder- Extra Spicy (Hot) - Chilli powder- Extra Spicy (Hot)</h4>
+								  				<h4>{{items.product.product.Name}}-{{items.product.Varient_Values.varient_values}}</h4>
 
-								  				<span>Nos : 1</span><br>
+								  				<span>Nos :{{items.count}}</span><br>
 
-								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 1</span><br>
+								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 {{items.product.Selling_Prize}}</span><br>
 
 
 											</div>
@@ -142,772 +135,38 @@
 								  			 -->
 
 								  	</div>
-
+									  {% endfor %}
 								
 							</div>
 
 						  	<div class="row order-total">
 
-						  		<div class="col-sm-3 col-12"><div class="block">Ordered On:{{order.order_date}}</div>
-				<div class="block"><b>Deliverable On:</b> </div>
-</div>
-						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>0</b></div></div></div>
-								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
-
-
-<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
-
-
-
-<h4>A PHP Error was encountered</h4>
-
-
-
-<p>Severity: Notice</p>
-
-<p>Message:  Undefined index: total_amount</p>
-
-<p>Filename: orders/my_order.php</p>
-
-<p>Line Number: 278</p>
-
-
-
-
-
-
-	<p>Backtrace:</p>
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
-
-			Line: 278<br />
-
-			Function: _error_handler
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
-
-			Line: 277<br />
-
-			Function: view
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/index.php<br />
-
-			Line: 315<br />
-
-			Function: require_once
-			</p>
-
-
-
-		
-
-
-	
-
-
-
-
-
-</div>-1</b></div></div></div> -->
-						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>1</b></div></div></div>
+						  		<div class="col-sm-3 col-12 mt-2"><div class="block">Ordered On:{{order.order_date}}</div>
+								<!-- <div class="block mt-2"><b>Deliverable On:</b> </div> -->
+								</div>
+						  		<div class="col-sm-3 col-12 mt-2">
+									  <div class="block txt-right">Delivery Charge
+										   <div class="price">&#8377 <b>0</b>
+										   </div>
+									  </div>
+								</div>
 								
-						  	</div>
-
-						</div>
-                        {% endfor %}
-
-									<div class="orderlist">
-					<div class="row no-gutters status-strip">
-						<div class="col-md-4 col-sm-12 col-xs-12">
-							<div class="block ptrbl-10p">
-								<strong>Order Id: 447</strong>
-							</div>
-
-							
-
-						</div>
-
-						<div class="col-md-4 col-sm-12 col-xs-12">
-							<div class="block ptrbl-10p">
-								<strong>Delivery Location:</strong><br> Primalcodes
-Westhill, Bangalore
-KARNATAKA, 560001							</div>
-						</div>
-						<div class="col-md-4 col-sm-12 col-xs-12">
-
-														<span class="button">
-
-								<i class="fas fa-ban"></i>
-								Cancelled
-							</span>
-
-						</div>
-
-					</div>
-
-
-
-							<div class="panel">
-
-							
-									<div class="row">
-
-								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-																		  			<img src="https://beru.co.in/uploads/product/pro43740665.jpg" alt="" style="height: 70px; width: 100px;">
-								  										  		</div>
-
-								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
-
-								  			<div class="block clear prl-20p">
-
-								  				<h4>Chilli powder- Extra Spicy (Hot) - Chilli powder- Extra Spicy (Hot)</h4>
-
-								  				<span>Nos : 1</span><br>
-
-								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 1</span><br>
-
-
-											</div>
-
-								  		</div>
-<!-- 
-								  		
-								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-
-										  			<div class="block order-status">
-
-										  				<p>Order cancelled</p>
-
-										  			</div>
-
-										  		</div>
-
-								  			 -->
-
-								  	</div>
-
+		<div class="col-sm-3 col-12 mt-2 ml-auto">
+			<div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total 
+				<div class="price">&#8377 <b>{{order.order_total}}</b></div></div></div>
 								
-							</div>
-
-						  	<div class="row order-total">
-
-						  		<div class="col-sm-3 col-12"><div class="block">Ordered On: Mon, Nov 29th 2021</div>
-				<div class="block"><b>Deliverable On:</b> </div>
-</div>
-						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>0</b></div></div></div>
-								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
-
-
-<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
-
-
-
-<h4>A PHP Error was encountered</h4>
-
-
-
-<p>Severity: Notice</p>
-
-<p>Message:  Undefined index: total_amount</p>
-
-<p>Filename: orders/my_order.php</p>
-
-<p>Line Number: 278</p>
-
-
-
-
-
-
-	<p>Backtrace:</p>
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
-
-			Line: 278<br />
-
-			Function: _error_handler
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
-
-			Line: 277<br />
-
-			Function: view
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/index.php<br />
-
-			Line: 315<br />
-
-			Function: require_once
-			</p>
-
-
-
-		
-
-
-	
-
-
-
-
-
-</div>-1</b></div></div></div> -->
-						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>1</b></div></div></div>
-								
-						  	</div>
+		</div>
 
 						</div>
-
-									<div class="orderlist">
-					<div class="row no-gutters status-strip">
-						<div class="col-md-4 col-sm-12 col-xs-12">
-							<div class="block ptrbl-10p">
-								<strong>Order Id: 249</strong>
-							</div>
-
-							
-
-						</div>
-
-						<div class="col-md-4 col-sm-12 col-xs-12">
-							<div class="block ptrbl-10p">
-								<strong>Delivery Location:</strong><br> House number 1
-Town, Bangalore
-KARNATAKA, 560001							</div>
-						</div>
-						<div class="col-md-4 col-sm-12 col-xs-12">
-
-														<span class="button">
-
-								<i class="fas fa-ban"></i>
-								Cancelled
-							</span>
-
-						</div>
-
-					</div>
-
-
-
-							<div class="panel">
-
-							
-									<div class="row">
-
-								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-																		  			<img src="https://beru.co.in/uploads/product/pro53700163.jpg" alt="" style="height: 70px; width: 100px;">
-								  										  		</div>
-
-								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
-
-								  			<div class="block clear prl-20p">
-
-								  				<h4>Coconut Barfi - Coconut Barfi </h4>
-
-								  				<span>Nos : 1</span><br>
-
-								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 50</span><br>
-
-
-											</div>
-
-								  		</div>
-<!-- 
-								  		
-								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-
-										  			<div class="block order-status">
-
-										  				<p>Order cancelled</p>
-
-										  			</div>
-
-										  		</div>
-
-								  			 -->
-
-								  	</div>
-
-								
-							</div>
-
-						  	<div class="row order-total">
-
-						  		<div class="col-sm-3 col-12"><div class="block">Ordered On: Fri, May 28th 2021</div>
-				<div class="block"><b>Deliverable On:</b> Sun, Jun 06th 2021 :6:00 PM</div>
-</div>
-						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>50</b></div></div></div>
-								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
-
-
-<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
-
-
-
-<h4>A PHP Error was encountered</h4>
-
-
-
-<p>Severity: Notice</p>
-
-<p>Message:  Undefined index: total_amount</p>
-
-<p>Filename: orders/my_order.php</p>
-
-<p>Line Number: 278</p>
-
-
-
-
-
-
-	<p>Backtrace:</p>
-
-	
+                      
 
 
 		
 
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
-
-			Line: 278<br />
-
-			Function: _error_handler
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
-
-			Line: 277<br />
-
-			Function: view
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/index.php<br />
-
-			Line: 315<br />
-
-			Function: require_once
-			</p>
-
-
-
-		
-
-
-	
-
-
-
-
-
-</div>-50</b></div></div></div> -->
-						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>100</b></div></div></div>
-								
-						  	</div>
-
-						</div>
-
-									<div class="orderlist">
-					<div class="row no-gutters status-strip">
-						<div class="col-md-4 col-sm-12 col-xs-12">
-							<div class="block ptrbl-10p">
-								<strong>Order Id: 248</strong>
-							</div>
-
-							
-
-						</div>
-
-						<div class="col-md-4 col-sm-12 col-xs-12">
-							<div class="block ptrbl-10p">
-								<strong>Delivery Location:</strong><br> House number 1
-Town, Bangalore
-KARNATAKA, 560001							</div>
-						</div>
-						<div class="col-md-4 col-sm-12 col-xs-12">
-
-														<span class="button">
-
-								<i class="fas fa-ban"></i>
-								Cancelled
-							</span>
-
-						</div>
-
-					</div>
-
-
-
-							<div class="panel">
-
-							
-									<div class="row">
-
-								  		<div class="col-lg-2 col-md-2 col-sm-3 col-xs-12">
-																		  			<img src="https://beru.co.in/uploads/product/pro50460191.jpg" alt="" style="height: 70px; width: 100px;">
-								  										  		</div>
-
-								  		<div class="col-lg-6 col-md-6 col-sm-9 col-xs-12">
-
-								  			<div class="block clear prl-20p">
-
-								  				<h4>Wood Apple Candy(Sweet)/Belada haninna Candy - Wood Apple Candy(Sweet)/Belada haninna Candy</h4>
-
-								  				<span>Nos : 1</span><br>
-
-								  				<span style="font-family: Roboto, Arial, sans-serif;">Price :&#8377 65</span><br>
-
-
-											</div>
-
-								  		</div>
-<!-- 
-								  		
-								  				<div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
-
-										  			<div class="block order-status">
-
-										  				<p>Order cancelled</p>
-
-										  			</div>
-
-										  		</div>
-
-								  			 -->
-
-								  	</div>
-
-								
-							</div>
-
-						  	<div class="row order-total">
-
-						  		<div class="col-sm-3 col-12"><div class="block">Ordered On: Fri, May 28th 2021</div>
-				<div class="block"><b>Deliverable On:</b> Sun, Jun 06th 2021 :6:00 PM</div>
-</div>
-						  		<div class="col-sm-3 col-12"><div class="block txt-right">Delivery Charge <div class="price">&#8377 <b>50</b></div></div></div>
-								<!-- <div class="col-sm-3 col-12"><div class="block txt-right">Promocode Discount <div class="price">&#8377 <b>
-
-
-<div style="border:1px solid #990000;padding-left:20px;margin:0 0 10px 0;">
-
-
-
-<h4>A PHP Error was encountered</h4>
-
-
-
-<p>Severity: Notice</p>
-
-<p>Message:  Undefined index: total_amount</p>
-
-<p>Filename: orders/my_order.php</p>
-
-<p>Line Number: 278</p>
-
-
-
-
-
-
-	<p>Backtrace:</p>
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/views/front/orders/my_order.php<br />
-
-			Line: 278<br />
-
-			Function: _error_handler
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/application/controllers/Orders.php<br />
-
-			Line: 277<br />
-
-			Function: view
-			</p>
-
-
-
-		
-
-
-	
-
-
-		
-
-
-	
-
-
-		
-
-
-			<p style="margin-left:10px">
-
-			File: /home/beru/web/beru.co.in/public_html/index.php<br />
-
-			Line: 315<br />
-
-			Function: require_once
-			</p>
-
-
-
-		
-
-
-	
-
-
-
-
-
-</div>-65</b></div></div></div> -->
-						  		<div class="col-sm- col-12"><div class="block txt-right">&nbsp;&nbsp;&nbsp;&nbsp;Order Total <div class="price">&#8377 <b>115</b></div></div></div>
-								
-						  	</div>
-
-						</div>
 
 					
 			</div>
+			{% endfor %}
 
 			<div class="pagination">
 

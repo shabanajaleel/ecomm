@@ -230,8 +230,10 @@
     <div class="row">
     <div class="col-12">
 
-    <div class="shopping-button" style="">
-    <label id="no_delivery_msg" for="" style="display:none;font-size: large;">Sorry,We dont have delivery to this Location,Change Location and continue</label>
+      <label id="no_delivery_msg" for="" style="display:none;font-size: large;">Sorry,We dont have delivery to this Location,Change Location and continue</label>
+
+    <div class="shopping-button" style="display:block">
+    
     <a id="rzp-button1" class="button  px-3 mt-3 buy" style="display:none">Razorpay Payment</a> 
 	
     <a href="javascript:void(0)" class="button buy pay_cod"  style="margin-right: 40px;margin-top:10px; display:block">Place Order</a>
@@ -568,6 +570,16 @@ $('#dflt_add').on('change', function(){
         </br> <span class="default_pin">'+pin+'</span>'
 		
 				$('.new_address').html(htm)
+        $('.pay_cod').show()
+      
+        $('#no_delivery_msg').hide()
+
+        if(data.message){
+          alertify.error(data.message)
+          $('.pay_cod').hide()
+
+         $('#no_delivery_msg').show()
+        }
 		
 
 			}
@@ -742,7 +754,7 @@ $('#dflt_add').on('change', function(){
 <script>
 	$(document).ready(function(){
 		$('.payment_cod').click(function(){
-      if($('#no_delivery_msg').style.display=="none")
+      if($('#no_delivery_msg').css("display", "none"))
       {
         var p_method = $('input[name=payment_cod]:checked').val();
 
@@ -949,8 +961,13 @@ else{
       success: (data) => {
         if(data.error){
          alertify.error(data.error)
-         $('.pay_cod').hide()
+         $('.shopping-button').hide()
          $('#no_delivery_msg').show()
+
+        }
+        else{
+          $('.shopping-button').show()
+         $('#no_delivery_msg').hide()
 
         }
                    

@@ -215,6 +215,7 @@
 <ul>
 <li><a href="#" id="track"><i class="fas fa-truck-moving"></i>&nbsp;&nbsp;Track Order</a></li>
 {% if currentUser %}
+<li class="top_link"><i class="fas fa-user-alt" style="color:#fff;"></i><a href="{% url 'user_profile' %}">My Account</a></li>
 <li class="top_link"><i class="fas fa-sign-in-alt" style="color:#fff;"></i><a href="{% url 'logout_user' %}">Logout</a></li>
 {% else %}
 <li class="top_link"><i class="fas fa-sign-in-alt" style="color:#fff;"></i><a href="{% url 'login_user' %}">Sign in</a></li>
@@ -321,8 +322,8 @@
 <li class="grid active"><a href="{% url 'Home' %}">HOME</a></li>
 <li class="grid active"><a href="{% url 'products' %}">PRODUCTS</a></li>
 <li class="grid active"><a href="{% url 'product-offers' %}">OFFERS</a></li>
-<li class="grid active"><a href="https://wazaitoon.com/about">ABOUT US</a></li>
-<li class="grid active"><a href="https://wazaitoon.com/contact">CONTACT</a></li>
+<li class="grid active"><a href="">ABOUT US</a></li>
+<li class="grid active"><a href="">CONTACT</a></li>
  <li class="grid active">
 <a class="sh-mobile-on">
 <b>CATEGORIES</b>

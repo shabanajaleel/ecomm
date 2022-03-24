@@ -400,6 +400,7 @@ def fnviewcart(request):
     
 
     # all contexts
+    context['currentUser']=currentUser
     context['cart']=user_cart
     context['total_price']=total_price
     context['total_qty']=total_qty
@@ -516,11 +517,15 @@ def fnproductlist(request):
             products=Product.objects.filter(status="Active").order_by("-product_varients__Product_stock")
             order_by="-Product_stock"
 
-        
+        single_product=[]
+        for i in products:
+            if i not in single_product:
+                single_product.append(i)
+        print(single_product)
 
-        # paginator=Paginator(products,12)
-        # page_num=request.GET.get('page')
-        # newproducts=paginator.get_page(page_num)
+        paginator=Paginator(single_product,12)
+        page_num=request.GET.get('page')
+        newproducts=paginator.get_page(page_num)
 
         catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
         allcatogory=Catogory.objects.filter(status="Active")
@@ -565,11 +570,18 @@ def fnproductlist(request):
                 products=Product.objects.filter(status="Active").order_by("-product_varients__Product_stock")
                 order_by="-Product_stock"
 
-            # paginator=Paginator(products,20)
-            # page_num=request.GET.get('page')
-            # newproducts=paginator.get_page(page_num)
-            # print(products)
-            context={'catogory': catogory,'allcat':allcatogory,'products':products,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products",'order_by':order_by}
+
+            single_product=[]
+            for i in products:
+                if i not in single_product:
+                    single_product.append(i)
+            print(single_product)
+
+            paginator=Paginator(single_product,6)
+            page_num=request.GET.get('page')
+            newproducts=paginator.get_page(page_num)
+            print(products)
+            context={'catogory': catogory,'allcat':allcatogory,'products':newproducts,'currentUser':currentUser,'cart_count':cart_count,"wish_count":wish_count,'cat_name':"all-products",'order_by':order_by}
             return render(request,'product_list.html',context)
 
         
@@ -636,8 +648,6 @@ def fnchangeqty(request):
 @login_cart
 def fncheckout(request):
     currentUser=request.session['customer']
-    
-
     catogory=Catogory.objects.filter(parent=None ,status="Active").order_by('display_order')
     allcat=Catogory.objects.filter(status="Active")
 
@@ -662,7 +672,7 @@ def fncheckout(request):
     # Cart_total(customer_id=currentUser,order_total=total_price,total_quantity=total_qty).save()
 
 
-    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat,'default_address':default_address}
+    context={'cart': user_cart ,'total_price':total_price,'total_qty': total_qty,'address':address,'form':form,'cart_count':cart_count,'wish_count':wish_count,'catogory':catogory,'allcat':allcat,'default_address':default_address,'currentUser':currentUser}
 
     return render(request,'checkout.html',context)
 
@@ -717,8 +727,14 @@ def fnselectaddress(request):
         print(add_id)
         currentUser=request.session['customer']
         new_address=Address.objects.get(username_id=currentUser,id=add_id)
-        data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'pin':new_address.pin,'name':new_address.username.name}
-        
+
+        pincode=Pincode.objects.filter(status="Active",pincode=new_address.pin).exists()
+        if pincode==False:
+            message="Sorry,No delivery to this area" 
+            data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'pin':new_address.pin,'name':new_address.username.name,"message":message}   
+        else:
+            data={'id':new_address.id,'address':new_address.address,'locality':new_address.locality,'district':new_address.district,'state':new_address.state,'country':new_address.country,'pin':new_address.pin,'name':new_address.username.name}
+
         return JsonResponse(data)
 
 def fneditaddress(request):
@@ -876,6 +892,7 @@ def fnnew(request):
     return render(request,'news.html')
 
 def fnoffers(request):
+    
     offers=Offers.objects.filter(status="Active")
     cart_count=0
     wish_count=0
@@ -883,6 +900,8 @@ def fnoffers(request):
         currentUser=request.session['customer']
         cart_count=Cart.objects.filter(customer=currentUser).count()
         wish_count=Wishlist.objects.filter(customer=currentUser).count()
+
+    context['currentUser']=currentUser    
     context['cart_count']=cart_count
     context['wish_count']=wish_count
     context['offer']=offers
@@ -916,7 +935,7 @@ def fnplace_order(request):
 
             for items in ordered_products:
                 quantity=items.quantity
-                order=Order(order_id_id=neworder_id,product_id=items.product.id,count=quantity,order_total=items.selling_price).save()
+                order=Order(order_id=neworder_id,product_id=items.product.id,count=quantity,order_total=items.selling_price).save()
                 product_varient_stock=items.product.Product_stock
                 new_stock=product_varient_stock-quantity
                 # update product quantity
@@ -963,7 +982,7 @@ def fnplace_order_razorpay(request):
 
             for items in ordered_products:
                 quantity=items.quantity
-                order=Order(order_id_id=neworder_id,product_id=items.product.id,count=quantity,order_total=items.selling_price).save()
+                order=Order(order_id=neworder_id,product_id=items.product.id,count=quantity,order_total=items.selling_price).save()
                 # product_varient_stock=items.product.Product_stock
                 # new_stock=product_varient_stock-quantity
                 # # update product quantity
@@ -1006,7 +1025,7 @@ def fnpaymenthandler(request):
                 
 
                 order_id=order_details.id
-                orders=Order.objects.filter(order_id_id=order_id)
+                orders=Order.objects.filter(order_id=order_id)
                 for allorders in orders:
                     product_varient_stock=allorders.product.Product_stock
                     print(product_varient_stock)
@@ -1082,7 +1101,7 @@ def fnprofile(request):
     wish_count=Wishlist.objects.filter(customer=currentUser).count()
     context['cart_count']=cart_count
     context['wish_count']=wish_count
-    context['customer']=Customer.objects.get(id=currentUser)
+    context['currentUser']=Customer.objects.get(id=currentUser)
     context['addresses']=Address.objects.filter(username_id=currentUser)
 
     return render(request,'profile.html',context)
@@ -1135,6 +1154,12 @@ def fnordersuccess(request):
 
 def fnuser_order(request):
     currentUser=request.session['customer']
+    orders=OrderDetails.objects.filter(customer_id=currentUser)
+    cart_count=Cart.objects.filter(customer=currentUser).count()
+    wish_count=Wishlist.objects.filter(customer=currentUser).count()
+    context['cart_count']=cart_count
+    context['wish_count']=wish_count
+    context['currentUser']=Customer.objects.get(id=currentUser)
     
     context['orders']=OrderDetails.objects.filter(customer_id=currentUser)
     return render(request,'myorders.html',context)
